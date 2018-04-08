@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>School</key>
+	<dict>
+		<key>AOE 4066</key>
+		<dict>
+			<key>Event Info</key>
+			<array>
+				<array>
+					<true/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+				</array>
+				<string>12:00 pm</string>
+				<string>YES</string>
+				<string>Medium</string>
+				<date>2018-05-08T21:17:10Z</date>
+			</array>
+			<key>Notes</key>
+			<array/>
+		</dict>
+		<key>CS3714</key>
+		<dict>
+			<key>Event Info</key>
+			<array>
+				<array>
+					<true/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+				</array>
+				<string>8:00 am</string>
+				<string>YES</string>
+				<string>Medium</string>
+				<date>2018-05-08T21:23:28Z</date>
+			</array>
+			<key>Notes</key>
+			<array>
+				<string></string>
+			</array>
+		</dict>
+	</dict>
+	<key>Work</key>
+	<dict>
+		<key>Meetings</key>
+		<dict>
+			<key>Event Info</key>
+			<array>
+				<array>
+					<true/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+				</array>
+				<string>12:00 pm</string>
+				<string>NO</string>
+				<string>High</string>
+				<date>2018-05-08T21:23:28Z</date>
+			</array>
+			<key>Notes</key>
+			<array/>
+		</dict>
+		<key>Projects</key>
+		<dict>
+			<key>Project 1</key>
+			<dict>
+				<key>Event Info</key>
+				<array>
+					<array>
+						<true/>
+						<false/>
+						<false/>
+						<false/>
+						<false/>
+						<false/>
+						<false/>
+					</array>
+					<string>10:00 am</string>
+					<string>YES</string>
+					<string>Medium</string>
+					<date>2018-05-08T21:23:28Z</date>
+				</array>
+				<key>Notes</key>
+				<array/>
+			</dict>
+		</dict>
+	</dict>
+	<key>Family</key>
+	<dict>
+		<key>Cousins Birthday Party</key>
+		<dict>
+			<key>Event Info</key>
+			<array>
+				<array>
+					<true/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+				</array>
+				<string>2:00 pm</string>
+				<string>NO</string>
+				<string>Medium</string>
+				<date>2018-05-08T21:23:28Z</date>
+			</array>
+			<key>Notes</key>
+			<array/>
+		</dict>
+		<key>Visit Grandmother</key>
+		<dict>
+			<key>Event Info</key>
+			<array>
+				<array>
+					<true/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+				</array>
+				<string>5:00 pm</string>
+				<string>YES</string>
+				<string>Medium</string>
+				<date>2018-05-08T21:23:28Z</date>
+			</array>
+			<key>Notes</key>
+			<array/>
+		</dict>
+	</dict>
+	<key>Social</key>
+	<dict>
+		<key>Spring Game</key>
+		<dict>
+			<key>Event Info</key>
+			<array>
+				<array>
+					<true/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+				</array>
+				<string>5:00 pm</string>
+				<string>YES</string>
+				<string>Medium</string>
+				<date>2018-05-08T21:23:28Z</date>
+			</array>
+			<key>Notes</key>
+			<array/>
+		</dict>
+		<key>Dinner With Roommates</key>
+		<dict>
+			<key>Event Info</key>
+			<array>
+				<array>
+					<true/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+					<false/>
+				</array>
+				<string>5:00 pm</string>
+				<string>YES</string>
+				<string>Medium</string>
+				<date>2018-05-08T21:23:28Z</date>
+			</array>
+			<key>New item</key>
+			<array/>
+		</dict>
+	</dict>
+</dict>
+</plist>
