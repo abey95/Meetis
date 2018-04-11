@@ -16,7 +16,8 @@ class HomeTableViewController: UITableViewController {
     // Obtain the object reference to the App Delegate object
     let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    let tableViewRowHeight: CGFloat = 70.0
+    let tableViewRowHeightClosed: CGFloat = 70
+    let tableViewRowHeightOpen: CGFloat = 130
     
        
     //---------- Create and Initialize the Arrays -----------------------
@@ -141,10 +142,14 @@ class HomeTableViewController: UITableViewController {
         let currentEvent = events[rowNumber]
        
         cell.openButton.tag = t_count
-
+        cell.openButton.addTarget(self, action: #selector(cellOpened(sender:)), for: .touchUpInside)
+        t_count += 1
+        cell.cellExists = true
+        
         cell.eventTitleLabel.text = currentEvent.title
         cell.eventTimeLabel.text = currentEvent.getDateString()
-        
+        cell.imageView!.image = UIImage(named: "G.png")
+
         UIView.animate(withDuration: 0) {
             cell.contentView.layoutIfNeeded()
         }
@@ -152,7 +157,7 @@ class HomeTableViewController: UITableViewController {
         return cell
     }
     
-    func cellOpened(sender:UIButton) {
+    @objc func cellOpened(sender:UIButton) {
         self.tableView.beginUpdates()
         
         let previousCellTag = button_tag
@@ -180,7 +185,22 @@ class HomeTableViewController: UITableViewController {
         self.tableView.endUpdates()
     }
     
-
+    /*
+     -----------------------------------
+     MARK: - Table View Delegate Methods
+     -----------------------------------
+     */
+    
+    // Asks the table view delegate to return the height of a given row.
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if indexPath.row == button_tag {
+            return tableViewRowHeightOpen
+        } else {
+            return tableViewRowHeightClosed
+        }
+    }
+    
     
     /*
      -----------------------------
