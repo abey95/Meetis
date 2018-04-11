@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CS3714</key>
+	<dict>
+		<key>active</key>
+		<false/>
+		<key>days</key>
+		<array>
+			<false/>
+			<false/>
+			<false/>
+			<false/>
+			<false/>
+			<false/>
+			<false/>
+		</array>
+		<key>priority</key>
+		<string>Medium</string>
+		<key>time</key>
+		<string>12:00</string>
+		<key>category</key>
+		<string>School</string>
+	</dict>
+</dict>
+</plist>

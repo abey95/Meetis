@@ -1,20 +1,15 @@
 //
-//  HomeTableViewCell.swift
+//  StackTableViewCell.swift
 //  Meetis
 //
-//  Created by CS3714 on 4/8/18.
+//  Created by Kyle Thompson on 4/9/18.
 //  Copyright © 2018 Abey Yoseph. All rights reserved.
 //
 
 import UIKit
 
-/*
- https://www.youtube.com/watch?v=c7opB2B4nh0
- */
-class HomeTableViewCell: UITableViewCell {
+class StackTableViewCell: UITableViewCell {
 
-    @IBOutlet var eventCategoryImageView: UIImageView!
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -25,5 +20,5 @@ class HomeTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    
 }

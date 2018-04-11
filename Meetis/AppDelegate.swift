@@ -14,7 +14,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     // Instance variable to hold the object reference of a Dictionary object, the content of which is modifiable at runtime
-    var dict_MyEvents_EventData: NSMutableDictionary = NSMutableDictionary()
+    var dict_Events: NSMutableDictionary = NSMutableDictionary()
+    
+    var dict_Notes: NSMutableDictionary = NSMutableDictionary()
+    
+    var chronEvents = [Event]()
+    var events = [[Event]]()
     
     /*
      ---------------------------
@@ -43,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let documentDirectoryPath = paths[0] as String
         
         // Add the plist filename to the document directory path to obtain an absolute path to the plist filename
-        let plistFilePathInDocumentDirectory = documentDirectoryPath + "/MyEvents.plist"
+        let plistFilePathInDocumentDirectory = documentDirectoryPath + "/Events.plist"
         
         /*
          NSMutableDictionary manages an *unordered* collection of mutable (modifiable) key-value pairs.
@@ -59,22 +64,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let dictionaryFromFileInDocumentDirectory = dictionaryFromFile {
             
             // CompaniesILike.plist exists in the Document directory
-            dict_MyEvents_EventData = dictionaryFromFileInDocumentDirectory
+            dict_Events = dictionaryFromFileInDocumentDirectory
             
         } else {
             
             // CompaniesILike.plist does not exist in the Document directory; Read it from the main bundle.
             
             // Obtain the file path to the plist file in the mainBundle (project folder)
-            let plistFilePathInMainBundle = Bundle.main.path(forResource: "MyEvents", ofType: "plist")
+            let plistFilePathInMainBundle = Bundle.main.path(forResource: "Events", ofType: "plist")
             
             // Instantiate an NSMutableDictionary object and initialize it with the contents of the CompaniesILike.plist file.
             let dictionaryFromFileInMainBundle: NSMutableDictionary? = NSMutableDictionary(contentsOfFile: plistFilePathInMainBundle!)
             
             // Store the object reference into the instance variable
-            dict_MyEvents_EventData = dictionaryFromFileInMainBundle!
+            dict_Events = dictionaryFromFileInMainBundle!
         }
-        
+        loadAllEvents()
         return true
     }
     
@@ -96,10 +101,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let documentDirectoryPath = paths[0] as String
         
         // Add the plist filename to the document directory path to obtain an absolute path to the plist filename
-        let plistFilePathInDocumentDirectory = documentDirectoryPath + "/MyEvents.plist"
+        let plistFilePathInDocumentDirectory = documentDirectoryPath + "/Events.plist"
         
         // Write the NSMutableDictionary to the CompaniesILike.plist file in the Document directory
-        dict_MyEvents_EventData.write(toFile: plistFilePathInDocumentDirectory, atomically: true)
+        dict_Events.write(toFile: plistFilePathInDocumentDirectory, atomically: true)
         
         /*
          The flag "atomically" specifies whether the file should be written atomically or not.
@@ -131,6 +136,63 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
+    func reloadChronEvents() {
+        var allEvents:[Event] = [Event]()
+        
+        for i in EventCategory.allValues {
+            allEvents.append(contentsOf: events[i.hashValue])
+        }
+        
+        
+        }
+        
+    }
+    
+    func loadAllEvents() {
+        
+        //create an entry for each category
+        for _ in EventCategory.allValues {
+            events.append([])
+        }
+        
+        
+        //get all names of events
+        var events_names = dict_Events.allKeys as! [String]
+        events_names.sort { $0 < $1}
+        
+        for title in events_names {
+            // Obtain the event of a given name
+            let cur_event_data = dict_Events.value(forKey: title) as! Dictionary<String, AnyObject>
+            
+            let priority = cur_event_data["priority"] as! String
+            let active = cur_event_data["active"] as! Bool
+            let days = cur_event_data["days"] as! [Bool]
+            let time = cur_event_data["time"] as! String
+            let cat = cur_event_data["category"] as! String
+            var category:EventCategory
+            switch (cat) {
+            case "school":
+                category = .school
+                break;
+            case "work":
+                category = .work
+                break;
+            case "personal":
+                category = .personal
+                break;
+            default:
+                category = .travel
+            }
+            
+            let new_event = Event.init(title: title, days: days, time: time, priority: priority, category: category, active: active)
+            
+            // add to events in given category
+            events[new_event.category.hashValue].append(new_event)
+        }
+        
+    }
+    
 }
+
 
 
