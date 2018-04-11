@@ -11,6 +11,8 @@
 		089FBDA4207BD205001A5CF8 /* StackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FBDA2207BD205001A5CF8 /* StackTableViewCell.xib */; };
 		089FBDA6207C0C46001A5CF8 /* Events.plist in Resources */ = {isa = PBXBuildFile; fileRef = 089FBDA5207C0C46001A5CF8 /* Events.plist */; };
 		089FBDA8207D3BB4001A5CF8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089FBDA7207D3BB4001A5CF8 /* Event.swift */; };
+		089FBDAA207E70F6001A5CF8 /* NoteDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089FBDA9207E70F6001A5CF8 /* NoteDataViewController.swift */; };
+		089FBDAC207E7B07001A5CF8 /* EventDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089FBDAB207E7B07001A5CF8 /* EventDataViewController.swift */; };
 		B763567A207AAEF90068B3A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7635679207AAEF90068B3A8 /* AppDelegate.swift */; };
 		B7635681207AAEF90068B3A8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B763567F207AAEF90068B3A8 /* Main.storyboard */; };
 		B7635683207AAEF90068B3A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7635682207AAEF90068B3A8 /* Assets.xcassets */; };
@@ -27,6 +29,8 @@
 		089FBDA2207BD205001A5CF8 /* StackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StackTableViewCell.xib; sourceTree = "<group>"; };
 		089FBDA5207C0C46001A5CF8 /* Events.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Events.plist; sourceTree = "<group>"; };
 		089FBDA7207D3BB4001A5CF8 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		089FBDA9207E70F6001A5CF8 /* NoteDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDataViewController.swift; sourceTree = "<group>"; };
+		089FBDAB207E7B07001A5CF8 /* EventDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDataViewController.swift; sourceTree = "<group>"; };
 		B7635676207AAEF90068B3A8 /* Meetis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Meetis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7635679207AAEF90068B3A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B7635680207AAEF90068B3A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -92,6 +96,8 @@
 				089FBDA2207BD205001A5CF8 /* StackTableViewCell.xib */,
 				B799279A207E45730033571F /* NewNoteViewController.swift */,
 				B799279E207E65320033571F /* AddEventViewController.swift */,
+				089FBDA9207E70F6001A5CF8 /* NoteDataViewController.swift */,
+				089FBDAB207E7B07001A5CF8 /* EventDataViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -173,9 +179,11 @@
 				B7635695207AB8830068B3A8 /* HomeTableViewController.swift in Sources */,
 				B799279F207E65320033571F /* AddEventViewController.swift in Sources */,
 				B763567A207AAEF90068B3A8 /* AppDelegate.swift in Sources */,
+				089FBDAC207E7B07001A5CF8 /* EventDataViewController.swift in Sources */,
 				B799279D207E48AF0033571F /* ContainerViewController.swift in Sources */,
 				B799279B207E45730033571F /* NewNoteViewController.swift in Sources */,
 				B7635693207AB8360068B3A8 /* MenuViewController.swift in Sources */,
+				089FBDAA207E70F6001A5CF8 /* NoteDataViewController.swift in Sources */,
 				089FBDA8207D3BB4001A5CF8 /* Event.swift in Sources */,
 				089FBDA3207BD205001A5CF8 /* StackTableViewCell.swift in Sources */,
 			);
