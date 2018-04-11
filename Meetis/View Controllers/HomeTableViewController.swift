@@ -21,7 +21,11 @@ class HomeTableViewController: UITableViewController {
        
     //---------- Create and Initialize the Arrays -----------------------
     var categories = [String]()
-    var eventTitles = [String]()
+    var events = [Event]()
+    var lastCell:StackTableViewCell = StackTableViewCell()
+    var t_count:Int = 0
+    var button_tag:Int = -1
+
     
     // companyDataToPass is the data object to pass to the downstream view controller
     var eventDataToPass = [String]()
@@ -37,45 +41,13 @@ class HomeTableViewController: UITableViewController {
                                                          action: #selector(HomeTableViewController.addEvent(_:)))
         self.navigationItem.rightBarButtonItem = addButton
         
+        events = applicationDelegate.chronEvents
         
-        
-        eventsTableView.register(UINib(nibName: "StackCell", bundle: nil), forCellReuseIdentifier: "StackCell")
+        eventsTableView.register(UINib(nibName: "StackTableViewCell", bundle: nil), forCellReuseIdentifier: "StackCell")
         eventsTableView.delegate = self
         eventsTableView.dataSource = self
     }
     
-    private func getEvents() {
-        /*
-         allKeys returns a new array containing the dictionary’s keys as of type AnyObject.
-         Therefore, typecast the AnyObject type keys to be of type String.
-         The keys in the array are *unordered*; therefore, they need to be sorted.
-         */
-        categories = applicationDelegate.dict_Events.allKeys as! [String]
-        
-        for category in categories {
-            // Obtain the events of a specific category
-            let events: AnyObject? = applicationDelegate.dict_Events.value(forKey: category) as AnyObject
-            
-            // Typecast the AnyObject to NSMutableDictionary
-            let eventsOfGivenCategory = events! as! NSMutableDictionary
-            
-            //add all events of a category to our list of events
-            let curEvents = eventsOfGivenCategory.allKeys as! [String]
-            
-            //get event and check if it still in use
-            for eventName in curEvents {
-                //get event from events dictionary
-                let event: AnyObject? = eventsOfGivenCategory.value(forKey: eventName) as AnyObject
-                
-                // Typecast the AnyObject to NSMutableDictionary
-                let eventData = event! as! NSMutableDictionary
-            }
-           
-        }
-        
-        // Sort the stock symbols within itself in alphabetical order
-        eventTitles.sort { $0 < $1 }
-    }
     
     //-------------------------------
     // Allow Editing of Rows (Movies)
@@ -94,35 +66,35 @@ class HomeTableViewController: UITableViewController {
     // This is the method invoked when the user taps the Delete button in the Edit mode
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
-        if editingStyle == .delete {   // Handle the Delete action
-            
-            // Obtain the name of the event to be deleted
-            let eventName = eventTitles[(indexPath as NSIndexPath).section]
-            
-            //create new dicitionary of all movies and updated preferences minus the movie to remove
-            let newDict = NSMutableDictionary()
-
-            
-            if newDict.count == 0 {
-                // If no genre remains in the array after deletion, then we need to also delete the country
-                applicationDelegate.dict_Genres_MovieData.removeObject(forKey: genreOfMovieToDelete)
-                
-                // Since the dictionary has been changed, obtain the genre names again
-                genres = applicationDelegate.dict_Genres_MovieData.allKeys as! [String]
-                
-                // Sort the genres names within itself in alphabetical order
-                genres.sort { $0 < $1 }
-            }
-            else {
-                // At least one more movie remains in the array; therefore, the genre stays.
-                
-                // Update the new list of movies for the genre in the NSMutableDictionary
-                applicationDelegate.dict_Genres_MovieData.setValue(newDict, forKey: genreOfMovieToDelete)
-            }
-            
-            // Reload the rows and sections of the Table View moviesTableView
-            moviesTableView.reloadData()
-        }
+//        if editingStyle == .delete {   // Handle the Delete action
+//
+//            // Obtain the name of the event to be deleted
+//            let eventName = eventTitles[(indexPath as NSIndexPath).section]
+//
+//            //create new dicitionary of all movies and updated preferences minus the movie to remove
+//            let newDict = NSMutableDictionary()
+//
+//
+//            if newDict.count == 0 {
+//                // If no genre remains in the array after deletion, then we need to also delete the country
+//                applicationDelegate.dict_Genres_MovieData.removeObject(forKey: genreOfMovieToDelete)
+//
+//                // Since the dictionary has been changed, obtain the genre names again
+//                genres = applicationDelegate.dict_Genres_MovieData.allKeys as! [String]
+//
+//                // Sort the genres names within itself in alphabetical order
+//                genres.sort { $0 < $1 }
+//            }
+//            else {
+//                // At least one more movie remains in the array; therefore, the genre stays.
+//
+//                // Update the new list of movies for the genre in the NSMutableDictionary
+//                applicationDelegate.dict_Genres_MovieData.setValue(newDict, forKey: genreOfMovieToDelete)
+//            }
+//
+//            // Reload the rows and sections of the Table View moviesTableView
+//            moviesTableView.reloadData()
+//        }
     }
 
     /*
@@ -150,9 +122,84 @@ class HomeTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return eventTitles.count
+        return events.count
     }
 
+    //-------------------------------------
+    // Prepare and Return a Table View Cell
+    //-------------------------------------
     
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let rowNumber = (indexPath as NSIndexPath).row
+        
+        // Obtain the object reference of a reusable table view cell object instantiated under the identifier
+        // Company Cell, which was specified in the storyboard
+        let cell: StackTableViewCell = tableView.dequeueReusableCell(withIdentifier: "StackCell") as! StackTableViewCell
+        
+        // Typecast the AnyObject to Swift array of String objects
+        let currentEvent = events[rowNumber]
+       
+        cell.openButton.tag = t_count
+
+        cell.eventTitleLabel.text = currentEvent.title
+        cell.eventTimeLabel.text = currentEvent.getDateString()
+        
+        UIView.animate(withDuration: 0) {
+            cell.contentView.layoutIfNeeded()
+        }
+        
+        return cell
+    }
+    
+    func cellOpened(sender:UIButton) {
+        self.tableView.beginUpdates()
+        
+        let previousCellTag = button_tag
+        
+        if lastCell.cellExists {
+            self.lastCell.animate(duration: 0.2, c: {
+                self.view.layoutIfNeeded()
+            })
+            
+            if sender.tag == button_tag {
+                button_tag = -1
+                lastCell = StackTableViewCell()
+            }
+        }
+        
+        if sender.tag != previousCellTag {
+            button_tag = sender.tag
+            
+            lastCell = tableView.cellForRow(at: IndexPath(row: button_tag, section: 0)) as! StackTableViewCell
+            self.lastCell.animate(duration: 0.2, c: {
+                self.view.layoutIfNeeded()
+            })
+            
+        }
+        self.tableView.endUpdates()
+    }
+    
+
+    
+    /*
+     -----------------------------
+     MARK: - Display Alert Message
+     -----------------------------
+     */
+    func showAlertMessage(messageHeader header: String, messageBody body: String) {
+        
+        /*
+         Create a UIAlertController object; dress it up with title, message, and preferred style;
+         and store its object reference into local constant alertController
+         */
+        let alertController = UIAlertController(title: header, message: body, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // Create a UIAlertAction object and add it to the alert controller
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        // Present the alert controller
+        present(alertController, animated: true, completion: nil)
+    }
 
 }

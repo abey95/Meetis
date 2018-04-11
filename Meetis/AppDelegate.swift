@@ -135,19 +135,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    
-    func reloadChronEvents() {
-        var allEvents:[Event] = [Event]()
         
-        for i in EventCategory.allValues {
-            allEvents.append(contentsOf: events[i.hashValue])
-        }
-        
-        
-        }
-        
-    }
-    
     func loadAllEvents() {
         
         //create an entry for each category
@@ -188,10 +176,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // add to events in given category
             events[new_event.category.hashValue].append(new_event)
+            
+            if active {
+                chronEvents.append(new_event)
+            }
+            
         }
         
     }
-    
 }
 
 

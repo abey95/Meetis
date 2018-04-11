@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -34,6 +34,13 @@
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KZu-mz-CxC">
                                 <rect key="frame" x="84" y="8" width="228" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nhr-8i-fSr">
+                                <rect key="frame" x="84" y="41" width="228" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -106,6 +113,19 @@
                 </subviews>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="dismissButton" destination="bLw-GD-odl" id="ivj-bf-SwQ"/>
+                <outlet property="eventTimeLabel" destination="nhr-8i-fSr" id="ebi-7D-lwP"/>
+                <outlet property="eventTitleLabel" destination="KZu-mz-CxC" id="9uB-yl-MMK"/>
+                <outlet property="iconImageView" destination="ZuI-vU-t3z" id="hyz-v2-aoj"/>
+                <outlet property="micButton" destination="ocX-Tw-fmH" id="9Qm-Uw-3g2"/>
+                <outlet property="openButton" destination="wm5-BA-yLD" id="3G5-ux-XmV"/>
+                <outlet property="openView" destination="p7I-s1-duy" id="Kva-Lb-xkt"/>
+                <outlet property="penButton" destination="wtR-67-Q83" id="myz-qE-09y"/>
+                <outlet property="picButton" destination="jNJ-HK-yhY" id="g8T-xc-4dy"/>
+                <outlet property="stuffView" destination="vIS-EY-UQ4" id="BG7-mY-KGR"/>
+                <outlet property="uploadButton" destination="zI8-EV-xuy" id="vaM-GC-OEL"/>
+            </connections>
             <point key="canvasLocation" x="34.5" y="69"/>
         </tableViewCell>
     </objects>

@@ -17,7 +17,8 @@
 		B7635686207AAEF90068B3A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7635684207AAEF90068B3A8 /* LaunchScreen.storyboard */; };
 		B7635693207AB8360068B3A8 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7635692207AB8360068B3A8 /* MenuViewController.swift */; };
 		B7635695207AB8830068B3A8 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7635694207AB8830068B3A8 /* HomeTableViewController.swift */; };
-		B7635697207AB9680068B3A8 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7635696207AB9680068B3A8 /* HomeTableViewCell.swift */; };
+		B799279B207E45730033571F /* NewNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B799279A207E45730033571F /* NewNoteViewController.swift */; };
+		B799279D207E48AF0033571F /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B799279C207E48AF0033571F /* ContainerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +34,8 @@
 		B7635687207AAEF90068B3A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7635692207AB8360068B3A8 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B7635694207AB8830068B3A8 /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
-		B7635696207AB9680068B3A8 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
+		B799279A207E45730033571F /* NewNoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNoteViewController.swift; sourceTree = "<group>"; };
+		B799279C207E48AF0033571F /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,11 +83,12 @@
 		B763568F207AAF2C0068B3A8 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				B7635696207AB9680068B3A8 /* HomeTableViewCell.swift */,
+				B799279C207E48AF0033571F /* ContainerViewController.swift */,
 				B7635694207AB8830068B3A8 /* HomeTableViewController.swift */,
 				B7635692207AB8360068B3A8 /* MenuViewController.swift */,
 				089FBDA1207BD205001A5CF8 /* StackTableViewCell.swift */,
 				089FBDA2207BD205001A5CF8 /* StackTableViewCell.xib */,
+				B799279A207E45730033571F /* NewNoteViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -166,7 +169,8 @@
 			files = (
 				B7635695207AB8830068B3A8 /* HomeTableViewController.swift in Sources */,
 				B763567A207AAEF90068B3A8 /* AppDelegate.swift in Sources */,
-				B7635697207AB9680068B3A8 /* HomeTableViewCell.swift in Sources */,
+				B799279D207E48AF0033571F /* ContainerViewController.swift in Sources */,
+				B799279B207E45730033571F /* NewNoteViewController.swift in Sources */,
 				B7635693207AB8360068B3A8 /* MenuViewController.swift in Sources */,
 				089FBDA8207D3BB4001A5CF8 /* Event.swift in Sources */,
 				089FBDA3207BD205001A5CF8 /* StackTableViewCell.swift in Sources */,

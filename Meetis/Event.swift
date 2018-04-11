@@ -77,4 +77,8 @@ class Event: NSObject {
         return -1
     }
     
+    func getDateString() -> String {
+        return "8:00-9:15am MWF"
+    }
+    
 }
