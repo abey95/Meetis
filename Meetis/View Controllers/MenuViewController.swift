@@ -16,7 +16,9 @@ protocol MenuViewControllerDelegate {
 }
 
 
-class MenuViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UISearchBarDelegate {
+class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate {
+    
+    
 
     // Obtain the object reference to the App Delegate object
     let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -49,8 +51,8 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
 
         events = applicationDelegate.events
-        eventsTableView.delegate = self
-        eventsTableView.dataSource = self
+        //eventsTableView.delegate = self
+        //eventsTableView.dataSource = self
         
         //Need to create the arrays of event names and event categories
 

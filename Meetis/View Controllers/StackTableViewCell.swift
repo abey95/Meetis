@@ -62,7 +62,7 @@ class StackTableViewCell: UITableViewCell {
                 
             })
         }, completion: {  (finished: Bool) in
-            print("animation complete")
+            //print("animation complete")
             c()
         })
     }

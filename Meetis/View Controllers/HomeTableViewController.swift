@@ -16,8 +16,8 @@ class HomeTableViewController: UITableViewController {
     // Obtain the object reference to the App Delegate object
     let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    let tableViewRowHeightClosed: CGFloat = 70
-    let tableViewRowHeightOpen: CGFloat = 130
+    let tableViewRowHeightClosed: CGFloat = 70.0
+    let tableViewRowHeightOpen: CGFloat = 130.0
     
        
     //---------- Create and Initialize the Arrays -----------------------
