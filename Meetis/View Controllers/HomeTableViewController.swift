@@ -27,12 +27,14 @@ class HomeTableViewController: UITableViewController {
     var t_count:Int = 0
     var button_tag:Int = -1
 
+    let background_color = UIColor.init(red: 50/255, green: 54/255, blue: 64/255, alpha: 1)
     
     // companyDataToPass is the data object to pass to the downstream view controller
     var eventToPass: Event?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = background_color
         
         // Set up the Edit button on the left of the navigation bar to enable editing of the table view rows
         self.navigationItem.leftBarButtonItem = self.editButtonItem
@@ -40,6 +42,9 @@ class HomeTableViewController: UITableViewController {
         // Set up the Add button on the right of the navigation bar to call the addCompany method when tapped
         let addButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self,
                                                          action: #selector(HomeTableViewController.addEvent(_:)))
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: nil)
+        self.setToolbarItems([flexSpace], animated: true)
         self.navigationItem.rightBarButtonItem = addButton
         
         events = applicationDelegate.chronEvents
@@ -47,6 +52,9 @@ class HomeTableViewController: UITableViewController {
         eventsTableView.register(UINib(nibName: "StackTableViewCell", bundle: nil), forCellReuseIdentifier: "StackCell")
         eventsTableView.delegate = self
         eventsTableView.dataSource = self
+        
+        eventsTableView.allowsSelection = false
+        eventsTableView.backgroundColor = background_color
     }
     
     
@@ -142,35 +150,40 @@ class HomeTableViewController: UITableViewController {
         // Typecast the AnyObject to Swift array of String objects
         let currentEvent = events[rowNumber]
         
-        cell.index = rowNumber
-        cell.cellExists = true
-        cell.eventTitleLabel.text = currentEvent.title
-        cell.eventTimeLabel.text = currentEvent.getDateString()
-        
-        cell.tag = t_count
-        
-        cell.openButton.addTarget(self, action: #selector(cellOpened(sender:)), for: .touchUpInside)
-        
-        switch currentEvent.category {
-        case .school:
-            cell.imageView!.image = UIImage(named: "school.png")
-            break
-        case .family:
-            cell.imageView!.image = UIImage(named: "family.png")
-        case .personal:
-            cell.imageView!.image = UIImage(named: "personal.png")
-        case .travel:
-            cell.imageView!.image = UIImage(named: "travel.png")
-        default:
-            cell.imageView!.image = UIImage(named: "work.png")
+        if !cell.cellExists {
+            cell.index = rowNumber
+            cell.cellExists = true
+            cell.eventTitleLabel.text = currentEvent.title
+            cell.eventTimeLabel.text = currentEvent.getDateString()
             
+            cell.openButton.tag = t_count
+            
+            cell.openButton.addTarget(self, action: #selector(cellOpened(sender:)), for: .touchUpInside)
+            
+           switch currentEvent.category {
+            case .school:
+                cell.imageView!.image = UIImage(named: "school.png")
+                break
+            case .family:
+                cell.imageView!.image = UIImage(named: "family.png")
+            case .personal:
+                cell.imageView!.image = UIImage(named: "personal.png")
+            case .travel:
+                cell.imageView!.image = UIImage(named: "travel.png")
+            default:
+                cell.imageView!.image = UIImage(named: "work.png")
+                
+            }
+            t_count = t_count + 1
+            cell.cellExists = true
         }
+    
 
         UIView.animate(withDuration: 0) {
             cell.contentView.layoutIfNeeded()
         }
         
-        t_count = t_count + 1
+        
         
         return cell
     }
@@ -295,23 +308,31 @@ extension HomeTableViewController: StackCellDelegate {
 extension HomeTableViewController: AddEventViewControllerProtocol {
     func addEventViewController(_ controller: AddEventViewController, didFinishWithSave save: Bool) {
         //get fields from add event view controller and create a new event object
-        
-        let priority: String?
-        switch controller.prioritySegmentedControl.selectedSegmentIndex {
-        case 0:
-            priority = "high"
-        case 1:
-            priority = "medium"
-        default:
-            priority = "low"
+        if save {
+            let priority: String?
+            switch controller.prioritySegmentedControl.selectedSegmentIndex {
+            case 0:
+                priority = "high"
+            case 1:
+                priority = "medium"
+            default:
+                priority = "low"
+            }
+            
+            
+            let event = Event(title: controller.titleTextField.text!, days: controller.days, time: controller.timeTextField.text!, priority: priority!, category: controller.selectedCategory!, active: true  )
+            
+            //add the new event to the dictionary and refresh the tableview and app delegate arrays
+            applicationDelegate.dict_Events.setValue(event.toDict(), forKey: event.title!)
+            
+            applicationDelegate.loadAllEvents()
+            events = applicationDelegate.chronEvents
+            
+            eventsTableView.reloadData()
         }
         
         
-       // let event = Event(title: controller.titleTextField.text!, days: controller.days, time: controller. )
-
-        
-        
-        //add the new event to the dictionary and refresh the tableview and app delegate arrays
+        self.navigationController!.popViewController(animated: true)
     }
     
     

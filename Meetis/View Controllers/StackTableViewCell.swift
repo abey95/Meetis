@@ -41,15 +41,12 @@ class StackTableViewCell: UITableViewCell {
     var micActive = false
     var delegate: StackCellDelegate?
     
+    let background_color = UIColor.init(red: 50/255, green: 54/255, blue: 64/255, alpha: 1)
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        self.contentView.backgroundColor = background_color
     }
     
     func animate(duration:Double, c: @escaping () -> Void) {

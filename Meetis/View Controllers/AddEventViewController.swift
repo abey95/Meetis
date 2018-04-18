@@ -27,6 +27,8 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBOutlet var pickerView: UIPickerView!
     @IBOutlet var prioritySegmentedControl: UISegmentedControl!
     
+    @IBOutlet var timeTextField: UITextField!
+    
     /*
      Whichever object wants to conform to our protocol declared above must store its unique ID into this
      instance variable named "delegate" and provide the implementation of the protocol method.

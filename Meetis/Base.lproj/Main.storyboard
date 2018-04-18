@@ -397,6 +397,7 @@
                     <connections>
                         <outlet property="pickerView" destination="xfa-eb-Fme" id="srb-De-GWD"/>
                         <outlet property="prioritySegmentedControl" destination="YBa-pU-yQ6" id="ZFX-4Z-gPt"/>
+                        <outlet property="timeTextField" destination="JBM-qU-lhj" id="QeZ-PE-j9L"/>
                         <outlet property="titleTextField" destination="b9Q-6O-yTM" id="tea-5C-5tX"/>
                     </connections>
                 </viewController>

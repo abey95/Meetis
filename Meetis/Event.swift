@@ -24,12 +24,14 @@ class Event: NSObject {
     var priority:String?        // priority of the event: "High"
     var category: EventCategory // category of the event
     var active: Bool            // true if active, false otherwise
+    var time: String?           // string representation of time
     
     // This function is called to initialize an object instantiated from the MapAnnotation class
     init(title:String, days:[Bool], time:String, priority:String, category: EventCategory, active: Bool ) {
         self.title = title
         self.days = days
         let hours_minutes = time.split(separator: ":")
+        self.time = time
         self.priority = priority
         self.category = category
         self.active = active
@@ -64,6 +66,20 @@ class Event: NSObject {
      */
     func deactivate() {
         active = false
+    }
+    
+    /*
+        return the all fields in an object array
+    */
+    func toDict() -> [String : AnyObject] {
+        var dict = [String: AnyObject]()
+        dict["active"] = active as AnyObject
+        dict["days"] = days as AnyObject
+        dict["priority"] = priority as AnyObject
+        dict["time"] = time as AnyObject
+        dict["category"] = category.rawValue as AnyObject
+        
+        return dict
     }
     
     private func nextDateOrdinal() -> Int {
