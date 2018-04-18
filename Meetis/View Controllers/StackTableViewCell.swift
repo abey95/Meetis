@@ -36,6 +36,7 @@ class StackTableViewCell: UITableViewCell {
     @IBOutlet var importButton: UIButton!
     
     
+    
     var index = -1
     var cellExists = false
     var micActive = false
