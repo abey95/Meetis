@@ -9,10 +9,10 @@
 import UIKit
 
 
-enum EventCategory {
-    case school, work, personal, travel
+enum EventCategory:String {
+    case school, work, personal, travel, family
     
-     static let allValues = [school, work, personal, travel]
+     static let allValues = [school, work, personal, travel, family]
 }
 
 class Event: NSObject {

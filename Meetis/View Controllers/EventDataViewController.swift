@@ -22,6 +22,9 @@ class EventDataViewController: UIViewController {
     @IBOutlet var fridayButton: UIButton!
     @IBOutlet var saturdayButton: UIButton!
     
+    
+    var eventDataPassed: Event?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

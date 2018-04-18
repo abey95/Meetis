@@ -8,6 +8,13 @@
 
 import UIKit
 
+protocol StackCellDelegate {
+    func didTapPen(title: String)
+    func didTapPic(title: String)
+    func didTapImport(title: String)
+    func didTapIgnore(title: String)
+}
+
 class StackTableViewCell: UITableViewCell {
 
     @IBOutlet var openView: UIView!
@@ -20,18 +27,19 @@ class StackTableViewCell: UITableViewCell {
     @IBOutlet var iconImageView: UIImageView!
     @IBOutlet var eventTitleLabel: UILabel!
     @IBOutlet var eventTimeLabel: UILabel!
-    @IBOutlet var openButton: UIButton!
     
+    @IBOutlet var openButton: UIButton!
     @IBOutlet var micButton: UIButton!
     @IBOutlet var penButton: UIButton!
     @IBOutlet var picButton: UIButton!
-    @IBOutlet var uploadButton: UIButton!
-    @IBOutlet var dismissButton: UIButton!
+    @IBOutlet var ignoreButton: UIButton!
+    @IBOutlet var importButton: UIButton!
     
     
-    
-    
+    var index = -1
     var cellExists = false
+    var micActive = false
+    var delegate: StackCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -60,6 +68,31 @@ class StackTableViewCell: UITableViewCell {
             print("animation complete")
             c()
         })
+    }
+    
+    @IBAction func micTapped(_ sender: UIButton) {
+        
+        micActive = !micActive
+        if micActive {
+            micButton.backgroundColor = UIColor.red
+        } else {
+            micButton.backgroundColor = UIColor.clear
+        }
+    }
+    
+    @IBAction func penTapped(_ sender: UIButton) {
+        delegate?.didTapPen(title: eventTimeLabel.text!)
+    }
+    
+    @IBAction func picTapped(_ sender: UIButton) {
+        delegate?.didTapPic(title: eventTimeLabel.text!)
+    }
+    
+    @IBAction func importTapped(_ sender: UIButton) {
+        delegate?.didTapImport(title: eventTimeLabel.text!)
+    }
+    @IBAction func ignoreTapped(_ sender: UIButton) {
+        delegate?.didTapIgnore(title: eventTimeLabel.text!)
     }
     
 }

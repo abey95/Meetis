@@ -29,7 +29,7 @@ class HomeTableViewController: UITableViewController {
 
     
     // companyDataToPass is the data object to pass to the downstream view controller
-    var eventDataToPass = [String]()
+    var eventToPass: Event?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,6 +65,7 @@ class HomeTableViewController: UITableViewController {
     //---------------------
     
     // This is the method invoked when the user taps the Delete button in the Edit mode
+    // deleting a row only makes the event inactive - the notes are still available in the menu
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
 //        if editingStyle == .delete {   // Handle the Delete action
@@ -140,19 +141,36 @@ class HomeTableViewController: UITableViewController {
         
         // Typecast the AnyObject to Swift array of String objects
         let currentEvent = events[rowNumber]
-       
-        cell.openButton.tag = t_count
-        cell.openButton.addTarget(self, action: #selector(cellOpened(sender:)), for: .touchUpInside)
-        t_count += 1
-        cell.cellExists = true
         
+        cell.index = rowNumber
+        cell.cellExists = true
         cell.eventTitleLabel.text = currentEvent.title
         cell.eventTimeLabel.text = currentEvent.getDateString()
-        cell.imageView!.image = UIImage(named: "G.png")
+        
+        cell.tag = t_count
+        
+        cell.openButton.addTarget(self, action: #selector(cellOpened(sender:)), for: .touchUpInside)
+        
+        switch currentEvent.category {
+        case .school:
+            cell.imageView!.image = UIImage(named: "school.png")
+            break
+        case .family:
+            cell.imageView!.image = UIImage(named: "family.png")
+        case .personal:
+            cell.imageView!.image = UIImage(named: "personal.png")
+        case .travel:
+            cell.imageView!.image = UIImage(named: "travel.png")
+        default:
+            cell.imageView!.image = UIImage(named: "work.png")
+            
+        }
 
         UIView.animate(withDuration: 0) {
             cell.contentView.layoutIfNeeded()
         }
+        
+        t_count = t_count + 1
         
         return cell
     }
@@ -203,23 +221,98 @@ class HomeTableViewController: UITableViewController {
     
     
     /*
-     -----------------------------
-     MARK: - Display Alert Message
-     -----------------------------
+     -------------------------
+     MARK: - Prepare For Segue
+     -------------------------
      */
-    func showAlertMessage(messageHeader header: String, messageBody body: String) {
+    
+    // This method is called by the system whenever you invoke the method performSegueWithIdentifier:sender:
+    // You never call this method. It is invoked by the system.
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         
-        /*
-         Create a UIAlertController object; dress it up with title, message, and preferred style;
-         and store its object reference into local constant alertController
-         */
-        let alertController = UIAlertController(title: header, message: body, preferredStyle: UIAlertControllerStyle.alert)
-        
-        // Create a UIAlertAction object and add it to the alert controller
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        
-        // Present the alert controller
-        present(alertController, animated: true, completion: nil)
+        if segue.identifier == "Pen Tapped" {
+            // Obtain the object reference of the destination view controller
+            let newNoteViewController: NewNoteViewController = segue.destination as! NewNoteViewController
+        } else if segue.identifier == "Pic Tapped" {
+            // Obtain the object reference of the destination view controller
+            let newNoteViewController: NewNoteViewController = segue.destination as! NewNoteViewController
+        } else if segue.identifier == "Import Tapped" {
+            let newNoteViewController: NewNoteViewController = segue.destination as! NewNoteViewController
+        } else if segue.identifier == "Add Event" {
+            let addEventViewController: AddEventViewController = segue.destination as! AddEventViewController
+            addEventViewController.delegate = self
+        } else if segue.identifier == "View Event Data" {
+            let eventDataViewController: EventDataViewController = segue.destination as! EventDataViewController
+            eventDataViewController.eventDataPassed = eventToPass
+        }
     }
+    
+    //--------------------------------
+    // Detail Disclosure Button Tapped
+    //--------------------------------
+    
+    // This is the method invoked when the user taps the Detail Disclosure button (circle icon with i)
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        
+        let rowNumber = (indexPath as NSIndexPath).row
+        
+        // Obtain the stock symbol of the selected Company
+        eventToPass = events[rowNumber]
+        
+        performSegue(withIdentifier: "View Event Data", sender: self)
+    }
+    
+    
 
+}
+
+extension HomeTableViewController: StackCellDelegate {
+    
+    //go to blank canvas
+    func didTapPen(title: String) {
+        performSegue(withIdentifier: "Pen Tapped", sender: self)
+    }
+    
+    // go to camera
+    func didTapPic(title: String) {
+        performSegue(withIdentifier: "Pic Tapped", sender: self)
+    }
+    
+    // go to import picture view
+    func didTapImport(title: String) {
+        performSegue(withIdentifier: "Import Tapped", sender: self)
+    }
+    
+    //update event to be next date and update tablview
+    func didTapIgnore(title: String) {
+        
+        eventsTableView.reloadData();
+    }
+    
+    
+}
+
+extension HomeTableViewController: AddEventViewControllerProtocol {
+    func addEventViewController(_ controller: AddEventViewController, didFinishWithSave save: Bool) {
+        //get fields from add event view controller and create a new event object
+        
+        let priority: String?
+        switch controller.prioritySegmentedControl.selectedSegmentIndex {
+        case 0:
+            priority = "high"
+        case 1:
+            priority = "medium"
+        default:
+            priority = "low"
+        }
+        
+        
+       // let event = Event(title: controller.titleTextField.text!, days: controller.days, time: controller. )
+
+        
+        
+        //add the new event to the dictionary and refresh the tableview and app delegate arrays
+    }
+    
+    
 }
