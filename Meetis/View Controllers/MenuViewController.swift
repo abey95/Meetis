@@ -18,8 +18,6 @@ protocol MenuViewControllerDelegate {
 
 class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate {
     
-    
-
     // Obtain the object reference to the App Delegate object
     let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
@@ -51,20 +49,40 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         super.viewDidLoad()
 
         events = applicationDelegate.events
-        //eventsTableView.delegate = self
-        //eventsTableView.dataSource = self
-        
-        //Need to create the arrays of event names and event categories
-
-        //---------------------------------------------------
-        //           Initialize the Table View List
-        //---------------------------------------------------
-        
+        eventNames = applicationDelegate.dict_Events.allKeys as! [String]
+       
         // Initialize the current table view rows to be the list of the university names
-        
+        tableViewList = eventNames
+
         createSearchResultsController()
     }
 
+    // Prepare the view before it appears to the user
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if eventNameSelected {
+            
+            // Reload the table view data so that the selected sport name can be
+            // colored in blue to indicate that it is the selected row.
+            eventsTableView.reloadData()
+        }
+        
+        super.viewWillAppear(animated)
+    }
+    
+    // Scroll the selected sport name row towards the middle of the table view
+    override func viewDidAppear(_ animated: Bool) {
+        
+        if eventNameSelected {
+            
+            // Scroll the selected row towards the middle of the table view
+            eventsTableView.scrollToRow(at: selectedIndexPath,
+                                           at: UITableViewScrollPosition.middle, animated: true)
+        }
+        
+        super.viewDidAppear(animated)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -164,4 +182,154 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         eventNameSelected = false
     }
 
+    /*
+     ----------------------------------------------
+     MARK: - UITableViewDataSource Protocol Methods
+     ----------------------------------------------
+     */
+    
+    // Asks the data source to return the number of sections in the table view
+    func numberOfSections(in tableView: UITableView) -> Int {
+        
+        return 1
+    }
+    
+    // Asks the data source to return the number of rows in a section, the number of which is given
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return searchResultsController.isActive ? searchResults.count : tableViewList.count
+    }
+    
+    //-------------------------------------------------------------
+    //         Prepare and Return a Table View Cell
+    //-------------------------------------------------------------
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let rowNumber: Int = (indexPath as NSIndexPath).row    // Identify the row number
+        
+        // Obtain the object reference of a reusable table view cell object instantiated under the identifier
+        // TableViewCellReuseID, which was specified in the storyboard
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "MenuItemCell") as UITableViewCell!
+        
+        // Obtain the name of the row from the table view list
+        let rowName: String = searchResultsController.isActive ? searchResults[rowNumber] : tableViewList[rowNumber]
+        
+        // Set the label text of the cell to be the row name
+        cell.textLabel!.text = rowName
+        
+        // Cell indentation width of 10.0 points is the default value
+        cell.indentationWidth = 10.0
+        
+        if eventNames.contains(rowName) {    // Rows decomposition level = 0
+            
+            // Row name is an event name
+            cell.indentationLevel = 0;
+            
+            cell.imageView!.image = UIImage(named: rowName)
+            
+        } else if rowName == "Men's Sports" {           // Rows decomposition level = 1
+            
+            cell.indentationLevel = 1
+            cell.imageView!.image = UIImage(named:"MenSportIcon")
+            
+        } else {         // Rows decomposition level = 2
+            
+            // Row name is a sport name
+            cell.indentationLevel = 2
+            cell.imageView!.image = UIImage(named:"WomenSportIcon")
+        }
+        return cell
+    }
+    
+    //---------------------------------------------------------------
+    // Prepare the Table View Cell before it is displayed to the user
+    //---------------------------------------------------------------
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        // Set the number of lines to be displayed in each table view cell to 2
+        cell.textLabel!.numberOfLines = 2
+        
+        // Set the text to wrap around on the next line
+        cell.textLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping
+        
+        // Set the cell label text to use the System font of size 14 pts
+        cell.textLabel!.font = UIFont(name: "System", size: 14.0)
+        
+        if eventNameSelected && (selectedRowNumber == (indexPath as NSIndexPath).row) {
+            
+            // Set the cell label text color to blue to indicate its selection
+            cell.textLabel!.textColor = UIColor.blue
+            
+        } else {
+            // Set the cell label text color to black otherwise
+            cell.textLabel!.textColor = UIColor.black
+        }
+        
+        switch cell.indentationLevel {
+        case 0:
+            // Set level 1 (University Name) row background color to Lavendar (#E6E6FA)
+            cell.backgroundColor = UIColor(red: 230.0/255.0, green: 230.0/255.0, blue: 250.0/255.0, alpha: 1.0)
+            
+        case 1:
+            // Set level 2 (Sport Category Name) row background color to Ivory (#FFFFF0)
+            cell.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 240.0/255.0, alpha: 1.0)
+            
+        case 2:
+            // Set level 3 (Sport Name) row background color to PeachPuff (#FFDAB9)
+            cell.backgroundColor = UIColor(red: 255.0/255.0, green: 218.0/255.0, blue: 185.0/255.0, alpha: 1.0)
+            
+        default:
+            print("Cell indentation level is out of range!")
+            break
+        }
+        
+        // If the cell label is a sport name
+        if eventNames.contains((cell.textLabel!.text!)) {
+            
+            // Then, show the Right Arrow image as Disclosure Indicator
+            cell.accessoryView = UIImageView(image: UIImage(named: "RightArrow"))
+            
+        } else {
+            
+            // Otherwise, show the Down Arrow image to indicate that the row has child rows
+            cell.accessoryView = UIImageView(image: UIImage(named: "DownArrow"))
+        }
+    }
+    /*
+     --------------------------------------------
+     MARK: - UITableViewDelegate Protocol Methods
+     --------------------------------------------
+     */
+    
+    // Set the height of the table view row
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return 60
+    }
+    
+    
+    /*
+     -----------------------------
+     MARK: - Display Error Message
+     -----------------------------
+     */
+    func showErrorMessageFor(_ fileName: String) {
+        
+        /*
+         Create a UIAlertController object; dress it up with title, message, and preferred style;
+         and store its object reference into local constant alertController
+         */
+        let alertController = UIAlertController(title: "Unable to Access the File: \(fileName)!",
+            message: "The file does not reside in the application's main bundle (project folder)!",
+            preferredStyle: UIAlertControllerStyle.alert)
+        
+        // Create a UIAlertAction object and add it to the alert controller
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        // Present the alert controller by calling the presentViewController method
+        present(alertController, animated: true, completion: nil)
+    }
+    
 }
