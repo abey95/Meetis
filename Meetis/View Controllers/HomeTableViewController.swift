@@ -322,6 +322,7 @@ extension HomeTableViewController: AddEventViewControllerProtocol {
             
             let event = Event(title: controller.titleTextField.text!, days: controller.days, time: controller.timeTextField.text!, priority: priority!, category: controller.selectedCategory!, active: true  )
             
+            
             //add the new event to the dictionary and refresh the tableview and app delegate arrays
             applicationDelegate.dict_Events.setValue(event.toDict(), forKey: event.title!)
             

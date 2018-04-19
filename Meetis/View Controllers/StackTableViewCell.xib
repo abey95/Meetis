@@ -100,6 +100,12 @@
                                             <constraint firstAttribute="height" constant="40" id="EE3-ty-AFB"/>
                                         </constraints>
                                         <state key="normal" title="Button" image="mic"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="micTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="hqv-Af-cYb"/>
                                         </connections>

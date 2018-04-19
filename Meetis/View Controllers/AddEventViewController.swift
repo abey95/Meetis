@@ -115,16 +115,35 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     func inputValid() -> Bool{
         if titleTextField.text!.isEmpty {
             showAlertMessage(messageHeader: "Missing Event Title!", messageBody: "Please enter a name for the event")
+            return false
         } else if prioritySegmentedControl.selectedSegmentIndex < 0 {
             showAlertMessage(messageHeader: "No Priority Selected!", messageBody: "Please select the priority for the event")
+            return false
+        } else if timeTextField.text!.isEmpty{
+            showAlertMessage(messageHeader: "No Time Entered!", messageBody: "Please enter the time for the event. Example: 12:15")
+            return false
         } else {
-            for check in days {
-                if check {
-                    return true;
-                }
+            let min_hr = timeTextField.text!.split(separator: ":")
+            if min_hr.count != 2 {
+                showAlertMessage(messageHeader: "Time Read Error!", messageBody: "Please enter a time in the format hh:mm")
+                return false
             }
-            showAlertMessage(messageHeader: "Missing Selected Days!", messageBody: "Please select the days for the event")
+            if Int(min_hr[0]) == nil {
+                showAlertMessage(messageHeader: "Hours Read Error!", messageBody: "Please enter a time in the format hh:mm")
+                return false
+            }
+            if Int(min_hr[1]) == nil {
+                showAlertMessage(messageHeader: "Minutes Read Error!", messageBody: "Please enter a time in the format hh:mm")
+                return false
+            }
         }
+        
+        for check in days {
+            if check {
+                return true;
+            }
+        }
+        showAlertMessage(messageHeader: "Missing Selected Days!", messageBody: "Please select the days for the event")
         return false
     }
     

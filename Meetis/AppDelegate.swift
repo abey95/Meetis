@@ -138,6 +138,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     func loadAllEvents() {
         
+        events = [[Event]]()
+        chronEvents = [Event]()
         //create an entry for each category
         for _ in EventCategory.allValues {
             events.append([])

@@ -26,6 +26,8 @@ class Event: NSObject {
     var active: Bool            // true if active, false otherwise
     var time: String?           // string representation of time
     
+    let charOfDays = ["Su", "M", "T", "W", "R", "F", "Sa"]
+    
     // This function is called to initialize an object instantiated from the MapAnnotation class
     init(title:String, days:[Bool], time:String, priority:String, category: EventCategory, active: Bool ) {
         self.title = title
@@ -41,10 +43,11 @@ class Event: NSObject {
     
     
     /*
-     * returns the number of seconds to the event from the current time
+     * /// Returns the amount of seconds from current date to another date
      */
     func getTimeUntil() -> Int {
-        return 1;
+        return 1
+        //return Calendar.current.dateComponents([.second], from: nextDate!.date!, to: Date()).seconds ?? 0
     }
     
     /*
@@ -82,6 +85,7 @@ class Event: NSObject {
         return dict
     }
     
+    // returns the next active day
     private func nextDateOrdinal() -> Int {
         let cur_ordinal = 0
         
@@ -94,7 +98,13 @@ class Event: NSObject {
     }
     
     func getDateString() -> String {
-        return "8:00-9:15am MWF"
+        var days_string = String()
+        for i in 0...days.count - 1 {
+            if days[i] {
+                days_string.append(charOfDays[i] + " ")
+            }
+        }
+        return time! + " " + days_string
     }
     
 }
