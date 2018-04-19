@@ -191,15 +191,12 @@ class HomeTableViewController: UITableViewController {
             }
             t_count = t_count + 1
             cell.cellExists = true
+            cell.delegate = self
         }
-    
 
         UIView.animate(withDuration: 0) {
             cell.contentView.layoutIfNeeded()
         }
-        
-        
-        
         return cell
     }
     
@@ -258,7 +255,7 @@ class HomeTableViewController: UITableViewController {
     // You never call this method. It is invoked by the system.
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         
-        if segue.identifier == "Pen Tapped" {
+        if segue.identifier == "New Note" {
             // Obtain the object reference of the destination view controller
             let newNoteViewController: NewNoteViewController = segue.destination as! NewNoteViewController
         } else if segue.identifier == "Pic Tapped" {
@@ -269,7 +266,7 @@ class HomeTableViewController: UITableViewController {
         } else if segue.identifier == "Add Event" {
             let addEventViewController: AddEventViewController = segue.destination as! AddEventViewController
             addEventViewController.delegate = self
-        } else if segue.identifier == "View Event Data" {
+        } else if segue.identifier == "Event Data" {
             let eventDataViewController: EventDataViewController = segue.destination as! EventDataViewController
             eventDataViewController.eventDataPassed = eventToPass
         }
@@ -287,7 +284,7 @@ class HomeTableViewController: UITableViewController {
         // Obtain the stock symbol of the selected Company
         eventToPass = events[rowNumber]
         
-        performSegue(withIdentifier: "View Event Data", sender: self)
+        performSegue(withIdentifier: "Event Data", sender: self)
     }
     
     
@@ -298,7 +295,7 @@ extension HomeTableViewController: StackCellDelegate {
     
     //go to blank canvas
     func didTapPen(title: String) {
-        performSegue(withIdentifier: "Pen Tapped", sender: self)
+        performSegue(withIdentifier: "New Note", sender: self)
     }
     
     // go to camera

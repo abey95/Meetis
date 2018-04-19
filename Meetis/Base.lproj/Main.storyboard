@@ -38,7 +38,7 @@
                         <outlet property="eventsTableView" destination="jIM-ur-786" id="ZDb-rl-4HJ"/>
                         <segue destination="xBc-t5-Rd0" kind="show" identifier="Add Event" id="S24-Wb-NCd"/>
                         <segue destination="1VQ-UR-NFE" kind="show" identifier="Event Data" id="j2W-Yq-iar"/>
-                        <segue destination="sOX-oQ-uhO" kind="show" identifier="Take Note" id="pWq-E7-0LJ"/>
+                        <segue destination="sOX-oQ-uhO" kind="show" identifier="New Note" id="pWq-E7-0LJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="59E-FL-9sL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -53,13 +53,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Category" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6gd-tm-5EF">
-                                <rect key="frame" x="94" y="176" width="132" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Input name of event" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TQ3-P5-4Qc">
                                 <rect key="frame" x="16" y="355" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
