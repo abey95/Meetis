@@ -8,6 +8,15 @@
 
 import UIKit
 
+@objc
+
+// Define HomeViewControllerDelegate as a protocol with two optional methods
+protocol HomeTableViewControllerDelegate {
+    
+    @objc optional func toggleMenuView()
+    @objc optional func collapseMenuView()
+}
+
 class HomeTableViewController: UITableViewController {
 
     // Instance variable holding the object reference of the UITableView UI object created in the Storyboard
@@ -31,6 +40,12 @@ class HomeTableViewController: UITableViewController {
     
     // companyDataToPass is the data object to pass to the downstream view controller
     var eventToPass: Event?
+    
+    /*
+     This instance variable designates the object that adopts the HomeViewControllerDelegate protocol.
+     ContainerViewController adopts this protocol and implements its two optional methods (see its code).
+     */
+    var delegate: HomeTableViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
