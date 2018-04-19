@@ -96,8 +96,8 @@
 				089FBDA2207BD205001A5CF8 /* StackTableViewCell.xib */,
 				B799279A207E45730033571F /* NewNoteViewController.swift */,
 				B799279E207E65320033571F /* AddEventViewController.swift */,
-				089FBDA9207E70F6001A5CF8 /* NoteDataViewController.swift */,
 				089FBDAB207E7B07001A5CF8 /* EventDataViewController.swift */,
+				089FBDA9207E70F6001A5CF8 /* NoteDataViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
