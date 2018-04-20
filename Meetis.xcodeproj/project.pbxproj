@@ -23,6 +23,7 @@
 		B799279D207E48AF0033571F /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B799279C207E48AF0033571F /* ContainerViewController.swift */; };
 		B799279F207E65320033571F /* AddEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B799279E207E65320033571F /* AddEventViewController.swift */; };
 		B7C489FB208A2EE200F3ABF3 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C489FA208A2EE200F3ABF3 /* CameraViewController.swift */; };
+		B7C489FD208A37B100F3ABF3 /* NoteRecordingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C489FC208A37B100F3ABF3 /* NoteRecordingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		B799279C207E48AF0033571F /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		B799279E207E65320033571F /* AddEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventViewController.swift; sourceTree = "<group>"; };
 		B7C489FA208A2EE200F3ABF3 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		B7C489FC208A37B100F3ABF3 /* NoteRecordingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRecordingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,10 +98,11 @@
 				B7635692207AB8360068B3A8 /* MenuViewController.swift */,
 				089FBDA1207BD205001A5CF8 /* StackTableViewCell.swift */,
 				089FBDA2207BD205001A5CF8 /* StackTableViewCell.xib */,
-				B799279A207E45730033571F /* NewNoteViewController.swift */,
 				B799279E207E65320033571F /* AddEventViewController.swift */,
 				089FBDAB207E7B07001A5CF8 /* EventDataViewController.swift */,
+				B799279A207E45730033571F /* NewNoteViewController.swift */,
 				089FBDA9207E70F6001A5CF8 /* NoteDataViewController.swift */,
+				B7C489FC208A37B100F3ABF3 /* NoteRecordingViewController.swift */,
 				B7C489FA208A2EE200F3ABF3 /* CameraViewController.swift */,
 			);
 			path = "View Controllers";
@@ -189,6 +192,7 @@
 				B7635693207AB8360068B3A8 /* MenuViewController.swift in Sources */,
 				089FBDAA207E70F6001A5CF8 /* NoteDataViewController.swift in Sources */,
 				089FBDA8207D3BB4001A5CF8 /* Event.swift in Sources */,
+				B7C489FD208A37B100F3ABF3 /* NoteRecordingViewController.swift in Sources */,
 				089FBDA3207BD205001A5CF8 /* StackTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
