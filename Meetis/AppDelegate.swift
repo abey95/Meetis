@@ -185,6 +185,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         }
         
+        chronEvents.sort(by: {$0.nextDate! < $1.nextDate!})
+        
     }
 }
 

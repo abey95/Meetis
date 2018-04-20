@@ -340,7 +340,7 @@ extension HomeTableViewController: AddEventViewControllerProtocol {
             
             applicationDelegate.loadAllEvents()
             events = applicationDelegate.chronEvents
-            
+            events.sort(by: {$0.nextDate! < $1.nextDate!})
             eventsTableView.reloadData()
         }
         

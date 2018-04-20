@@ -19,12 +19,13 @@ class Event: NSObject {
     
     // Instance Variables
     var title:String?           // name of the event
-    var nextDate:DateComponents?// component of the recurring event
+    var dateInfo:DateComponents?// component of the recurring event
     var days:[Bool]             // days of the week the event is active
     var priority:String?        // priority of the event: "High"
     var category: EventCategory // category of the event
     var active: Bool            // true if active, false otherwise
     var time: String?           // string representation of time
+    var nextDate: Date?         // date object for the nearest event in the future
     
     let charOfDays = ["Su", "M", "T", "W", "R", "F", "Sa"]
     
@@ -38,16 +39,24 @@ class Event: NSObject {
         self.category = category
         self.active = active
         super.init()
-        self.nextDate = DateComponents(hour: Int(hours_minutes[0]), minute:Int(hours_minutes[1]), weekday: nextDateOrdinal())
+        self.dateInfo = DateComponents(hour: Int(hours_minutes[0]), minute:Int(hours_minutes[1]), weekday: nextDateOrdinal())
+        nextDate = Calendar.current.nextDate(after: Date(), matching: dateInfo!, matchingPolicy: Calendar.MatchingPolicy.nextTime)
     }
     
     
     /*
-     * /// Returns the amount of seconds from current date to another date
+     * Returns the amount of seconds from current date to another date
+     *  MAY RETURN NEGATIVE
      */
-    func getTimeUntil() -> Int {
-        return 1
-        //return Calendar.current.dateComponents([.second], from: nextDate!.date!, to: Date()).seconds ?? 0
+    func getTimeUntil() -> Double {
+        return nextDate!.timeIntervalSinceNow.magnitude
+        
+        
+    }
+    
+    // updates the nextDate object to be the next active date
+    func updateNextDate () {
+        nextDate = Calendar.current.nextDate(after: nextDate!, matching: dateInfo!, matchingPolicy: Calendar.MatchingPolicy.nextTime)
     }
     
     /*
@@ -97,6 +106,7 @@ class Event: NSObject {
         return -1
     }
     
+    // Prints the time and the days the event is active. Ex: 12:00 M W F
     func getDateString() -> String {
         var days_string = String()
         for i in 0...days.count - 1 {
