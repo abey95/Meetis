@@ -39,11 +39,12 @@
                         <segue destination="xBc-t5-Rd0" kind="show" identifier="Add Event" id="S24-Wb-NCd"/>
                         <segue destination="1VQ-UR-NFE" kind="show" identifier="Event Data" id="j2W-Yq-iar"/>
                         <segue destination="sOX-oQ-uhO" kind="show" identifier="New Note" id="pWq-E7-0LJ"/>
+                        <segue destination="gC7-x1-wxy" kind="show" identifier="Pic Tapped" id="D94-Vj-iDj"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="59E-FL-9sL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3105" y="-342"/>
+            <point key="canvasLocation" x="-4553" y="-413"/>
         </scene>
         <!--Event Info-->
         <scene sceneID="nWw-3d-LbS">
@@ -178,7 +179,58 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HFh-6N-dFu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1397" y="-333"/>
+            <point key="canvasLocation" x="-2591" y="-1101"/>
+        </scene>
+        <!--Pictures-->
+        <scene sceneID="p3s-k3-UI4">
+            <objects>
+                <viewController id="gC7-x1-wxy" customClass="CameraViewController" customModule="Meetis" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="E0U-CK-3Pm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oe7-tG-o2k">
+                                <rect key="frame" x="0.0" y="64" width="320" height="300"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wu8-Nr-ilM">
+                                <rect key="frame" x="107" y="392" width="107" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Open Camera"/>
+                                <connections>
+                                    <action selector="openCameraButtonWithSender:" destination="gC7-x1-wxy" eventType="touchUpInside" id="yIx-pZ-AyK"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ea7-xp-KHc">
+                                <rect key="frame" x="89" y="442" width="142" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Open Photo Library">
+                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="openPhotoLibraryButtonWithSender:" destination="gC7-x1-wxy" eventType="touchUpInside" id="476-Cd-dVN"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <viewLayoutGuide key="safeArea" id="b7f-rW-nHV"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Pictures" id="Wyg-fX-Igq">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="v1l-yG-BJP">
+                            <connections>
+                                <action selector="saveButtWithSender:" destination="gC7-x1-wxy" id="opv-Fk-YzZ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="imageView" destination="Oe7-tG-o2k" id="7iY-xg-6Dl"/>
+                        <outlet property="openCameraButton" destination="Wu8-Nr-ilM" id="Wln-hI-TG2"/>
+                        <outlet property="openPhotoLibraryButton" destination="ea7-xp-KHc" id="b8K-xF-xuV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LnY-1B-gc9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1603.125" y="-770.07042253521126"/>
         </scene>
         <!--Note Name-->
         <scene sceneID="ULC-eU-ch9">
@@ -252,7 +304,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FP0-bo-iJ8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3864" y="554"/>
+            <point key="canvasLocation" x="-3606" y="875"/>
         </scene>
         <!--Add Event-->
         <scene sceneID="UQo-wl-v0F">
@@ -396,7 +448,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FTn-H3-Uq9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2158" y="-753"/>
+            <point key="canvasLocation" x="-3606" y="-1310"/>
         </scene>
         <!--New Note-->
         <scene sceneID="BvM-xZ-Q5L">
@@ -442,7 +494,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GEk-Sa-vqp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2158" y="102"/>
+            <point key="canvasLocation" x="-3566" y="78"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="HjE-MN-SFP">
@@ -498,7 +550,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nI5-2R-HHD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4873" y="-332"/>
+            <point key="canvasLocation" x="-6321" y="-404"/>
         </scene>
         <!--Home-->
         <scene sceneID="gFf-QQ-kT3">
@@ -515,10 +567,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eeu-oB-Tia" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3863" y="-342"/>
+            <point key="canvasLocation" x="-5312" y="-413"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="qk0-sE-uhW"/>
+        <segue reference="f1e-FT-hUO"/>
     </inferredMetricsTieBreakers>
 </document>
