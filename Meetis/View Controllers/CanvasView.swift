@@ -8,6 +8,11 @@
 
 import UIKit
 
+
+
+/**
+ This class is used for marking up notes
+*/
 class CanvasView: UIView {
 
     var lineColor: UIColor!
@@ -15,6 +20,9 @@ class CanvasView: UIView {
     var path:UIBezierPath!
     var touchPoint: CGPoint!
     var startingPoint: CGPoint!
+    
+    // make initial selection the pen
+    var isErase = false
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -56,8 +64,15 @@ class CanvasView: UIView {
     func drawShapeLayer() {
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = lineColor.cgColor
-        shapeLayer.lineWidth = lineWidth
+        
+        //if we are erasing make the pen color clear
+        if isErase {
+            shapeLayer.strokeColor = UIColor.clear.cgColor
+            shapeLayer.lineWidth = lineWidth
+        } else {
+            shapeLayer.strokeColor = lineColor.cgColor
+            shapeLayer.lineWidth = lineWidth
+        }
         
         //make line smoother
         shapeLayer.lineCap = kCALineCapRound
@@ -72,6 +87,10 @@ class CanvasView: UIView {
         path.removeAllPoints()
         self.layer.sublayers = nil
         self.setNeedsDisplay()
+    }
+    
+    func addBackground(image: UIImage) {
+        self.backgroundColor = UIColor(patternImage: image)
     }
     /*
     // Only override draw() if you perform custom drawing.

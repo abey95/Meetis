@@ -500,33 +500,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VDU-pc-yaE">
-                                <rect key="frame" x="18" y="473" width="286" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VDU-pc-yaE">
+                                <rect key="frame" x="18" y="493" width="282" height="75"/>
                             </scrollView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uXu-Hy-Nxe">
-                                <rect key="frame" x="0.0" y="473" width="18" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uXu-Hy-Nxe">
+                                <rect key="frame" x="0.0" y="493" width="18" height="75"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gam-g0-aS7">
-                                <rect key="frame" x="302" y="473" width="18" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uOB-aY-7RI">
-                                <rect key="frame" x="104" y="87" width="115" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Record a Note"/>
-                                <connections>
-                                    <action selector="recordButtonTapped:" destination="sOX-oQ-uhO" eventType="touchUpInside" id="ltf-7b-cNw"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w2w-Zr-BfZ" customClass="CanvasView" customModule="Meetis" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="125" width="320" height="347"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w2w-Zr-BfZ" customClass="CanvasView" customModule="Meetis" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="320" height="421"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gam-g0-aS7">
+                                <rect key="frame" x="302" y="493" width="18" height="75"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="VDU-pc-yaE" firstAttribute="leading" secondItem="uXu-Hy-Nxe" secondAttribute="trailing" id="4A8-fY-huR"/>
+                            <constraint firstItem="w2w-Zr-BfZ" firstAttribute="top" secondItem="luL-8O-AHU" secondAttribute="top" id="76R-ok-Kkt"/>
+                            <constraint firstItem="Gam-g0-aS7" firstAttribute="bottom" secondItem="luL-8O-AHU" secondAttribute="bottom" id="D9b-Vz-gHK"/>
+                            <constraint firstItem="w2w-Zr-BfZ" firstAttribute="leading" secondItem="luL-8O-AHU" secondAttribute="leading" id="FGa-SS-23M"/>
+                            <constraint firstItem="Gam-g0-aS7" firstAttribute="leading" secondItem="VDU-pc-yaE" secondAttribute="trailing" id="H9Z-aX-5CZ"/>
+                            <constraint firstItem="uXu-Hy-Nxe" firstAttribute="leading" secondItem="luL-8O-AHU" secondAttribute="leading" id="NZ8-g0-prN"/>
+                            <constraint firstItem="uXu-Hy-Nxe" firstAttribute="bottom" secondItem="luL-8O-AHU" secondAttribute="bottom" id="bNi-Ec-CE2"/>
+                            <constraint firstItem="Gam-g0-aS7" firstAttribute="trailing" secondItem="luL-8O-AHU" secondAttribute="trailing" id="ecn-0S-mlH"/>
+                            <constraint firstItem="w2w-Zr-BfZ" firstAttribute="trailing" secondItem="luL-8O-AHU" secondAttribute="trailing" id="uWH-7r-Mm0"/>
+                            <constraint firstItem="VDU-pc-yaE" firstAttribute="bottom" secondItem="luL-8O-AHU" secondAttribute="bottom" id="wOT-F8-rpe"/>
+                            <constraint firstItem="VDU-pc-yaE" firstAttribute="top" secondItem="w2w-Zr-BfZ" secondAttribute="bottom" id="zZQ-59-w86"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="luL-8O-AHU"/>
                     </view>
                     <navigationItem key="navigationItem" title="New Note" id="dQX-Yp-Lrz">
