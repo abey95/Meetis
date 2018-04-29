@@ -16,4 +16,5 @@ class Note: NSObject {
     var views: [UIImage]?
     var recording: AVAudioSession?
     var notes: String?
+    
 }

@@ -23,7 +23,7 @@ class NewNoteViewController: UIViewController {
     
     var dataPassed: [String]?
     
-    var buttonNames = ["Black", "Blue", "Red", "Highlight", "Erase", "Clear",  "Record", "Text", "Take_Pic", "New_Page", "Discard"]
+    var buttonNames = ["Black", "Blue", "Red", "Highlight", "Erase", "Clear", "Text", "Camera", "New_Page"]
     
     
     override func viewDidLoad() {
