@@ -13,10 +13,12 @@ protocol StackCellDelegate {
     func didTapPic(title: String)
     func didTapImport(title: String)
     func didTapIgnore(title: String)
+    func didTapDetail(title: String, cellNum: Int)
+    
 }
 
 class StackTableViewCell: UITableViewCell {
-
+    
     @IBOutlet var openView: UIView!
     @IBOutlet var stuffView: UIView! {
         didSet {
@@ -63,7 +65,6 @@ class StackTableViewCell: UITableViewCell {
                 
             })
         }, completion: {  (finished: Bool) in
-            //print("animation complete")
             c()
         })
     }
@@ -93,4 +94,8 @@ class StackTableViewCell: UITableViewCell {
         delegate?.didTapIgnore(title: eventTimeLabel.text!)
     }
     
+    @IBAction func detailDisclosureTapped(_ sender: UIButton) {
+        delegate?.didTapDetail(title: eventTimeLabel.text!, cellNum: self.tag)
+    }
 }
+

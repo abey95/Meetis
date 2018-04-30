@@ -270,25 +270,7 @@ class HomeTableViewController: UITableViewController {
             let eventDataViewController: EventDataViewController = segue.destination as! EventDataViewController
             eventDataViewController.eventDataPassed = eventToPass
         }
-    }
-    
-    //--------------------------------
-    // Detail Disclosure Button Tapped
-    //--------------------------------
-    
-    // This is the method invoked when the user taps the Detail Disclosure button (circle icon with i)
-    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        
-        let rowNumber = (indexPath as NSIndexPath).row
-        
-        // Obtain the stock symbol of the selected Company
-        eventToPass = events[rowNumber]
-        
-        performSegue(withIdentifier: "Event Data", sender: self)
-    }
-    
-    
-
+    }   
 }
 
 extension HomeTableViewController: StackCellDelegate {
@@ -313,7 +295,13 @@ extension HomeTableViewController: StackCellDelegate {
         
         eventsTableView.reloadData();
     }
-    
+    //update event to be next date and update tablview
+    func didTapDetail(title: String, cellNum: Int) {
+        
+        eventToPass = events[cellNum]
+        
+        performSegue(withIdentifier: "Event Data", sender: self)
+    }
     
 }
 

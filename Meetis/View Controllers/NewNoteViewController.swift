@@ -25,88 +25,117 @@ class NewNoteViewController: UIViewController {
     
     let buttonNames = ["Black", "Blue", "Red", "Highlight", "Erase", "Clear", "Camera", "New_Page"]
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
+        populateScrollView()        
+    }
+    
+    func populateScrollView() {
         /***********************************************************************
          * Instantiate and setup the buttons for the horizontally scrollable menu
          ***********************************************************************/
-
+        
         // Instantiate a mutable array to hold the menu buttons to be created
         var listOfMenuButtons = [UIButton]()
-
+        
         for i in 0 ..< buttonNames.count {
-
+            
             // Instantiate a button to be placed within the horizontally scrollable menu
             let scrollMenuButton = UIButton(type: UIButtonType.custom)
-
+            
             // Obtain the dictionary of the genre
             let name = buttonNames[i].replacingOccurrences(of: "_", with: " ")
-
+            
             // Obtain the auto manufacturer's logo image
             let buttonImage = UIImage(named: "\(buttonNames[i].lowercased()).png")
-
+            let resizedImage = resizeImage(image: buttonImage!, withSize: CGSize(width: 124, height: 50))
+            
             // Set the button frame at origin at (x, y) = (0, 0) with
             // button width  =  image width + 10 points padding for each side
             // button height = kScrollMenuHeight points
-            scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: buttonImage!.size.width + 20.0, height: kScrollMenuHeight)
-
+            scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: resizedImage.size.width + 20.0, height: kScrollMenuHeight)
+            
             // Set the button image to be the auto maker's logo
-            scrollMenuButton.setImage(buttonImage, for: UIControlState())
-
+            scrollMenuButton.setImage(resizedImage, for: UIControlState())
+            
             // The button width and height in points will depend on its font style and size
             let buttonTitleFont = UIFont(name: "Helvetica", size: 12.0)
-
+            
             // Set the font of the button title label text
             scrollMenuButton.titleLabel?.font = buttonTitleFont
-
+            
             // Compute the size of the button title in points
             let buttonTitleSize: CGSize = (name as NSString).size(withAttributes: [NSAttributedStringKey.font:buttonTitleFont!])
-
+            
             let titleTextWidth = buttonTitleSize.width
-            let logoImageWidth = buttonImage!.size.width
-
+            let logoImageWidth = resizedImage.size.width
+            
             var buttonWidth: CGFloat = 0.0
-
+            
             // Set the button width to be the largest width + 20 pixels of padding
             if titleTextWidth > logoImageWidth {
                 buttonWidth = titleTextWidth + 20.0
             } else {
                 buttonWidth = logoImageWidth + 20.0
             }
-
+            
             // Set the button frame with width=buttonWidth height=kScrollMenuHeight points with origin at (x, y) = (0, 0)
             scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: buttonWidth, height: kScrollMenuHeight)
-
+            
             // Set the button title to the automobile manufacturer's name
             scrollMenuButton.setTitle(name, for: UIControlState())
-
+            
             // Set the button title color to black when the button is not selected
             scrollMenuButton.setTitleColor(UIColor.black, for: UIControlState())
-
+            
             // Set the button title color to red when the button is selected
             scrollMenuButton.setTitleColor(UIColor.red, for: UIControlState.selected)
-
+            
             // Specify the Inset values for top, left, bottom, and right edges for the title
             scrollMenuButton.titleEdgeInsets = UIEdgeInsetsMake(0.0, -buttonImage!.size.width, -(buttonImage!.size.height + 5), 0.0)
-
+            
             // Specify the Inset values for top, left, bottom, and right edges for the auto logo image
             scrollMenuButton.imageEdgeInsets = UIEdgeInsetsMake(-(buttonTitleSize.height + 5), 0.0, 0.0, -buttonTitleSize.width)
-
+            
             // Set the button to invoke the buttonPressed: method when the user taps it
             scrollMenuButton.addTarget(self, action: #selector(NewNoteViewController.buttonPressed(_:)), for: .touchUpInside)
-
+            
             scrollMenuButton.tag = i
             
             // Add the constructed button to the list of buttons
             listOfMenuButtons.append(scrollMenuButton)
-
         }
+        
+        var sumOfButtonWidths: CGFloat = 0.0
+
+        for j in 0 ..< listOfMenuButtons.count {
+            
+            // Obtain the obj ref to the jth button in the listOfMenuButtons array
+            let button: UIButton = listOfMenuButtons[j]
+            
+            // Set the button's frame to buttonRect
+            var buttonRect: CGRect = button.frame
+            
+            // Set the buttonRect's y coordinate value to sumOfButtonHeights
+            buttonRect.origin.x = sumOfButtonWidths
+            
+            // Set the button's frame to the newly specified buttonRect
+            button.frame = buttonRect
+            
+            // Add the button to the vertically scrollable menu
+            horizontalScrollView.addSubview(button)
+            
+            // Add the height of the button to the total height
+            sumOfButtonWidths += button.frame.size.width
+            
+        }
+        
+        horizontalScrollView.contentSize = CGSize(width: sumOfButtonWidths, height: kScrollMenuHeight)
+        
+        // Hide left arrow
+        leftArrowImageView.isHidden = true
     }
-    
     /*
      -----------------------------------
      MARK: - Method to Handle Button Tap
@@ -117,6 +146,8 @@ class NewNoteViewController: UIViewController {
         
         let selectedButton: UIButton = sender
         
+        print(selectedButton.tag)
+
         switch selectedButton.tag {
         case 0:
             updateToBlackPen()
@@ -193,14 +224,93 @@ class NewNoteViewController: UIViewController {
 
 
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+     -----------------------------------
+     MARK: - Scroll View Delegate Method
+     -----------------------------------
+     */
+    
+    // Tells the delegate when the user scrolls the content view within the receiver
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        /*
+         Content        = concatenated list of buttons
+         Content Height = sum of all button heights, sumOfButtonHeights
+         Content Width  = kScrollMenuWidth points
+         Origin         = (x, y) values of the bottom left corner of the scroll view or content
+         Sy             = Scroll View's origin y value
+         Cy             = Content's origin y value
+         contentOffset  = Cy - Sy
+         
+         Interpretation of the Arrows:
+         
+         IF scrolled all the way to the BOTTOM then show only DOWN arrow: indicating that the data (content) is
+         on the lower side and therefore, the user must *** scroll UP *** to see the content.
+         
+         IF scrolled all the way to the TOP then show only UP arrow: indicating that the data (content) is
+         on the upper side and therefore, the user must *** scroll DOWN *** to see the content.
+         
+         5 pixels used as padding
+         */
+        if scrollView.contentOffset.x <= 5 {
+            // Scrolling is done all the way to the RIGHT
+            leftArrowImageView.isHidden   = true      // Hide left arrow
+            rightArrowImageView.isHidden  = false     // Show right arrow
+        }
+        else if scrollView.contentOffset.x >= (scrollView.contentSize.width - scrollView.frame.size.width) - 5 {
+            // Scrolling is done all the way to the LEFT
+            leftArrowImageView.isHidden   = false     // Show left arrow
+            rightArrowImageView.isHidden  = true      // Hide right arrow
+        }
+        else {
+            // Scrolling is in between. Scrolling can be done in either direction.
+            leftArrowImageView.isHidden   = false     // Show left arrow
+            rightArrowImageView.isHidden  = false     // Show right arrow
+        }
     }
-    */
+    
+    /*
+     ------------------------------------
+     MARK: - Resize Image Proportionately
+     ------------------------------------
+     */
+    func resizeImage(image: UIImage, withSize: CGSize) -> UIImage {
+        
+        var actualHeight: CGFloat = image.size.height
+        var actualWidth: CGFloat = image.size.width
+        let maxHeight: CGFloat = withSize.width
+        let maxWidth: CGFloat = withSize.height
+        var imgRatio: CGFloat = actualWidth/actualHeight
+        let maxRatio: CGFloat = maxWidth/maxHeight
+        let compressionQuality = 0.5
+        
+        if (actualHeight > maxHeight || actualWidth > maxWidth) {
+            if (imgRatio < maxRatio) {
+                // Adjust width according to maxHeight
+                imgRatio = maxHeight / actualHeight
+                actualWidth = imgRatio * actualWidth
+                actualHeight = maxHeight
+            } else if (imgRatio > maxRatio) {
+                // Adjust height according to maxWidth
+                imgRatio = maxWidth / actualWidth
+                actualHeight = imgRatio * actualHeight
+                actualWidth = maxWidth
+            } else {
+                actualHeight = maxHeight
+                actualWidth = maxWidth
+            }
+        }
+        
+        let rect: CGRect = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight)
+        UIGraphicsBeginImageContext(rect.size)
+        image.draw(in: rect)
+        let image: UIImage  = UIGraphicsGetImageFromCurrentImageContext()!
+        let imageData = UIImageJPEGRepresentation(image, CGFloat(compressionQuality))
+        UIGraphicsEndImageContext()
+        let resizedImage = UIImage(data: imageData!)
+        
+        return resizedImage!
+    }
 
 }
 

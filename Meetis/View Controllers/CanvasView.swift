@@ -15,9 +15,9 @@ import UIKit
 */
 class CanvasView: UIView {
 
-    var lineColor: UIColor!
-    var lineWidth: CGFloat!
-    var lineOpacity: Float!
+    var lineColor = UIColor.black
+    var lineWidth: CGFloat = 10
+    var lineOpacity: Float = 1
     var path:UIBezierPath!
     var touchPoint: CGPoint!
     var startingPoint: CGPoint!
@@ -29,9 +29,7 @@ class CanvasView: UIView {
         self.clipsToBounds = true
         self.isMultipleTouchEnabled = false
         
-        lineColor = UIColor.black
-        lineWidth = 10
-        lineOpacity = 1
+        
         
     }
     
