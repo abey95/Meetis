@@ -16,7 +16,7 @@ import UIKit
 class CanvasView: UIView {
 
     // background image view
-    var backgroundView = UIImageView()
+    var backgroundView: UIImageView!
     
     // mark-up variables
     var lineColor = UIColor.black
@@ -32,9 +32,6 @@ class CanvasView: UIView {
         
         self.clipsToBounds = true
         self.isMultipleTouchEnabled = false
-        
-        backgroundView.frame = self.frame
-        self.insertSubview(backgroundView, at: 0)
         
     }
     
@@ -86,6 +83,7 @@ class CanvasView: UIView {
         if path != nil {
             path.removeAllPoints()
             self.layer.sublayers = nil
+            //self.addSubview(backgroundView)
             self.setNeedsDisplay()
         }
     }

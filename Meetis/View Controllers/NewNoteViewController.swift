@@ -38,6 +38,9 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         populateScrollView()
         
         imagePicker.delegate = self
+        
+        canvasView.backgroundView = UIImageView(frame: canvasView.frame)
+        canvasView.insertSubview(canvasView.backgroundView, at: 0)
         // if starting state is import or camera send user to that view controller
         
     }
@@ -184,10 +187,10 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
             clearCanvas()
             break
         case 6:
-            cameraSelected()
+            openCameraButton()
             break
         case 7:
-            openPhotoLibraryButton(sender: self)
+            openPhotoLibraryButton()
             break
         default:
             newPageSelected()
@@ -239,10 +242,6 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
     
     func clearCanvas() {
         canvasView.clearCanvas()
-    }
-    
-    func cameraSelected() {
-        performSegue(withIdentifier: "Camera", sender: self)
     }
     
     
@@ -355,10 +354,19 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
 extension NewNoteViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     
-    func openPhotoLibraryButton(sender: AnyObject) {
+    func openPhotoLibraryButton() {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             imagePicker.sourceType = .photoLibrary;
             imagePicker.allowsEditing = true
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    func openCameraButton() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+
+            imagePicker.sourceType = .camera;
+            imagePicker.allowsEditing = false
             self.present(imagePicker, animated: true, completion: nil)
         }
     }

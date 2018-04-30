@@ -24,7 +24,6 @@
 		B799279B207E45730033571F /* NewNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B799279A207E45730033571F /* NewNoteViewController.swift */; };
 		B799279D207E48AF0033571F /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B799279C207E48AF0033571F /* ContainerViewController.swift */; };
 		B799279F207E65320033571F /* AddEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B799279E207E65320033571F /* AddEventViewController.swift */; };
-		B7C489FB208A2EE200F3ABF3 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C489FA208A2EE200F3ABF3 /* CameraViewController.swift */; };
 		B7C489FD208A37B100F3ABF3 /* NoteRecordingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C489FC208A37B100F3ABF3 /* NoteRecordingViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,7 +47,6 @@
 		B799279A207E45730033571F /* NewNoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNoteViewController.swift; sourceTree = "<group>"; };
 		B799279C207E48AF0033571F /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		B799279E207E65320033571F /* AddEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventViewController.swift; sourceTree = "<group>"; };
-		B7C489FA208A2EE200F3ABF3 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		B7C489FC208A37B100F3ABF3 /* NoteRecordingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRecordingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -108,7 +106,6 @@
 				B799279A207E45730033571F /* NewNoteViewController.swift */,
 				089FBDA9207E70F6001A5CF8 /* NoteDataViewController.swift */,
 				B7C489FC208A37B100F3ABF3 /* NoteRecordingViewController.swift */,
-				B7C489FA208A2EE200F3ABF3 /* CameraViewController.swift */,
 				08022D842094CB2D00744F44 /* CanvasView.swift */,
 			);
 			path = "View Controllers";
@@ -188,7 +185,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7C489FB208A2EE200F3ABF3 /* CameraViewController.swift in Sources */,
 				B7635695207AB8830068B3A8 /* HomeTableViewController.swift in Sources */,
 				B799279F207E65320033571F /* AddEventViewController.swift in Sources */,
 				B763567A207AAEF90068B3A8 /* AppDelegate.swift in Sources */,
