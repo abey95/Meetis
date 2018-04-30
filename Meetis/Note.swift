@@ -13,7 +13,7 @@ import AVKit
 class Note: NSObject {
     
     var title: String?
-    var views: [UIImage]?
+    var views: [UIView]?
     var recording: AVAudioSession?
     var notes: String?
     

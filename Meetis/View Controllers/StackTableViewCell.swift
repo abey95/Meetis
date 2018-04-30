@@ -9,12 +9,14 @@
 import UIKit
 
 protocol StackCellDelegate {
-    func didTapPen(title: String)
-    func didTapPic(title: String)
-    func didTapImport(title: String)
-    func didTapIgnore(title: String)
-    func didTapDetail(title: String, cellNum: Int)
+    func didTapNote(sender: StackTableViewCell)
+    func didTapIgnore(sender: StackTableViewCell)
+    func didTapDetail(sender: StackTableViewCell)
     
+}
+
+enum CanvasState {
+    case Blank, Pic, Import;
 }
 
 class StackTableViewCell: UITableViewCell {
@@ -37,12 +39,14 @@ class StackTableViewCell: UITableViewCell {
     @IBOutlet var ignoreButton: UIButton!
     @IBOutlet var importButton: UIButton!
     
-    
-    
-    var index = -1
-    var cellExists = false
+    // selected cell state
     var micActive = false
+    var currState = CanvasState.Blank
+    
+    var index = -1 //row number for the cell
+    var cellExists = false
     var delegate: StackCellDelegate?
+    var micBackground = UIImageView()
     
     let background_color = UIColor.init(red: 50/255, green: 54/255, blue: 64/255, alpha: 1)
     
@@ -50,6 +54,9 @@ class StackTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         self.contentView.backgroundColor = background_color
+        
+        micButton.layer.masksToBounds = true
+        micButton.layer.cornerRadius = micButton.layer.frame.width/2
     }
     
     func animate(duration:Double, c: @escaping () -> Void) {
@@ -72,6 +79,7 @@ class StackTableViewCell: UITableViewCell {
     @IBAction func micTapped(_ sender: UIButton) {
         
         micActive = !micActive
+        
         if micActive {
             micButton.backgroundColor = UIColor.red
         } else {
@@ -80,22 +88,25 @@ class StackTableViewCell: UITableViewCell {
     }
     
     @IBAction func penTapped(_ sender: UIButton) {
-        delegate?.didTapPen(title: eventTimeLabel.text!)
+        currState = .Blank
+        delegate?.didTapNote(sender: self)
     }
     
     @IBAction func picTapped(_ sender: UIButton) {
-        delegate?.didTapPic(title: eventTimeLabel.text!)
+        currState = .Pic
+       delegate?.didTapNote(sender: self)
     }
     
     @IBAction func importTapped(_ sender: UIButton) {
-        delegate?.didTapImport(title: eventTimeLabel.text!)
+        currState = .Import
+        delegate?.didTapNote(sender: self)
     }
     @IBAction func ignoreTapped(_ sender: UIButton) {
-        delegate?.didTapIgnore(title: eventTimeLabel.text!)
+        delegate?.didTapIgnore(sender: self)
     }
     
     @IBAction func detailDisclosureTapped(_ sender: UIButton) {
-        delegate?.didTapDetail(title: eventTimeLabel.text!, cellNum: self.tag)
+        delegate?.didTapDetail(sender: self)
     }
 }
 

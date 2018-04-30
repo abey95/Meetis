@@ -8,30 +8,47 @@
 
 import UIKit
 
-class NewNoteViewController: UIViewController {
+class NewNoteViewController: UIViewController, UIScrollViewDelegate {
 
     @IBOutlet var canvasView: CanvasView!
     @IBOutlet var leftArrowImageView: UIImageView!
     @IBOutlet var horizontalScrollView: UIScrollView!
     @IBOutlet var rightArrowImageView: UIImageView!
     
+    // data passed from upstream
+    var startingState:CanvasState!
+    var isMicActive:Bool!
+    
+    // variable for the background images
+    var imagePicker = UIImagePickerController()
+    
     // instance of the current note that will hold all the note data
     var note: Note!
     
+    // variables used for the scroll view
     var previousButton = UIButton(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-    let kScrollMenuHeight: CGFloat = 100.0
+    let kScrollMenuHeight: CGFloat = 75.0
+    let backgroundColorToUse = UIColor.white
     
-    var dataPassed: [String]?
-    
-    let buttonNames = ["Black", "Blue", "Red", "Highlight", "Erase", "Clear", "Camera", "New_Page"]
+    let buttonNames = ["Black", "Blue", "Red", "Highlight", "Erase", "Clear", "Camera", "Import", "New_Page"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        populateScrollView()        
+        populateScrollView()
+        
+        imagePicker.delegate = self
+        // if starting state is import or camera send user to that view controller
+        
     }
     
     func populateScrollView() {
+        horizontalScrollView.delegate = self
+        
+        leftArrowImageView.backgroundColor = backgroundColorToUse
+        rightArrowImageView.backgroundColor = backgroundColorToUse
+        horizontalScrollView.backgroundColor = backgroundColorToUse
+        
         /***********************************************************************
          * Instantiate and setup the buttons for the horizontally scrollable menu
          ***********************************************************************/
@@ -49,14 +66,14 @@ class NewNoteViewController: UIViewController {
             
             // Obtain the auto manufacturer's logo image
             let buttonImage = UIImage(named: "\(buttonNames[i].lowercased()).png")
-            let resizedImage = resizeImage(image: buttonImage!, withSize: CGSize(width: 124, height: 50))
+            let resizedImage = resizeImage(image: buttonImage!, withSize: CGSize(width: 50, height: 50))
             
             // Set the button frame at origin at (x, y) = (0, 0) with
-            // button width  =  image width + 10 points padding for each side
+            // button width  =  image width + 20 points padding for each side
             // button height = kScrollMenuHeight points
-            scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: resizedImage.size.width + 20.0, height: kScrollMenuHeight)
+            scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: resizedImage.size.width + 20.0, height: 50)
             
-            // Set the button image to be the auto maker's logo
+            // Set the button image to be the designated button action ico
             scrollMenuButton.setImage(resizedImage, for: UIControlState())
             
             // The button width and height in points will depend on its font style and size
@@ -81,10 +98,10 @@ class NewNoteViewController: UIViewController {
             }
             
             // Set the button frame with width=buttonWidth height=kScrollMenuHeight points with origin at (x, y) = (0, 0)
-            scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: buttonWidth, height: kScrollMenuHeight)
+            scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: buttonWidth, height: 75 )
             
-            // Set the button title to the automobile manufacturer's name
-            scrollMenuButton.setTitle(name, for: UIControlState())
+            // Set the button title to the selection's name
+            scrollMenuButton.setTitle(buttonNames[i], for: UIControlState())
             
             // Set the button title color to black when the button is not selected
             scrollMenuButton.setTitleColor(UIColor.black, for: UIControlState())
@@ -146,7 +163,6 @@ class NewNoteViewController: UIViewController {
         
         let selectedButton: UIButton = sender
         
-        print(selectedButton.tag)
 
         switch selectedButton.tag {
         case 0:
@@ -164,9 +180,17 @@ class NewNoteViewController: UIViewController {
         case 4:
             updateToErase()
             break
-        default :
+        case 5 :
             clearCanvas()
             break
+        case 6:
+            cameraSelected()
+            break
+        case 7:
+            openPhotoLibraryButton(sender: self)
+            break
+        default:
+            newPageSelected()
         }
         // check if this is a canvas state update
         if selectedButton.tag < 5 {
@@ -185,6 +209,7 @@ class NewNoteViewController: UIViewController {
         }
         
     }
+    
     
     
     func updateToBlackPen() {
@@ -209,11 +234,23 @@ class NewNoteViewController: UIViewController {
     
     func updateToHighlight () {
         canvasView.lineColor = UIColor.yellow
-        canvasView.lineOpacity = 0.5
+        canvasView.lineOpacity = 0.25
     }
     
     func clearCanvas() {
         canvasView.clearCanvas()
+    }
+    
+    func cameraSelected() {
+        performSegue(withIdentifier: "Camera", sender: self)
+    }
+    
+    
+    // add screenshot of canvasview to notes array of note images
+    func newPageSelected() {
+        
+        note.views!.append(canvasView.snapshotView(afterScreenUpdates: true)!)
+        clearCanvas()
     }
 
 
@@ -282,7 +319,7 @@ class NewNoteViewController: UIViewController {
         let maxWidth: CGFloat = withSize.height
         var imgRatio: CGFloat = actualWidth/actualHeight
         let maxRatio: CGFloat = maxWidth/maxHeight
-        let compressionQuality = 0.5
+        let compressionQuality = 1.0
         
         if (actualHeight > maxHeight || actualWidth > maxWidth) {
             if (imgRatio < maxRatio) {
@@ -311,6 +348,28 @@ class NewNoteViewController: UIViewController {
         
         return resizedImage!
     }
+    
 
 }
+
+extension NewNoteViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    
+    func openPhotoLibraryButton(sender: AnyObject) {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            imagePicker.sourceType = .photoLibrary;
+            imagePicker.allowsEditing = true
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [String : Any]) {
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        canvasView.addBackground(image: image)
+        dismiss(animated:true, completion: nil)
+    }
+
+}
+
 

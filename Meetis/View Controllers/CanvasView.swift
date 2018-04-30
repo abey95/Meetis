@@ -15,6 +15,10 @@ import UIKit
 */
 class CanvasView: UIView {
 
+    // background image view
+    var backgroundView = UIImageView()
+    
+    // mark-up variables
     var lineColor = UIColor.black
     var lineWidth: CGFloat = 10
     var lineOpacity: Float = 1
@@ -29,7 +33,8 @@ class CanvasView: UIView {
         self.clipsToBounds = true
         self.isMultipleTouchEnabled = false
         
-        
+        backgroundView.frame = self.frame
+        self.insertSubview(backgroundView, at: 0)
         
     }
     
@@ -42,6 +47,7 @@ class CanvasView: UIView {
     
     // called when putting finger on surface and moving finger
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         // get the value and update touch point to its location
         let touch = touches.first
         touchPoint = touch?.location(in: self)
@@ -77,13 +83,15 @@ class CanvasView: UIView {
     }
     
     func clearCanvas() {
-        path.removeAllPoints()
-        self.layer.sublayers = nil
-        self.setNeedsDisplay()
+        if path != nil {
+            path.removeAllPoints()
+            self.layer.sublayers = nil
+            self.setNeedsDisplay()
+        }
     }
     
     func addBackground(image: UIImage) {
-        self.backgroundColor = UIColor(patternImage: image)
+        backgroundView.image = image
     }
     /*
     // Only override draw() if you perform custom drawing.

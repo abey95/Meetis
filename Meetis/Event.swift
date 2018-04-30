@@ -12,7 +12,7 @@ import UIKit
 enum EventCategory:String {
     case school, work, personal, travel, family
     
-     static let allValues = [school, work, personal, travel, family]
+    static let allValues = [school, work, personal, travel, family]
 }
 
 class Event: NSObject {
@@ -81,8 +81,8 @@ class Event: NSObject {
     }
     
     /*
-        return the all fields in an object array
-    */
+     return the all fields in an object array
+     */
     func toDict() -> [String : AnyObject] {
         var dict = [String: AnyObject]()
         dict["active"] = active as AnyObject
@@ -96,11 +96,11 @@ class Event: NSObject {
     
     // returns the next active day
     private func nextDateOrdinal() -> Int {
-        let cur_ordinal = 0
+        let cur_ordinal = Calendar.current.component(.weekday, from: Date()) - 1
         
         for i in 0...days.count {
             if days[(cur_ordinal + i) % days.count] {
-                return i
+                return (cur_ordinal + i) % days.count
             }
         }
         return -1

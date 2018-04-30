@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="MsF-LC-wM8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="MsF-LC-wM8">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -39,7 +39,6 @@
                         <segue destination="xBc-t5-Rd0" kind="show" identifier="Add Event" id="S24-Wb-NCd"/>
                         <segue destination="1VQ-UR-NFE" kind="show" identifier="Event Data" id="j2W-Yq-iar"/>
                         <segue destination="sOX-oQ-uhO" kind="show" identifier="New Note" id="pWq-E7-0LJ"/>
-                        <segue destination="gC7-x1-wxy" kind="show" identifier="Pic Tapped" id="D94-Vj-iDj"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="59E-FL-9sL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -338,7 +337,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LnY-1B-gc9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1676" y="-630"/>
+            <point key="canvasLocation" x="-2550" y="-158"/>
         </scene>
         <!--Note Name-->
         <scene sceneID="ULC-eU-ch9">
@@ -782,6 +781,7 @@
                         <outlet property="rightArrowImageView" destination="Gam-g0-aS7" id="2jD-jZ-TQL"/>
                         <segue destination="4q7-KJ-wNC" kind="show" identifier="Note Data View" id="f1e-FT-hUO"/>
                         <segue destination="2jN-Rm-tuM" kind="show" identifier="Record Note" id="1Jj-0q-DLt"/>
+                        <segue destination="gC7-x1-wxy" kind="show" identifier="Camera" id="sw5-dH-DXF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GEk-Sa-vqp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -854,7 +854,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Irh-pF-gGx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2550" y="76.056338028169009"/>
+            <point key="canvasLocation" x="-2550" y="545"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="HjE-MN-SFP">

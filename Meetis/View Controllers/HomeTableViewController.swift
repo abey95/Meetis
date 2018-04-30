@@ -38,8 +38,11 @@ class HomeTableViewController: UITableViewController {
 
     let background_color = UIColor.init(red: 50/255, green: 54/255, blue: 64/255, alpha: 1)
     
-    // companyDataToPass is the data object to pass to the downstream view controller
+    // eventToPass is the data object to pass to the downstream Event detail view controller
     var eventToPass: Event?
+    
+    //current open cell
+    var cell: StackTableViewCell?
     
     /*
      This instance variable designates the object that adopts the HomeViewControllerDelegate protocol.
@@ -228,6 +231,8 @@ class HomeTableViewController: UITableViewController {
         self.tableView.endUpdates()
     }
     
+    
+    
     /*
      -----------------------------------
      MARK: - Table View Delegate Methods
@@ -258,11 +263,8 @@ class HomeTableViewController: UITableViewController {
         if segue.identifier == "New Note" {
             // Obtain the object reference of the destination view controller
             let newNoteViewController: NewNoteViewController = segue.destination as! NewNoteViewController
-        } else if segue.identifier == "Pic Tapped" {
-            // Obtain the object reference of the destination view controller
-            let newNoteViewController: NewNoteViewController = segue.destination as! NewNoteViewController
-        } else if segue.identifier == "Import Tapped" {
-            let newNoteViewController: NewNoteViewController = segue.destination as! NewNoteViewController
+            newNoteViewController.isMicActive = cell!.micActive
+            newNoteViewController.startingState = cell!.currState
         } else if segue.identifier == "Add Event" {
             let addEventViewController: AddEventViewController = segue.destination as! AddEventViewController
             addEventViewController.delegate = self
@@ -275,30 +277,21 @@ class HomeTableViewController: UITableViewController {
 
 extension HomeTableViewController: StackCellDelegate {
     
-    //go to blank canvas
-    func didTapPen(title: String) {
+    // go to new note view controller
+    func didTapNote(sender: StackTableViewCell) {
+        cell = sender
         performSegue(withIdentifier: "New Note", sender: self)
     }
     
-    // go to camera
-    func didTapPic(title: String) {
-        performSegue(withIdentifier: "Pic Tapped", sender: self)
-    }
-    
-    // go to import picture view
-    func didTapImport(title: String) {
-        performSegue(withIdentifier: "Import Tapped", sender: self)
-    }
-    
     //update event to be next date and update tablview
-    func didTapIgnore(title: String) {
+    func didTapIgnore(sender: StackTableViewCell) {
         
         eventsTableView.reloadData();
     }
     //update event to be next date and update tablview
-    func didTapDetail(title: String, cellNum: Int) {
+    func didTapDetail(sender: StackTableViewCell) {
         
-        eventToPass = events[cellNum]
+        eventToPass = events[sender.index]
         
         performSegue(withIdentifier: "Event Data", sender: self)
     }
