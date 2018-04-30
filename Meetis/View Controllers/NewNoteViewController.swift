@@ -23,12 +23,12 @@ class NewNoteViewController: UIViewController {
     
     var dataPassed: [String]?
     
-    var buttonNames = ["Black", "Blue", "Red", "Highlight", "Erase", "Clear", "Text", "Camera", "New_Page"]
+    let buttonNames = ["Black", "Blue", "Red", "Highlight", "Erase", "Clear", "Camera", "New_Page"]
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
 
 
         /***********************************************************************
@@ -117,10 +117,29 @@ class NewNoteViewController: UIViewController {
         
         let selectedButton: UIButton = sender
         
+        switch selectedButton.tag {
+        case 0:
+            updateToBlackPen()
+            break
+        case 1:
+            updateToBluePen()
+            break
+        case 2:
+            updateToRedPen()
+            break
+        case 3:
+            updateToHighlight()
+            break
+        case 4:
+            updateToErase()
+            break
+        default :
+            clearCanvas()
+            break
+        }
         // check if this is a canvas state update
         if selectedButton.tag < 5 {
             
-        }
         
         // Indicate that the button is selected
         selectedButton.isSelected = true
@@ -131,28 +150,39 @@ class NewNoteViewController: UIViewController {
         }
         
         previousButton = selectedButton
+            
+        }
         
     }
     
     
     func updateToBlackPen() {
-        canvasView.isErase = false
         canvasView.lineColor = UIColor.black
+        canvasView.lineOpacity = 1
     }
     
     func updateToBluePen() {
-        canvasView.isErase = false
         canvasView.lineColor = UIColor.blue
+        canvasView.lineOpacity = 1
     }
     
     func updateToRedPen() {
-        canvasView.isErase = false
         canvasView.lineColor = UIColor.red
+        canvasView.lineOpacity = 1
     }
     
     func updateToErase() {
-        canvasView.isErase = true
         canvasView.lineColor = UIColor.clear
+        canvasView.lineOpacity = 1
+    }
+    
+    func updateToHighlight () {
+        canvasView.lineColor = UIColor.yellow
+        canvasView.lineOpacity = 0.5
+    }
+    
+    func clearCanvas() {
+        canvasView.clearCanvas()
     }
 
 

@@ -17,12 +17,11 @@ class CanvasView: UIView {
 
     var lineColor: UIColor!
     var lineWidth: CGFloat!
+    var lineOpacity: Float!
     var path:UIBezierPath!
     var touchPoint: CGPoint!
     var startingPoint: CGPoint!
     
-    // make initial selection the pen
-    var isErase = false
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -32,6 +31,7 @@ class CanvasView: UIView {
         
         lineColor = UIColor.black
         lineWidth = 10
+        lineOpacity = 1
         
     }
     
@@ -65,14 +65,9 @@ class CanvasView: UIView {
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = path.cgPath
         
-        //if we are erasing make the pen color clear
-        if isErase {
-            shapeLayer.strokeColor = UIColor.clear.cgColor
-            shapeLayer.lineWidth = lineWidth
-        } else {
-            shapeLayer.strokeColor = lineColor.cgColor
-            shapeLayer.lineWidth = lineWidth
-        }
+        shapeLayer.strokeColor = lineColor.cgColor
+        shapeLayer.lineWidth = lineWidth
+        shapeLayer.opacity = lineOpacity
         
         //make line smoother
         shapeLayer.lineCap = kCALineCapRound

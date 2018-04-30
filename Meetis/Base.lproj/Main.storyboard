@@ -534,6 +534,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Save" id="vBK-t1-qqc"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="canvasView" destination="w2w-Zr-BfZ" id="WjT-d3-xqt"/>
                         <outlet property="horizontalScrollView" destination="VDU-pc-yaE" id="T4d-o9-HNr"/>
                         <outlet property="leftArrowImageView" destination="uXu-Hy-Nxe" id="ane-Qr-Jz2"/>
                         <outlet property="rightArrowImageView" destination="Gam-g0-aS7" id="2jD-jZ-TQL"/>
