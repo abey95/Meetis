@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="MsF-LC-wM8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="MsF-LC-wM8">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -114,7 +114,7 @@
                                 </constraints>
                                 <state key="normal" title="W"/>
                                 <connections>
-                                    <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="ADc-kO-9iB"/>
+                                    <action selector="weekButtonTapped:" destination="1VQ-UR-NFE" eventType="touchUpInside" id="5IY-vw-41q"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="553-px-MVu">
@@ -125,7 +125,7 @@
                                 </constraints>
                                 <state key="normal" title="T"/>
                                 <connections>
-                                    <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="9Nf-aV-AhE"/>
+                                    <action selector="weekButtonTapped:" destination="1VQ-UR-NFE" eventType="touchUpInside" id="viA-OS-rR3"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JWc-Vr-2uJ">
@@ -136,7 +136,7 @@
                                 </constraints>
                                 <state key="normal" title="M"/>
                                 <connections>
-                                    <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="G1I-7B-P94"/>
+                                    <action selector="weekButtonTapped:" destination="1VQ-UR-NFE" eventType="touchUpInside" id="ZVp-9S-nJ8"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O9D-9o-Cgb">
@@ -147,7 +147,7 @@
                                 </constraints>
                                 <state key="normal" title="R"/>
                                 <connections>
-                                    <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="lzh-Dx-58y"/>
+                                    <action selector="weekButtonTapped:" destination="1VQ-UR-NFE" eventType="touchUpInside" id="jdl-Eh-mGS"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ej-dw-hS4">
@@ -158,7 +158,7 @@
                                 </constraints>
                                 <state key="normal" title="F"/>
                                 <connections>
-                                    <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="2dF-Hj-h6u"/>
+                                    <action selector="weekButtonTapped:" destination="1VQ-UR-NFE" eventType="touchUpInside" id="Axw-OG-9Co"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zNF-X8-90R">
@@ -169,7 +169,7 @@
                                 </constraints>
                                 <state key="normal" title="Sa"/>
                                 <connections>
-                                    <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="fRU-mb-A6s"/>
+                                    <action selector="weekButtonTapped:" destination="1VQ-UR-NFE" eventType="touchUpInside" id="4NM-Nr-8UA"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDd-v3-n8f">
@@ -180,7 +180,7 @@
                                 </constraints>
                                 <state key="normal" title="Su"/>
                                 <connections>
-                                    <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="xbK-Tc-EbU"/>
+                                    <action selector="weekButtonTapped:" destination="1VQ-UR-NFE" eventType="touchUpInside" id="Xwp-s3-8Xl"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5nd-Wh-ddv">
@@ -253,9 +253,16 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tci-yI-Tb2"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Event Info" id="X0R-j9-wh4"/>
+                    <navigationItem key="navigationItem" title="Event Info" id="X0R-j9-wh4">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="f8g-81-qTx">
+                            <connections>
+                                <action selector="editSaveTapped:" destination="1VQ-UR-NFE" id="IF4-Uw-J2L"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="categoryLabel" destination="5nd-Wh-ddv" id="qj5-jF-TXo"/>
+                        <outlet property="editSaveButton" destination="f8g-81-qTx" id="M8v-f2-JF8"/>
                         <outlet property="fridayButton" destination="0Ej-dw-hS4" id="VTG-Wb-gzl"/>
                         <outlet property="imageView" destination="6is-dc-2mQ" id="Gy4-OG-3Xj"/>
                         <outlet property="mondayButton" destination="JWc-Vr-2uJ" id="k1f-gJ-B0j"/>
