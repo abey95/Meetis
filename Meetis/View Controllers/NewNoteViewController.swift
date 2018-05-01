@@ -55,6 +55,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         // disable swipe to pop-off for editting purposes
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         
+        
         imagePicker.delegate = self
         
         
@@ -96,18 +97,18 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         newPageSelected()
         
         // save all views to document directory as .png
-        for i in 0...views.count - 1{
-            let image = UIImage(view: views[i])
+        for i in 1...views.count {
+            let image = UIImage(view: views[i - 1])
             
             if let data = UIImagePNGRepresentation(image) {
-                let filename = getDocumentsDirectory().appendingPathComponent("\(self.filename)_\(i).png")
+                let filename = getDocumentsDirectory().appendingPathComponent("\(self.filename!)_\(i).png")
                 try? data.write(to: filename)
             }
             
         }
         
         // add needed information to event in order to retrieve file information
-        event.apppendToNotes(filename: filename)
+        event.apppendToNotes(filename: filename!)
         
         //  update the dictionaries
         applicationDelegate.dict_Events.setValue(event.toDict(), forKeyPath: event.title)

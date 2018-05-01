@@ -51,11 +51,17 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
     override func viewDidLoad() {
         super.viewDidLoad()
 
+       
+    }
+
+    // Prepare the view before it appears to the user
+    override func viewWillAppear(_ animated: Bool) {
+        
         applicationDelegate.loadAllEvents()
         
         events = applicationDelegate.events
         eventNames = applicationDelegate.dict_Events.allKeys as! [String]
-       
+        
         // Initialize the current table view rows to be the list of event Categories
         tableViewList = eventCategories
         
@@ -68,19 +74,8 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
             }
         }
         
-
         createSearchResultsController()
-    }
-
-    // Prepare the view before it appears to the user
-    override func viewWillAppear(_ animated: Bool) {
-        
-        if noteSelected {
-            
-            // Reload the table view data so that the selected sport name can be
-            // colored in blue to indicate that it is the selected row.
-            eventsTableView.reloadData()
-        }
+        eventsTableView.reloadData()
         
         super.viewWillAppear(animated)
     }
@@ -97,6 +92,8 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         
         super.viewDidAppear(animated)
     }
+    
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -228,21 +225,35 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         
         if eventCategories.contains(rowName) {    // Rows decomposition level = 0
             
-            // Row name is an event name
+            // Row name is an category name
             cell.indentationLevel = 0;
-            //cell.detailTextLabel!.text = "\()"
-            //cell.imageView!.image = UIImage(named: rowName)
+            
+            let curCategoryIndex = eventCategories.index(of: rowName)!
+            let eventsOfCategory = events[curCategoryIndex].count
+            
+            cell.detailTextLabel!.text = "\(eventsOfCategory) Events"
             
         } else if eventNames.contains(rowName) {           // Rows decomposition level = 1
             
+            var curEvent : Event!
+            for i in  0..<eventCategories.count{
+                for j in 0..<events[i].count {
+                    if events[i][j].title == rowName {
+                        curEvent = events[i][j]
+                    }
+                }
+            }
+            
+            let notesOfSelectedEvent = curEvent.notes
+            
+            cell.detailTextLabel!.text = "\(notesOfSelectedEvent.count) Notes"
             cell.indentationLevel = 1
-//            cell.imageView!.image = UIImage(named:"MenSportIcon")
             
         } else {         // Rows decomposition level = 2
             
             // Row name is a note name
             cell.indentationLevel = 2
-//            cell.imageView!.image = UIImage(named:"WomenSportIcon")
+            cell.detailTextLabel!.text = ""
         }
         return cell
     }

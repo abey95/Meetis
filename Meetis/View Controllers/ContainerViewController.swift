@@ -105,6 +105,8 @@ class ContainerViewController: UIViewController, HomeTableViewControllerDelegate
          the homeNavigationController object. Store its object reference into local variable panGestureRecognizer.
          */
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(ContainerViewController.handlePanGesture(_:)))
+        
+        panGestureRecognizer.delegate = self
 
         // Attach the pan gesture recognizer object to the homeNavigationController object.
         homeNavigationController.view.addGestureRecognizer(panGestureRecognizer)
@@ -230,6 +232,10 @@ class ContainerViewController: UIViewController, HomeTableViewControllerDelegate
         default:
             break
         }
+    }
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return homeViewController.isCurrentlyVisible
     }
 }
 

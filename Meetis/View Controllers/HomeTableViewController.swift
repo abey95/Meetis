@@ -44,6 +44,10 @@ class HomeTableViewController: UITableViewController {
     //current open cell
     var cell: StackTableViewCell?
     
+    // isCurrentlyVisible is needed because we only want pan gesture to be recognized when
+    // on menu or home view controllers
+    var isCurrentlyVisible = false
+    
     /*
      This instance variable designates the object that adopts the HomeViewControllerDelegate protocol.
      ContainerViewController adopts this protocol and implements its two optional methods (see its code).
@@ -71,6 +75,16 @@ class HomeTableViewController: UITableViewController {
         
         eventsTableView.allowsSelection = false
         eventsTableView.backgroundColor = background_color
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        isCurrentlyVisible = true
+        super.viewDidAppear(animated)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        isCurrentlyVisible = false
+        super.viewDidDisappear(animated)
     }
     
     

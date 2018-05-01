@@ -150,7 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          locked, and gains focus when the device is unlocked." [Apple]
          */
         
-        // Define the file path to the CompaniesILike.plist file in the Document directory
+        // Define the file path to the Events.plist file in the Document directory
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let documentDirectoryPath = paths[0] as String
         
@@ -159,6 +159,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Write the NSMutableDictionary to the CompaniesILike.plist file in the Document directory
         dict_Events.write(toFile: plistFilePathInDocumentDirectory, atomically: true)
+        
+        
+        
+        let notes_paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let notes_documentDirectoryPath = notes_paths[0] as String
+        
+        // Add the plist filename to the document directory path to obtain an absolute path to the plist filename
+        let notes_plistFilePathInDocumentDirectory = notes_documentDirectoryPath + "/Notes.plist"
+        
+        // Write the NSMutableDictionary to the CompaniesILike.plist file in the Document directory
+        dict_Notes.write(toFile: notes_plistFilePathInDocumentDirectory, atomically: true)
         
         /*
          The flag "atomically" specifies whether the file should be written atomically or not.
@@ -213,7 +224,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let days = cur_event_data["days"] as! [Bool]
             let time = cur_event_data["time"] as! String
             let cat = cur_event_data["category"] as! String
-            let notes = cur_event_data["Notes"] as! [String]
+            let notes = cur_event_data["notes"] as! [String]
             
             var category:EventCategory
             switch (cat) {
