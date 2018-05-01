@@ -14,9 +14,6 @@ import UIKit
  This class is used for marking up notes
 */
 class CanvasView: UIView {
-
-    // background image view
-    var backgroundView: UIImageView!
     
     // mark-up variables
     var lineColor = UIColor.black
@@ -29,7 +26,7 @@ class CanvasView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         self.clipsToBounds = true
         self.isMultipleTouchEnabled = false
         
@@ -80,16 +77,17 @@ class CanvasView: UIView {
     }
     
     func clearCanvas() {
-        if path != nil {
+        if path != nil && !path.isEmpty {
             path.removeAllPoints()
+            
             self.layer.sublayers = nil
-            //self.addSubview(backgroundView)
+            
             self.setNeedsDisplay()
         }
     }
     
     func addBackground(image: UIImage) {
-        backgroundView.image = image
+        self.layer.contents = image.cgImage
     }
     /*
     // Only override draw() if you perform custom drawing.

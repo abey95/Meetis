@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		08022D832094C88200744F44 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08022D822094C88200744F44 /* Note.swift */; };
 		08022D852094CB2D00744F44 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08022D842094CB2D00744F44 /* CanvasView.swift */; };
 		089FBDA3207BD205001A5CF8 /* StackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089FBDA1207BD205001A5CF8 /* StackTableViewCell.swift */; };
 		089FBDA4207BD205001A5CF8 /* StackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FBDA2207BD205001A5CF8 /* StackTableViewCell.xib */; };
@@ -28,7 +27,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		08022D822094C88200744F44 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		08022D842094CB2D00744F44 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		089FBDA1207BD205001A5CF8 /* StackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackTableViewCell.swift; sourceTree = "<group>"; };
 		089FBDA2207BD205001A5CF8 /* StackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StackTableViewCell.xib; sourceTree = "<group>"; };
@@ -88,7 +86,6 @@
 				B7635687207AAEF90068B3A8 /* Info.plist */,
 				089FBDA5207C0C46001A5CF8 /* Events.plist */,
 				089FBDA7207D3BB4001A5CF8 /* Event.swift */,
-				08022D822094C88200744F44 /* Note.swift */,
 			);
 			path = Meetis;
 			sourceTree = "<group>";
@@ -138,7 +135,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Abey Yoseph";
 				TargetAttributes = {
 					B7635675207AAEF90068B3A8 = {
@@ -189,7 +186,6 @@
 				B799279F207E65320033571F /* AddEventViewController.swift in Sources */,
 				B763567A207AAEF90068B3A8 /* AppDelegate.swift in Sources */,
 				089FBDAC207E7B07001A5CF8 /* EventDataViewController.swift in Sources */,
-				08022D832094C88200744F44 /* Note.swift in Sources */,
 				B799279D207E48AF0033571F /* ContainerViewController.swift in Sources */,
 				B799279B207E45730033571F /* NewNoteViewController.swift in Sources */,
 				08022D852094CB2D00744F44 /* CanvasView.swift in Sources */,
@@ -237,6 +233,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -244,6 +241,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -294,6 +292,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -301,6 +300,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

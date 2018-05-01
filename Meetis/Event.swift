@@ -15,17 +15,30 @@ enum EventCategory:String {
     static let allValues = [school, work, personal, travel, family]
 }
 
+struct Note {
+    
+    // name where the file is stored in the user's document directory
+    // to obtain jpeg of the views the path is filename + "_n.png" where n is the note number of the current session
+    // to obtain the audio recording the path is filename + "_recording.m4a"
+    var filename: String!
+    var text: String! // user input annotations
+    var numPages: Int!
+    var date: Date!
+    
+}
+
 class Event: NSObject {
     
     // Instance Variables
-    var title:String?           // name of the event
-    var dateInfo:DateComponents?// component of the recurring event
-    var days:[Bool]             // days of the week the event is active
-    var priority:String?        // priority of the event: "High"
+    var title:String!           // name of the event
+    var dateInfo:DateComponents!// component of the recurring event
+    var days:[Bool]!             // days of the week the event is active
+    var priority:String!        // priority of the event: "High"
     var category: EventCategory // category of the event
-    var active: Bool            // true if active, false otherwise
-    var time: String?           // string representation of time
-    var nextDate: Date?         // date object for the nearest event in the future
+    var active: Bool!            // true if active, false otherwise
+    var time: String!           // string representation of time
+    var nextDate: Date!         // date object for the nearest event in the future
+    var notes = [Note]()
     
     let charOfDays = ["Su", "M", "T", "W", "R", "F", "Sa"]
     
@@ -40,7 +53,16 @@ class Event: NSObject {
         self.active = active
         super.init()
         self.dateInfo = DateComponents(hour: Int(hours_minutes[0]), minute:Int(hours_minutes[1]), weekday: nextDateOrdinal())
-        nextDate = Calendar.current.nextDate(after: Date(), matching: dateInfo!, matchingPolicy: Calendar.MatchingPolicy.nextTime)
+       updateToNextDate()
+    }
+    
+    //updates the next Date to the next occurence matching the date ordinal
+    func updateToNextDate() {
+         nextDate = Calendar.current.nextDate(after: Date(), matching: dateInfo!, matchingPolicy: Calendar.MatchingPolicy.nextTime)
+    }
+    
+    func apppendToNotes(filename: String, text: String, numPages: Int) {
+        notes.append(Note(filename: filename, text: text, numPages: numPages, date: Date()))
     }
     
     
@@ -59,25 +81,12 @@ class Event: NSObject {
         nextDate = Calendar.current.nextDate(after: nextDate!, matching: dateInfo!, matchingPolicy: Calendar.MatchingPolicy.nextTime)
     }
     
-    /*
-     * accesses the dict_Notes and returns all of the filenames of the notes
-     */
-    func getNotes() -> [String] {
-        return ["lol"]
-    }
     
     /*
      * returns a filename for newly created notes for the event
      */
     func makeNewFilename() -> String {
-        return "lol"
-    }
-    
-    /*
-     * deactivates the event
-     */
-    func deactivate() {
-        active = false
+        return "\(title)_\(Date())"
     }
     
     /*

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class NewNoteViewController: UIViewController, UIScrollViewDelegate {
 
@@ -18,12 +19,22 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
     // data passed from upstream
     var startingState:CanvasState!
     var isMicActive:Bool!
+    var event: Event!
+    var filename: String!
+    
+    // audio recording variables
+    var recordingSession: AVAudioSession?
+    var audioRecorder: AVAudioRecorder!
     
     // variable for the background images
     var imagePicker = UIImagePickerController()
+    //var backgroundImage: UIImageView!
     
-    // instance of the current note that will hold all the note data
-    var note: Note!
+    // contains all the views for each of the note pages
+    var views = [UIView]()
+    var pageNum = 0
+    
+
     
     // variables used for the scroll view
     var previousButton = UIButton(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
@@ -35,19 +46,73 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // add scroll view buttons
         populateScrollView()
+        
+        // disable swipe to pop-off for editting purposes
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         
         imagePicker.delegate = self
         
-        canvasView.backgroundView = UIImageView(frame: canvasView.frame)
-        canvasView.insertSubview(canvasView.backgroundView, at: 0)
-        // if starting state is import or camera send user to that view controller
+        // set up background in canvasView to possibly be set by camera or photo lib
+//        backgroundImage = UIImageView(frame: canvasView.frame)
+//        canvasView.insertSubview(backgroundImage, at: 0)
         
+        // if starting state is import or camera automatically go to that view
+        
+        
+        
+        // Create a Save button on the right of the navigation bar to call the "save:" method when tapped
+        let saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(NewNoteViewController.saveButtonTapped(_:)))
+        self.navigationItem.rightBarButtonItem = saveButton
+        
+        //set up recording
+        if isMicActive {
+            recordingSession = AVAudioSession.sharedInstance()
+            setUpRecorder()
+        } else {
+            recordingSession = nil
+        }
+           
+    }
+    
+    /*
+     -------------------
+     MARK: - Save Method
+     -------------------
+     */
+    // This method is invoked when the user taps the Save button
+    @objc func saveButtonTapped(_ sender: AnyObject) {
+        //stop recording
+        if isMicActive {
+            audioRecorder.stop()
+        }
+        
+        //add current view to views array
+        newPageSelected()
+        
+        // save all views to document directory as .png
+        for i in 0...views.count - 1{
+            let image = UIImage(view: views[i])
+            
+            if let data = UIImagePNGRepresentation(image) {
+                let filename = getDocumentsDirectory().appendingPathComponent("\(self.filename)_\(i).png")
+                try? data.write(to: filename)
+            }
+            
+        }
+        
+        // add needed information to event in order to retrieve file information
+        event.apppendToNotes(filename: filename, text: "placeholder", numPages: views.count)
+        
+        // TODO: update the dictionary and reload the data
     }
     
     func populateScrollView() {
         horizontalScrollView.delegate = self
         
+        //set background color
+        self.view.backgroundColor = backgroundColorToUse
         leftArrowImageView.backgroundColor = backgroundColorToUse
         rightArrowImageView.backgroundColor = backgroundColorToUse
         horizontalScrollView.backgroundColor = backgroundColorToUse
@@ -184,7 +249,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
             updateToErase()
             break
         case 5 :
-            clearCanvas()
+            canvasView.clearCanvas()
             break
         case 6:
             openCameraButton()
@@ -195,19 +260,20 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         default:
             newPageSelected()
         }
-        // check if this is a canvas state update
+        
+        // check if this is a canvas state update i.e. pen change
         if selectedButton.tag < 5 {
             
         
-        // Indicate that the button is selected
-        selectedButton.isSelected = true
-        
-        if previousButton != selectedButton {
-            // Selecting the selected button again should not change its title color
-            previousButton.isSelected = false
-        }
-        
-        previousButton = selectedButton
+            // Indicate that the button is selected
+            selectedButton.isSelected = true
+            
+            if previousButton != selectedButton {
+                // Selecting the selected button again should not change its title color
+                previousButton.isSelected = false
+            }
+            
+            previousButton = selectedButton
             
         }
         
@@ -240,16 +306,18 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         canvasView.lineOpacity = 0.25
     }
     
-    func clearCanvas() {
-        canvasView.clearCanvas()
-    }
     
-    
-    // add screenshot of canvasview to notes array of note images
+    // add snapshot of canvasview to views array of note images
     func newPageSelected() {
         
-        note.views!.append(canvasView.snapshotView(afterScreenUpdates: true)!)
-        clearCanvas()
+        // add to end
+        if pageNum == views.count || views.isEmpty {
+            views.append(canvasView.snapshotView(afterScreenUpdates: true)!)
+        } else { //update that view
+            views[pageNum] = canvasView.snapshotView(afterScreenUpdates: true)!
+        }
+        canvasView.clearCanvas()
+        pageNum = pageNum + 1
     }
 
 
@@ -348,9 +416,30 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         return resizedImage!
     }
     
+    /*
+     -----------------------------
+     MARK: - Display Alert Message
+     -----------------------------
+     */
+    func showAlertMessage(messageHeader header: String, messageBody body: String) {
+        
+        /*
+         Create a UIAlertController object; dress it up with title, message, and preferred style;
+         and store its object reference into local constant alertController
+         */
+        let alertController = UIAlertController(title: header, message: body, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // Create a UIAlertAction object and add it to the alert controller
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        // Present the alert controller
+        present(alertController, animated: true, completion: nil)
+    }
+    
 
 }
 
+// logic for the Photo Library Selection and the New Picture capture from the camera
 extension NewNoteViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     
@@ -373,11 +462,71 @@ extension NewNoteViewController: UIImagePickerControllerDelegate, UINavigationCo
     
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : Any]) {
-        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        var
+        image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        image = resizeImage(image: image, withSize: canvasView.bounds.size)
         canvasView.addBackground(image: image)
         dismiss(animated:true, completion: nil)
     }
 
+}
+
+// logic for the voice recording
+extension NewNoteViewController:  AVAudioRecorderDelegate {
+    
+    func setUpRecorder() {
+        do {
+            try recordingSession!.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try recordingSession!.setActive(true)
+            recordingSession!.requestRecordPermission() { [unowned self] allowed in
+                DispatchQueue.main.async {
+                    if allowed {
+                        self.startRecording()
+                    } else {
+                        self.showAlertMessage(messageHeader: "Permission Denied", messageBody: "In order to record, please allow microphone access in privact settings!")
+                    }
+                }
+            }
+        } catch {
+            // failed to record!
+            showAlertMessage(messageHeader: "Recording Failed", messageBody: "The voice recording failed")
+        }
+    }
+    
+    func startRecording() {
+        let audioFilename = getDocumentsDirectory().appendingPathComponent("\(filename)_recording.m4a")
+        
+        let settings = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 12000,
+            AVNumberOfChannelsKey: 1,
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+        ]
+        
+        do {
+            audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
+            audioRecorder.delegate = self
+            audioRecorder.record()
+        } catch {
+            showAlertMessage(messageHeader: "Recording Failed", messageBody: "The voice recording failed")
+        }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+}
+
+// allows a view to be converted to a png
+extension UIImage {
+    convenience init(view: UIView) {
+        UIGraphicsBeginImageContext(view.frame.size)
+        view.layer.render(in:UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        self.init(cgImage: image!.cgImage!)
+    }
 }
 
 

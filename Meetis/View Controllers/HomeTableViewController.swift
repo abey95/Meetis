@@ -265,6 +265,8 @@ class HomeTableViewController: UITableViewController {
             let newNoteViewController: NewNoteViewController = segue.destination as! NewNoteViewController
             newNoteViewController.isMicActive = cell!.micActive
             newNoteViewController.startingState = cell!.currState
+            newNoteViewController.event = eventToPass!
+            newNoteViewController.filename = eventToPass?.makeNewFilename()
         } else if segue.identifier == "Add Event" {
             let addEventViewController: AddEventViewController = segue.destination as! AddEventViewController
             addEventViewController.delegate = self
@@ -280,6 +282,7 @@ extension HomeTableViewController: StackCellDelegate {
     // go to new note view controller
     func didTapNote(sender: StackTableViewCell) {
         cell = sender
+        eventToPass = events[sender.index]
         performSegue(withIdentifier: "New Note", sender: self)
     }
     

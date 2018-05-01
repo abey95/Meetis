@@ -210,7 +210,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         
         // Obtain the object reference of a reusable table view cell object instantiated under the identifier
         // TableViewCellReuseID, which was specified in the storyboard
-        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "MenuItemCell") as UITableViewCell!
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "MenuItemCell") as! UITableViewCell
         
         // Obtain the name of the row from the table view list
         let rowName: String = searchResultsController.isActive ? searchResults[rowNumber] : tableViewList[rowNumber]

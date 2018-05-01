@@ -22,6 +22,11 @@
 		<string>12:00</string>
 		<key>category</key>
 		<string>school</string>
+		<key>Events</key>
+		<dict>
+			<key>Event</key>
+			<string></string>
+		</dict>
 	</dict>
 </dict>
 </plist>

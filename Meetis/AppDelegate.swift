@@ -159,6 +159,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let days = cur_event_data["days"] as! [Bool]
             let time = cur_event_data["time"] as! String
             let cat = cur_event_data["category"] as! String
+            //let notes = cur_event_data["Notes"] as! NSDictionary
+            
             var category:EventCategory
             switch (cat) {
             case "school":
