@@ -23,9 +23,13 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
     
     var delegate: MenuViewControllerDelegate?
 
+    // 2D array where top index is category and bottom is the event
     var events = [[Event]]()
     var eventNames     = [String]()
     var eventCategories     = EventCategory.rawValues
+    var allNotes = [Note]()
+    var allNoteNames = [String]()
+    
     
     
     // These two instance variables are used for Search Bar functionality
@@ -41,7 +45,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
     var selectedIndexPathPrevious: IndexPath = IndexPath()
     
     // Flags created and initialized
-    var eventNameSelected: Bool = false
+    var noteSelected: Bool = false
     var selectedRowNumber: Int = 0
     
     
@@ -53,8 +57,22 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         events = applicationDelegate.events
         eventNames = applicationDelegate.dict_Events.allKeys as! [String]
        
-        // Initialize the current table view rows to be the list of the university names
+        // Initialize the current table view rows to be the list of event Categories
         tableViewList = eventNames
+        
+        
+        // get all note names by iterating through events
+        for i in 0...eventCategories.count - 1 {
+            for j in 0...events[i].count - 1 {
+                let curEvent = events[i][j]
+                
+                for note in curEvent.notes {
+                    allNotes.append(note)
+                    allNoteNames.append(note.filename)
+                }
+            }
+        }
+        
 
         createSearchResultsController()
     }
@@ -62,7 +80,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
     // Prepare the view before it appears to the user
     override func viewWillAppear(_ animated: Bool) {
         
-        if eventNameSelected {
+        if noteSelected {
             
             // Reload the table view data so that the selected sport name can be
             // colored in blue to indicate that it is the selected row.
@@ -75,7 +93,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
     // Scroll the selected sport name row towards the middle of the table view
     override func viewDidAppear(_ animated: Bool) {
         
-        if eventNameSelected {
+        if noteSelected {
             
             // Scroll the selected row towards the middle of the table view
             eventsTableView.scrollToRow(at: selectedIndexPath,
@@ -249,7 +267,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         // Set the cell label text to use the System font of size 14 pts
         cell.textLabel!.font = UIFont(name: "System", size: 14.0)
         
-        if eventNameSelected && (selectedRowNumber == (indexPath as NSIndexPath).row) {
+        if noteSelected && (selectedRowNumber == (indexPath as NSIndexPath).row) {
             
             // Set the cell label text color to blue to indicate its selection
             cell.textLabel!.textColor = UIColor.blue
@@ -298,6 +316,301 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         return 60
+    }
+    
+    //----------------------------------------------------------------------------
+    // Perform the necessary actions when the user selects a table view row (cell)
+    //----------------------------------------------------------------------------
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // Obtain the number of the selected row
+        var rowNumber: Int = (indexPath as NSIndexPath).row
+        
+        // Set the class properties
+        selectedIndexPath = indexPath
+        selectedRowNumber = rowNumber
+        
+        // Check whether the table view is from the search display controller
+        var selectedArray = searchResultsController.isActive ? searchResults : tableViewList
+        
+        // Obtain the name of the selected row
+        let nameOfSelectedRow: String = selectedArray[rowNumber]
+        
+        // Identify the table view cell object for the selected row
+        let selectedCell: UITableViewCell = tableView.cellForRow(at: indexPath)!
+        
+        // Obtain the indentation level of the selected row
+        let indentationLevelOfSelectedCell: Int = selectedCell.indentationLevel
+        
+        switch indentationLevelOfSelectedCell {
+            
+            //-------------------------------------------------------------------------
+            // Category Name is Selected: Expand the row to show its Events
+            //-------------------------------------------------------------------------
+            
+        case 0:
+            
+            noteSelected = false
+            
+            // If the selected gategory name is the last row or
+            // If the row below the selected category name is also a category name, implying that it is not expanded
+            if rowNumber == (selectedArray.count) - 1 || eventCategories.contains(selectedArray[rowNumber+1]) {
+                
+                // Expand the selected category name row
+                
+                var curCategoryIndex = eventCategories.index(of: nameOfSelectedRow)!
+                // Obtain an unordered list of events of selected category
+                var eventsOfCategory = events[curCategoryIndex]
+                
+                // Sort the events within itself in alphabetical order based on title
+                eventsOfCategory.sort { $0.title < $1.title }
+                
+                let numberOfEvents = eventsOfCategory.count
+                
+                // Equivalent to: for var i = 0; i < numberOfSportCategories; i++ {
+                // The half-open range operator (a..<b) defines a range that runs from a to b, but does not include b.
+                for i in 0..<numberOfEvents {
+                    
+                    // Insert the sport category names of the selected university
+                    if self.searchResultsController.isActive {
+                        rowNumber = rowNumber + 1
+                        searchResults.insert(eventsOfCategory[i].title, at: rowNumber)
+                    } else {
+                        rowNumber = rowNumber + 1
+                        tableViewList.insert(eventsOfCategory[i].title, at: rowNumber)
+                    }
+                }
+                
+            } else {    // Shrink the row: Hide the events under the selected category
+                
+                // As long as the next row is not a university name, delete the row from the table view list
+                // add a cloure to return the right list
+                while !self.eventCategories.contains({return ((self.searchResultsController.isActive) ? self.searchResults[rowNumber + 1] : self.tableViewList[rowNumber + 1])}()) {
+                    
+                    if self.searchResultsController.isActive {
+                        searchResults.remove(at: rowNumber + 1)
+                    } else {
+                        tableViewList.remove(at: rowNumber + 1)
+                    }
+                    
+                    // If the end of the table view list is reached, then break
+                    // add clousure to make sure you return the count of the right array
+                    if rowNumber + 1 > {return ((self.searchResultsController.isActive) ? self.searchResults.count : self.tableViewList.count)}() - 1 {
+                        break
+                    }
+                }
+            }
+            
+            // Reload the table view's rows since the table view list is changed
+            tableView.reloadData()
+            
+            //------------------------------------------------------------------------
+            // Event Name is Selected: Expand the row to show its Notes Names
+            // -----------------------------------------------------------------------
+            
+        case 1:
+            
+            noteSelected = false
+            
+            // Special Case: Selected event is the last row of the table view content
+            if rowNumber == selectedArray.count - 1 {
+                
+                // This loop goes from j=(rowNumber - 1) to j=0 with increments of 1
+                for j in (0..<rowNumber).reversed() {
+                    
+                    let previousRowName = (self.searchResultsController.isActive) ? self.searchResults[j] : self.tableViewList[j]
+                    
+                    if self.eventCategories.contains(previousRowName) {
+                        
+                        
+                        //---------- Events list -------------
+                    
+                        // Obtain an unordered list of events of selected category
+                        let curCategoryIndex = eventCategories.index(of: previousRowName)!
+                        var eventsOfCategory = events[curCategoryIndex]
+                        
+                        //---------- Notes of events -------------
+                        
+                        // Obtain an unordered list of notes of selected event
+                        var curEvent : Event!
+                        for i in  0...eventsOfCategory.count - 1{
+                            if eventsOfCategory[i].title == nameOfSelectedRow {
+                                curEvent = eventsOfCategory[i]
+                            }
+                        }
+                        var notesOfSelectedEvent = curEvent.notes
+                        
+                        // Sort the note names of selected category within itself in alphabetical order
+                        notesOfSelectedEvent.sort { $0.filename < $1.filename }
+                        
+                        let numberOfNotes = notesOfSelectedEvent.count
+                        
+                        for k in 0..<numberOfNotes {
+                            
+                            if self.searchResultsController.isActive {
+                                rowNumber = rowNumber + 1
+                                searchResults.insert(notesOfSelectedEvent[k].filename, at: rowNumber)
+                            } else {
+                                rowNumber = rowNumber + 1
+                                tableViewList.insert(notesOfSelectedEvent[k].filename, at: rowNumber)
+                            }
+                        }
+                        
+                        tableView.reloadData()
+                        break
+                    }
+                }
+                /*
+                 Note the Closure Expression: {return ((self.searchResultsController.active) ? self.searchResults[rowNumber+1] : self.tableViewList[rowNumber+1])}()
+                 Use of "self." is required in a Closure.
+                 */
+            } else if self.allNoteNames.contains({return ((self.searchResultsController.isActive) ? self.searchResults[rowNumber+1] : self.tableViewList[rowNumber+1])}()) {
+                
+                // If the row after the selected Event Name is a note name, that means
+                // it is already expanded; therefore, shrink the selected event row
+                
+                // As long as the next row is not a category or the next note name, delete that row from the table
+                var nextEventName : String!
+                var nextCatName : String!
+                for i in  0...eventCategories.count - 1 {
+                    if eventsOfCategory[i].title == nameOfSelectedRow {
+                        curEvent = eventsOfCategory[i]
+                    }
+                }
+                while !({return ((self.searchResultsController.isActive) ? self.searchResults[rowNumber+1] : self.tableViewList[rowNumber+1])}() == "Women's Sports") {
+                    
+                    if self.searchResultsController.isActive {
+                        searchResults.remove(at: rowNumber + 1)
+                    } else {
+                        tableViewList.remove(at: rowNumber + 1)
+                    }
+                    
+                    // If the end of the table view list is reached, then break
+                    if rowNumber+1 > {return ((self.searchResultsController.isActive) ? self.searchResults.count : self.tableViewList.count)}() - 1 {
+                        break
+                    }
+                }
+                
+                tableView.reloadData()
+                
+            } else {   // Expand the selected sport category row
+                
+                // This loop goes from j=(rowNumber - 1) to j=0 with increments of 1
+                for j in (0..<rowNumber).reversed() {
+                    
+                    let previousRowName = (self.searchResultsController.isActive) ? self.searchResults[j] : self.tableViewList[j]
+                    
+                    if self.universityNames.contains(previousRowName) {
+                        
+                        let universityNameOfSelectedRow = previousRowName
+                        
+                        //---------- Dictionary 2 -------------
+                        
+                        let dictionary2: AnyObject? = self.dict1_UniversityName_Dict2[universityNameOfSelectedRow]
+                        
+                        self.dict2_SportCategory_Dict3 = dictionary2! as! Dictionary
+                        
+                        //---------- Dictionary 3 -------------
+                        
+                        let dictionary3: AnyObject? = self.dict2_SportCategory_Dict3[nameOfSelectedRow]
+                        
+                        self.dict3_SportName_SportURL = dictionary3! as! Dictionary
+                        
+                        // Obtain an unordered list of sport names of selected category
+                        var sportNamesOfSelectedCategory: Array = dictionary3!.allKeys as! [String]
+                        
+                        // Sort the sport names of selected category within itself in alphabetical order
+                        sportNamesOfSelectedCategory.sort { $0 < $1 }
+                        
+                        let numberOfSportNames = sportNamesOfSelectedCategory.count
+                        
+                        for k in 0..<numberOfSportNames {
+                            
+                            if self.searchResultsController.isActive {
+                                rowNumber = rowNumber + 1
+                                searchResults.insert(sportNamesOfSelectedCategory[k], at: rowNumber)
+                            } else {
+                                rowNumber = rowNumber + 1
+                                tableViewList.insert(sportNamesOfSelectedCategory[k], at: rowNumber)
+                            }
+                        }
+                        
+                        tableView.reloadData()
+                        break
+                    }
+                }
+            }
+            
+            //-----------------------------------------------------------------
+            // Sport Name is Selected: Show the sport's website in another view
+            //-----------------------------------------------------------------
+            
+        case 2:
+            
+            sportNameSelected = true
+            
+            selectedIndexPathPrevious = selectedIndexPath
+            selectedIndexPath = indexPath
+            
+            var sportCategoryNameOfSelectedRowIdentified = false
+            
+            var sportCategoryNameOfSelectedRow: String = ""
+            
+            // This loop goes from j=(rowNumber - 1) to j=0 with increments of 1
+            for n in (0..<rowNumber).reversed() {
+                
+                let previousRowName = searchResultsController.isActive ? self.searchResults[n] : self.tableViewList[n]
+                
+                if previousRowName == "Men's Sports" || previousRowName == "Women's Sports" {
+                    
+                    if !sportCategoryNameOfSelectedRowIdentified {
+                        sportCategoryNameOfSelectedRow = previousRowName
+                        sportCategoryNameOfSelectedRowIdentified = true
+                    }
+                    
+                } else if universityNames.contains(previousRowName) {
+                    
+                    let universityNameOfSelectedRow = previousRowName
+                    
+                    //---------- Dictionary 2 -------------
+                    
+                    let dictionary2: AnyObject? = dict1_UniversityName_Dict2[universityNameOfSelectedRow]
+                    
+                    dict2_SportCategory_Dict3 = dictionary2! as! Dictionary
+                    
+                    //---------- Dictionary 3 -------------
+                    
+                    let dictionary3: AnyObject? = dict2_SportCategory_Dict3[sportCategoryNameOfSelectedRow]
+                    
+                    dict3_SportName_SportURL = dictionary3! as! Dictionary
+                    
+                    let websiteURL: AnyObject? = dict3_SportName_SportURL[nameOfSelectedRow]
+                    
+                    self.urlOfWebsite = websiteURL! as! String
+                    
+                    //----------------------- Related to Sliding View ------------------------
+                    
+                    /*
+                     Tell the delegate (HomeViewController) to execute its implementation of the
+                     MenuViewControllerDelegate protocol method sportSelected(url: NSURL)
+                     */
+                    delegate?.sportSelected(URL(string: self.urlOfWebsite)!)
+                    
+                    //----------------------- Related to Sliding View ------------------------
+                    
+                    // Remove the keyboard for the search bar
+                    searchResultsController.searchBar.resignFirstResponder()
+                    
+                    tableView.reloadData()
+                    break
+                }
+            }
+            
+        default:
+            print("Table View Cell Indentation Level is Out of Range!")
+            break
+        }
     }
     
     
