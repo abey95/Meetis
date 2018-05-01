@@ -13,6 +13,7 @@ enum EventCategory:String {
     case school, work, personal, travel, family
     
     static let allValues = [school, work, personal, travel, family]
+    static let rawValues =  [school.rawValue, work.rawValue, personal.rawValue, travel.rawValue, family.rawValue]
 }
 
 struct Note {
@@ -99,6 +100,7 @@ class Event: NSObject {
         dict["priority"] = priority as AnyObject
         dict["time"] = time as AnyObject
         dict["category"] = category.rawValue as AnyObject
+        dict["notes"] = notes as AnyObject
         
         return dict
     }

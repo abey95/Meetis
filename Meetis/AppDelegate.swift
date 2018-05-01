@@ -27,6 +27,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      ---------------------------
      */
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        /*
+         Create a UIWindow object with size (width x height) equal to the device's screen size.
+         Store its object reference into the instance variable window.
+         */
+        window = UIWindow(frame: UIScreen.main.bounds)
+        
+        // Create a ContainerViewController object and store its object reference into the local variable containerViewController.
+        let containerViewController = ContainerViewController()
+        
+        // Assign the newly created ContainerViewController object to be the root view controller of the window object.
+        window!.rootViewController = containerViewController
+        
+        // Make the window object to be the main window and display it.
+        window!.makeKeyAndVisible()
+        
         /*
          All application-specific and user data must be written to files that reside in the iOS device's
          Document directory. Nothing can be written into application's main bundle (project folder) because

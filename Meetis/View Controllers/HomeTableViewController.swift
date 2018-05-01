@@ -54,8 +54,6 @@ class HomeTableViewController: UITableViewController {
         super.viewDidLoad()
         view.backgroundColor = background_color
         
-        // Set up the Edit button on the left of the navigation bar to enable editing of the table view rows
-        self.navigationItem.leftBarButtonItem = self.editButtonItem
         
         // Set up the Add button on the right of the navigation bar to call the addCompany method when tapped
         let addButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self,
@@ -123,6 +121,20 @@ class HomeTableViewController: UITableViewController {
 //            // Reload the rows and sections of the Table View moviesTableView
 //            moviesTableView.reloadData()
 //        }
+    }
+    
+    /*
+     ----------------------
+     MARK: - Buttons Tapped
+     ----------------------
+     */
+    @IBAction func menuButtonTapped(_ sender: UIBarButtonItem) {
+        
+        /*
+         Tell the delegate (ContainerViewController) to execute its implementation of the
+         HomeViewControllerDelegate protocol method toggleMenuView()
+         */
+        delegate?.toggleMenuView!()
     }
 
     /*
@@ -330,6 +342,12 @@ extension HomeTableViewController: AddEventViewControllerProtocol {
         
         
         self.navigationController!.popViewController(animated: true)
+    }
+}
+
+extension HomeTableViewController: MenuViewControllerDelegate {
+    func eventSelected(_ event: Event) {
+        
     }
     
     

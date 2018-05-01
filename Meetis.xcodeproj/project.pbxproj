@@ -79,13 +79,13 @@
 			isa = PBXGroup;
 			children = (
 				B7635679207AAEF90068B3A8 /* AppDelegate.swift */,
+				089FBDA7207D3BB4001A5CF8 /* Event.swift */,
 				B763568F207AAF2C0068B3A8 /* View Controllers */,
 				B763567F207AAEF90068B3A8 /* Main.storyboard */,
 				B7635682207AAEF90068B3A8 /* Assets.xcassets */,
 				B7635684207AAEF90068B3A8 /* LaunchScreen.storyboard */,
 				B7635687207AAEF90068B3A8 /* Info.plist */,
 				089FBDA5207C0C46001A5CF8 /* Events.plist */,
-				089FBDA7207D3BB4001A5CF8 /* Event.swift */,
 			);
 			path = Meetis;
 			sourceTree = "<group>";

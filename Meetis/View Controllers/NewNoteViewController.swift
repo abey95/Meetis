@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 
+
 class NewNoteViewController: UIViewController, UIScrollViewDelegate {
 
     @IBOutlet var canvasView: CanvasView!
@@ -34,6 +35,8 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
     var views = [UIView]()
     var pageNum = 0
     
+    // Obtain the object reference to the App Delegate object
+    let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
 
     
     // variables used for the scroll view
@@ -54,12 +57,13 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         
         imagePicker.delegate = self
         
-        // set up background in canvasView to possibly be set by camera or photo lib
-//        backgroundImage = UIImageView(frame: canvasView.frame)
-//        canvasView.insertSubview(backgroundImage, at: 0)
         
         // if starting state is import or camera automatically go to that view
-        
+        if startingState == CanvasState.Import {
+            openPhotoLibraryButton()
+        } else if startingState == CanvasState.Pic {
+            openCameraButton()
+        }
         
         
         // Create a Save button on the right of the navigation bar to call the "save:" method when tapped
@@ -105,7 +109,9 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         // add needed information to event in order to retrieve file information
         event.apppendToNotes(filename: filename, text: "placeholder", numPages: views.count)
         
-        // TODO: update the dictionary and reload the data
+        //  update the dictionary and pop off the controller
+        applicationDelegate.dict_Events.setValue(event.toDict(), forKeyPath: event.title)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func populateScrollView() {
@@ -348,11 +354,11 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
          
          Interpretation of the Arrows:
          
-         IF scrolled all the way to the BOTTOM then show only DOWN arrow: indicating that the data (content) is
-         on the lower side and therefore, the user must *** scroll UP *** to see the content.
+         IF scrolled all the way to the RIGHT then show only LEFT arrow: indicating that the data (content) is
+         on the lower side and therefore, the user must *** scroll DOWN *** to see the content.
          
-         IF scrolled all the way to the TOP then show only UP arrow: indicating that the data (content) is
-         on the upper side and therefore, the user must *** scroll DOWN *** to see the content.
+         IF scrolled all the way to the LEFT then show only RIGHT arrow: indicating that the data (content) is
+         on the upper side and therefore, the user must *** scroll RIGHT *** to see the content.
          
          5 pixels used as padding
          */
@@ -462,8 +468,8 @@ extension NewNoteViewController: UIImagePickerControllerDelegate, UINavigationCo
     
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : Any]) {
-        var
-        image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        
+        var image = info[UIImagePickerControllerOriginalImage] as! UIImage
         image = resizeImage(image: image, withSize: canvasView.bounds.size)
         canvasView.addBackground(image: image)
         dismiss(animated:true, completion: nil)

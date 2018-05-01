@@ -12,7 +12,7 @@ import UIKit
 
 // Define MenuViewControllerDelegate as a protocol with one required method
 protocol MenuViewControllerDelegate {
-    func eventSelected(_ url: URL)
+    func eventSelected(_ event: Event)
 }
 
 
@@ -25,7 +25,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
 
     var events = [[Event]]()
     var eventNames     = [String]()
-    var eventCategories     = EventCategory.allValues
+    var eventCategories     = EventCategory.rawValues
     
     
     // These two instance variables are used for Search Bar functionality
@@ -48,6 +48,8 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        applicationDelegate.loadAllEvents()
+        
         events = applicationDelegate.events
         eventNames = applicationDelegate.dict_Events.allKeys as! [String]
        
@@ -171,16 +173,6 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         self.eventsTableView.reloadData()
     }
     
-    /*
-     ---------------------------------------
-     MARK: - Search Bar Cancel Button Tapped
-     ---------------------------------------
-     */
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        
-        // No sport should be shown as selected when the search bar Cancel button is tapped.
-        eventNameSelected = false
-    }
 
     /*
      ----------------------------------------------
@@ -210,7 +202,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         
         // Obtain the object reference of a reusable table view cell object instantiated under the identifier
         // TableViewCellReuseID, which was specified in the storyboard
-        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "MenuItemCell") as! UITableViewCell
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "MenuItemCell") as UITableViewCell!
         
         // Obtain the name of the row from the table view list
         let rowName: String = searchResultsController.isActive ? searchResults[rowNumber] : tableViewList[rowNumber]
@@ -221,23 +213,23 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         // Cell indentation width of 10.0 points is the default value
         cell.indentationWidth = 10.0
         
-        if eventNames.contains(rowName) {    // Rows decomposition level = 0
+        if eventCategories.contains(rowName) {    // Rows decomposition level = 0
             
             // Row name is an event name
             cell.indentationLevel = 0;
             
             cell.imageView!.image = UIImage(named: rowName)
             
-        } else if rowName == "Men's Sports" {           // Rows decomposition level = 1
+        } else if eventNames.contains(rowName) {           // Rows decomposition level = 1
             
             cell.indentationLevel = 1
-            cell.imageView!.image = UIImage(named:"MenSportIcon")
+//            cell.imageView!.image = UIImage(named:"MenSportIcon")
             
         } else {         // Rows decomposition level = 2
             
-            // Row name is a sport name
+            // Row name is a note name
             cell.indentationLevel = 2
-            cell.imageView!.image = UIImage(named:"WomenSportIcon")
+//            cell.imageView!.image = UIImage(named:"WomenSportIcon")
         }
         return cell
     }
@@ -285,16 +277,15 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
             break
         }
         
-        // If the cell label is a sport name
-        if eventNames.contains((cell.textLabel!.text!)) {
-            
-            // Then, show the Right Arrow image as Disclosure Indicator
-            cell.accessoryView = UIImageView(image: UIImage(named: "RightArrow"))
-            
+        // If the cell label is a category or event name
+        if eventNames.contains((cell.textLabel!.text!)) || eventCategories.contains((cell.textLabel!.text!)){
+            // Then, show the Down Arrow image to indicate that the row has child rows
+            cell.accessoryView = UIImageView(image: UIImage(named: "DownArrow"))
+           
         } else {
             
-            // Otherwise, show the Down Arrow image to indicate that the row has child rows
-            cell.accessoryView = UIImageView(image: UIImage(named: "DownArrow"))
+            // Otherwise, show the Right Arrow image as Disclosure Indicator
+            cell.accessoryView = UIImageView(image: UIImage(named: "RightArrow"))
         }
     }
     /*

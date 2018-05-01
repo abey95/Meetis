@@ -13,7 +13,7 @@
         <!--My Events-->
         <scene sceneID="B0f-b2-ur6">
             <objects>
-                <tableViewController id="vYP-7o-zXr" customClass="HomeTableViewController" customModule="Meetis" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="HomeTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vYP-7o-zXr" customClass="HomeTableViewController" customModule="Meetis" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="jIM-ur-786">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -33,7 +33,13 @@
                             <outlet property="delegate" destination="vYP-7o-zXr" id="OOz-vu-OJU"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="My Events" id="cQZ-V0-fEh"/>
+                    <navigationItem key="navigationItem" title="My Events" id="cQZ-V0-fEh">
+                        <barButtonItem key="leftBarButtonItem" title="Menu" id="f6Z-MC-KaU">
+                            <connections>
+                                <action selector="menuButtonTapped:" destination="vYP-7o-zXr" id="qDF-8B-m19"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="eventsTableView" destination="jIM-ur-786" id="ZDb-rl-4HJ"/>
                         <segue destination="xBc-t5-Rd0" kind="show" identifier="Add Event" id="S24-Wb-NCd"/>
@@ -936,6 +942,6 @@
         <image name="play" width="100" height="100"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="f1e-FT-hUO"/>
+        <segue reference="qk0-sE-uhW"/>
     </inferredMetricsTieBreakers>
 </document>
