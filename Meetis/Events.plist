@@ -22,7 +22,7 @@
 		<string>12:00</string>
 		<key>category</key>
 		<string>school</string>
-		<key>Notes</key>
+		<key>notes</key>
 		<array>
 			<string>filenames</string>
 		</array>

@@ -29,7 +29,7 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
     
     let backgroundColorToUse = UIColor(red: 0.6, green: 0.8, blue: 1.0, alpha: 1.0)
     
-    var views: [UIImage]?
+    var views = [UIImage]()
     //var audio:
     
     override func viewDidLoad() {
@@ -48,12 +48,12 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
         // load in images given file name + number
         for i in 1...numberOfNotes {
             
-            let imageFilePathInDocumentDirectory = documentDirectoryPath + "\(passedNoteFilename)_\(i).png"
+            let imageFilePathInDocumentDirectory = documentDirectoryPath + "/\(passedNoteFilename!)_\(i).png"
             
             let imageFromFile: UIImage? = UIImage(contentsOfFile: imageFilePathInDocumentDirectory)
 
             if let obtainedImage = imageFromFile {
-                views?.append(obtainedImage)
+                views.append(obtainedImage)
             }
         }
         
@@ -79,13 +79,13 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
         // Instantiate a mutable array to hold the menu buttons to be created
         var listOfMenuButtons = [UIButton]()
         
-        for i in 0 ..< views!.count {
+        for i in 0 ..< views.count {
             
             // Instantiate a button to be placed within the horizontally scrollable menu
             let scrollMenuButton = UIButton(type: UIButtonType.custom)
             
             // Obtain the auto manufacturer's logo image
-            let noteImage = views![i]
+            let noteImage = views[i]
             
             // Set the button frame at origin at (x, y) = (0, 0) with
             // button width  = genre image width + 10 points padding for each side

@@ -87,7 +87,11 @@ class Event: NSObject {
      * returns a filename for newly created notes for the event
      */
     func makeNewFilename() -> String {
-        return "\(title)_\(Date())"
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateStr = formatter.string(from: Date())
+        let filename = "\(title!)_\(dateStr)"
+        return filename.replacingOccurrences(of: " ", with: "_")
     }
     
     /*

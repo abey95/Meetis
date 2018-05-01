@@ -38,8 +38,10 @@ class HomeTableViewController: UITableViewController {
 
     let background_color = UIColor.init(red: 50/255, green: 54/255, blue: 64/255, alpha: 1)
     
-    // eventToPass is the data object to pass to the downstream Event detail view controller
+    // eventToPass is the data object to pass to the downstream Event detail + New Note
     var eventToPass: Event?
+    // filenameToPass is the data object to pass to the downstream Note Data
+    var filenameToPass: String?
     
     //current open cell
     var cell: StackTableViewCell?
@@ -292,15 +294,18 @@ class HomeTableViewController: UITableViewController {
             newNoteViewController.isMicActive = cell!.micActive
             newNoteViewController.startingState = cell!.currState
             newNoteViewController.event = eventToPass!
-            newNoteViewController.filename = eventToPass?.makeNewFilename()
+            newNoteViewController.filename = eventToPass!.makeNewFilename()
         } else if segue.identifier == "Add Event" {
             let addEventViewController: AddEventViewController = segue.destination as! AddEventViewController
             addEventViewController.delegate = self
         } else if segue.identifier == "Event Data" {
             let eventDataViewController: EventDataViewController = segue.destination as! EventDataViewController
             eventDataViewController.eventDataPassed = eventToPass
+        } else if segue.identifier == "View Note Data" {
+            let noteDataViewController: NoteDataViewController = segue.destination as! NoteDataViewController
+            noteDataViewController.passedNoteFilename = filenameToPass
         }
-    }   
+    }
 }
 
 extension HomeTableViewController: StackCellDelegate {
@@ -359,8 +364,22 @@ extension HomeTableViewController: AddEventViewControllerProtocol {
     }
 }
 
+// Menu view's delegate protocol for viewing a note
 extension HomeTableViewController: MenuViewControllerDelegate {
+    
     func noteSelected(_ filename: String) {
-        print("got \(filename)")
+        /*
+         Ask the navigation controller to pop all of the view controllers on the stack
+         except the root view controller and update the display.
+         */
+        _ = self.navigationController?.popToRootViewController(animated: false)
+        
+        /*
+         Tell the delegate (ContainerViewController) to execute its implementation of the
+         HomeViewControllerDelegate protocol method collapseMenuView()
+         */
+        delegate?.collapseMenuView!()
+        filenameToPass = filename
+        performSegue(withIdentifier: "View Note Data" , sender: self)
     }
 }

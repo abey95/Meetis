@@ -102,6 +102,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
             
             if let data = UIImagePNGRepresentation(image) {
                 let filename = getDocumentsDirectory().appendingPathComponent("\(self.filename!)_\(i).png")
+                print(filename)
                 try? data.write(to: filename)
             }
             
@@ -113,7 +114,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         //  update the dictionaries
         applicationDelegate.dict_Events.setValue(event.toDict(), forKeyPath: event.title)
         let noteData: [AnyObject] = ["placeholder" as AnyObject, views.count as AnyObject]
-        applicationDelegate.dict_Notes.setValue(noteData, forKey: filename)
+        applicationDelegate.dict_Notes.setValue(noteData, forKey: filename!)
         
         self.navigationController?.popViewController(animated: true)
     }
