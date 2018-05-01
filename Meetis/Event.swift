@@ -39,7 +39,7 @@ class Event: NSObject {
     var active: Bool!            // true if active, false otherwise
     var time: String!           // string representation of time
     var nextDate: Date!         // date object for the nearest event in the future
-    var notes = [Note]()
+    var notes = [String]()      // all the file names related to the current event used for look up in dict_notes
     
     let charOfDays = ["Su", "M", "T", "W", "R", "F", "Sa"]
     
@@ -62,8 +62,8 @@ class Event: NSObject {
          nextDate = Calendar.current.nextDate(after: Date(), matching: dateInfo!, matchingPolicy: Calendar.MatchingPolicy.nextTime)
     }
     
-    func apppendToNotes(filename: String, text: String, numPages: Int) {
-        notes.append(Note(filename: filename, text: text, numPages: numPages, date: Date()))
+    func apppendToNotes(filename: String) {
+        notes.append(filename)
     }
     
     

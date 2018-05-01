@@ -346,9 +346,7 @@ extension HomeTableViewController: AddEventViewControllerProtocol {
 }
 
 extension HomeTableViewController: MenuViewControllerDelegate {
-    func eventSelected(_ event: Event) {
-        
+    func noteSelected(_ filename: String) {
+        print("got \(filename)")
     }
-    
-    
 }

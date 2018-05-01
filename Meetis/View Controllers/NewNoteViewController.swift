@@ -107,10 +107,13 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         }
         
         // add needed information to event in order to retrieve file information
-        event.apppendToNotes(filename: filename, text: "placeholder", numPages: views.count)
+        event.apppendToNotes(filename: filename)
         
-        //  update the dictionary and pop off the controller
+        //  update the dictionaries
         applicationDelegate.dict_Events.setValue(event.toDict(), forKeyPath: event.title)
+        let noteData: [AnyObject] = ["placeholder" as AnyObject, views.count as AnyObject]
+        applicationDelegate.dict_Notes.setValue(noteData, forKey: filename)
+        
         self.navigationController?.popViewController(animated: true)
     }
     

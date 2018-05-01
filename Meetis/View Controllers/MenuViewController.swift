@@ -12,11 +12,11 @@ import UIKit
 
 // Define MenuViewControllerDelegate as a protocol with one required method
 protocol MenuViewControllerDelegate {
-    func eventSelected(_ event: Event)
+    func noteSelected(_ filename: String)
 }
 
 
-class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate {
+class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     // Obtain the object reference to the App Delegate object
     let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -27,7 +27,6 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
     var events = [[Event]]()
     var eventNames     = [String]()
     var eventCategories     = EventCategory.rawValues
-    var allNotes = [Note]()
     var allNoteNames = [String]()
     
     
@@ -58,18 +57,14 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         eventNames = applicationDelegate.dict_Events.allKeys as! [String]
        
         // Initialize the current table view rows to be the list of event Categories
-        tableViewList = eventNames
+        tableViewList = eventCategories
         
         
         // get all note names by iterating through events
-        for i in 0...eventCategories.count - 1 {
-            for j in 0...events[i].count - 1 {
+        for i in 0..<eventCategories.count {
+            for j in 0..<events[i].count {
                 let curEvent = events[i][j]
-                
-                for note in curEvent.notes {
-                    allNotes.append(note)
-                    allNoteNames.append(note.filename)
-                }
+                allNoteNames.append(contentsOf: curEvent.notes)
             }
         }
         
@@ -235,8 +230,8 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
             
             // Row name is an event name
             cell.indentationLevel = 0;
-            
-            cell.imageView!.image = UIImage(named: rowName)
+            //cell.detailTextLabel!.text = "\()"
+            //cell.imageView!.image = UIImage(named: rowName)
             
         } else if eventNames.contains(rowName) {           // Rows decomposition level = 1
             
@@ -359,7 +354,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
                 
                 // Expand the selected category name row
                 
-                var curCategoryIndex = eventCategories.index(of: nameOfSelectedRow)!
+                let curCategoryIndex = eventCategories.index(of: nameOfSelectedRow)!
                 // Obtain an unordered list of events of selected category
                 var eventsOfCategory = events[curCategoryIndex]
                 
@@ -434,7 +429,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
                         
                         // Obtain an unordered list of notes of selected event
                         var curEvent : Event!
-                        for i in  0...eventsOfCategory.count - 1{
+                        for i in  0..<eventsOfCategory.count{
                             if eventsOfCategory[i].title == nameOfSelectedRow {
                                 curEvent = eventsOfCategory[i]
                             }
@@ -442,7 +437,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
                         var notesOfSelectedEvent = curEvent.notes
                         
                         // Sort the note names of selected category within itself in alphabetical order
-                        notesOfSelectedEvent.sort { $0.filename < $1.filename }
+                        notesOfSelectedEvent.sort { $0 < $1 }
                         
                         let numberOfNotes = notesOfSelectedEvent.count
                         
@@ -450,10 +445,10 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
                             
                             if self.searchResultsController.isActive {
                                 rowNumber = rowNumber + 1
-                                searchResults.insert(notesOfSelectedEvent[k].filename, at: rowNumber)
+                                searchResults.insert(notesOfSelectedEvent[k], at: rowNumber)
                             } else {
                                 rowNumber = rowNumber + 1
-                                tableViewList.insert(notesOfSelectedEvent[k].filename, at: rowNumber)
+                                tableViewList.insert(notesOfSelectedEvent[k], at: rowNumber)
                             }
                         }
                         
@@ -470,15 +465,17 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
                 // If the row after the selected Event Name is a note name, that means
                 // it is already expanded; therefore, shrink the selected event row
                 
-                // As long as the next row is not a category or the next note name, delete that row from the table
-                var nextEventName : String!
-                var nextCatName : String!
-                for i in  0...eventCategories.count - 1 {
-                    if eventsOfCategory[i].title == nameOfSelectedRow {
-                        curEvent = eventsOfCategory[i]
+                // get the event and remove the n next cells where n is the number of notes in the event
+                var curEvent : Event!
+                for i in  0..<eventCategories.count{
+                    for j in 0..<events[i].count {
+                        if events[i][j].title == nameOfSelectedRow {
+                            curEvent = events[i][j]
+                        }
                     }
                 }
-                while !({return ((self.searchResultsController.isActive) ? self.searchResults[rowNumber+1] : self.tableViewList[rowNumber+1])}() == "Women's Sports") {
+                
+                for _ in 0..<curEvent.notes.count {
                     
                     if self.searchResultsController.isActive {
                         searchResults.remove(at: rowNumber + 1)
@@ -493,53 +490,40 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
                 }
                 
                 tableView.reloadData()
+                break
                 
-            } else {   // Expand the selected sport category row
+            } else {   // Expand the selected event row
                 
-                // This loop goes from j=(rowNumber - 1) to j=0 with increments of 1
-                for j in (0..<rowNumber).reversed() {
-                    
-                    let previousRowName = (self.searchResultsController.isActive) ? self.searchResults[j] : self.tableViewList[j]
-                    
-                    if self.universityNames.contains(previousRowName) {
-                        
-                        let universityNameOfSelectedRow = previousRowName
-                        
-                        //---------- Dictionary 2 -------------
-                        
-                        let dictionary2: AnyObject? = self.dict1_UniversityName_Dict2[universityNameOfSelectedRow]
-                        
-                        self.dict2_SportCategory_Dict3 = dictionary2! as! Dictionary
-                        
-                        //---------- Dictionary 3 -------------
-                        
-                        let dictionary3: AnyObject? = self.dict2_SportCategory_Dict3[nameOfSelectedRow]
-                        
-                        self.dict3_SportName_SportURL = dictionary3! as! Dictionary
-                        
-                        // Obtain an unordered list of sport names of selected category
-                        var sportNamesOfSelectedCategory: Array = dictionary3!.allKeys as! [String]
-                        
-                        // Sort the sport names of selected category within itself in alphabetical order
-                        sportNamesOfSelectedCategory.sort { $0 < $1 }
-                        
-                        let numberOfSportNames = sportNamesOfSelectedCategory.count
-                        
-                        for k in 0..<numberOfSportNames {
-                            
-                            if self.searchResultsController.isActive {
-                                rowNumber = rowNumber + 1
-                                searchResults.insert(sportNamesOfSelectedCategory[k], at: rowNumber)
-                            } else {
-                                rowNumber = rowNumber + 1
-                                tableViewList.insert(sportNamesOfSelectedCategory[k], at: rowNumber)
-                            }
+                // get the event and add each filename of the note to the table
+                var curEvent : Event!
+                for i in  0..<eventCategories.count{
+                    for j in 0..<events[i].count {
+                        if events[i][j].title == nameOfSelectedRow {
+                            curEvent = events[i][j]
                         }
-                        
-                        tableView.reloadData()
-                        break
                     }
                 }
+                
+                var notesOfSelectedEvent = curEvent.notes
+                
+                // Sort the notes within itself in alphabetical order
+                notesOfSelectedEvent.sort { $0 < $1 }
+                
+                for k in 0..<notesOfSelectedEvent.count {
+                    
+                    if self.searchResultsController.isActive {
+                        rowNumber = rowNumber + 1
+                        searchResults.insert(notesOfSelectedEvent[k], at: rowNumber)
+                    } else {
+                        rowNumber = rowNumber + 1
+                        tableViewList.insert(notesOfSelectedEvent[k], at: rowNumber)
+                    }
+                }
+                
+                tableView.reloadData()
+                break
+                
+                
             }
             
             //-----------------------------------------------------------------
@@ -548,64 +532,29 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
             
         case 2:
             
-            sportNameSelected = true
+            noteSelected = true
             
             selectedIndexPathPrevious = selectedIndexPath
             selectedIndexPath = indexPath
             
-            var sportCategoryNameOfSelectedRowIdentified = false
+    
             
-            var sportCategoryNameOfSelectedRow: String = ""
+            //----------------------- Related to Sliding View ------------------------
             
-            // This loop goes from j=(rowNumber - 1) to j=0 with increments of 1
-            for n in (0..<rowNumber).reversed() {
-                
-                let previousRowName = searchResultsController.isActive ? self.searchResults[n] : self.tableViewList[n]
-                
-                if previousRowName == "Men's Sports" || previousRowName == "Women's Sports" {
-                    
-                    if !sportCategoryNameOfSelectedRowIdentified {
-                        sportCategoryNameOfSelectedRow = previousRowName
-                        sportCategoryNameOfSelectedRowIdentified = true
-                    }
-                    
-                } else if universityNames.contains(previousRowName) {
-                    
-                    let universityNameOfSelectedRow = previousRowName
-                    
-                    //---------- Dictionary 2 -------------
-                    
-                    let dictionary2: AnyObject? = dict1_UniversityName_Dict2[universityNameOfSelectedRow]
-                    
-                    dict2_SportCategory_Dict3 = dictionary2! as! Dictionary
-                    
-                    //---------- Dictionary 3 -------------
-                    
-                    let dictionary3: AnyObject? = dict2_SportCategory_Dict3[sportCategoryNameOfSelectedRow]
-                    
-                    dict3_SportName_SportURL = dictionary3! as! Dictionary
-                    
-                    let websiteURL: AnyObject? = dict3_SportName_SportURL[nameOfSelectedRow]
-                    
-                    self.urlOfWebsite = websiteURL! as! String
-                    
-                    //----------------------- Related to Sliding View ------------------------
-                    
-                    /*
-                     Tell the delegate (HomeViewController) to execute its implementation of the
-                     MenuViewControllerDelegate protocol method sportSelected(url: NSURL)
-                     */
-                    delegate?.sportSelected(URL(string: self.urlOfWebsite)!)
-                    
-                    //----------------------- Related to Sliding View ------------------------
-                    
-                    // Remove the keyboard for the search bar
-                    searchResultsController.searchBar.resignFirstResponder()
-                    
-                    tableView.reloadData()
-                    break
-                }
-            }
+            /*
+             Tell the delegate (HomeViewController) to execute its implementation of the
+             MenuViewControllerDelegate protocol method noteSelected(filename: String)
+             */
+            delegate?.noteSelected(nameOfSelectedRow)
+            
+            //----------------------- Related to Sliding View ------------------------
+            
+            // Remove the keyboard for the search bar
+            searchResultsController.searchBar.resignFirstResponder()
+            
+            tableView.reloadData()
+            break
+    
             
         default:
             print("Table View Cell Indentation Level is Out of Range!")

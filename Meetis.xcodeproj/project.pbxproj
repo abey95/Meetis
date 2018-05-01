@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		08022D852094CB2D00744F44 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08022D842094CB2D00744F44 /* CanvasView.swift */; };
+		08022D872098E01D00744F44 /* Notes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 08022D862098E01C00744F44 /* Notes.plist */; };
 		089FBDA3207BD205001A5CF8 /* StackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089FBDA1207BD205001A5CF8 /* StackTableViewCell.swift */; };
 		089FBDA4207BD205001A5CF8 /* StackTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 089FBDA2207BD205001A5CF8 /* StackTableViewCell.xib */; };
 		089FBDA6207C0C46001A5CF8 /* Events.plist in Resources */ = {isa = PBXBuildFile; fileRef = 089FBDA5207C0C46001A5CF8 /* Events.plist */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		08022D842094CB2D00744F44 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		08022D862098E01C00744F44 /* Notes.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Notes.plist; sourceTree = "<group>"; };
 		089FBDA1207BD205001A5CF8 /* StackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackTableViewCell.swift; sourceTree = "<group>"; };
 		089FBDA2207BD205001A5CF8 /* StackTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StackTableViewCell.xib; sourceTree = "<group>"; };
 		089FBDA5207C0C46001A5CF8 /* Events.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Events.plist; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				B7635684207AAEF90068B3A8 /* LaunchScreen.storyboard */,
 				B7635687207AAEF90068B3A8 /* Info.plist */,
 				089FBDA5207C0C46001A5CF8 /* Events.plist */,
+				08022D862098E01C00744F44 /* Notes.plist */,
 			);
 			path = Meetis;
 			sourceTree = "<group>";
@@ -169,6 +172,7 @@
 			files = (
 				089FBDA4207BD205001A5CF8 /* StackTableViewCell.xib in Resources */,
 				B7635686207AAEF90068B3A8 /* LaunchScreen.storyboard in Resources */,
+				08022D872098E01D00744F44 /* Notes.plist in Resources */,
 				B7635683207AAEF90068B3A8 /* Assets.xcassets in Resources */,
 				B7635681207AAEF90068B3A8 /* Main.storyboard in Resources */,
 				089FBDA6207C0C46001A5CF8 /* Events.plist in Resources */,

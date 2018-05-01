@@ -66,6 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Add the plist filename to the document directory path to obtain an absolute path to the plist filename
         let plistFilePathInDocumentDirectory = documentDirectoryPath + "/Events.plist"
         
+        
         /*
          NSMutableDictionary manages an *unordered* collection of mutable (modifiable) key-value pairs.
          Instantiate an NSMutableDictionary object and initialize it with the contents of the CompaniesILike.plist file.
@@ -95,6 +96,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Store the object reference into the instance variable
             dict_Events = dictionaryFromFileInMainBundle!
         }
+        
+        
+        // Add the plist filename to the document directory path to obtain an absolute path to the plist filename
+        let notes_plistFilePathInDocumentDirectory = documentDirectoryPath + "/Notes.plist"
+        
+        
+        /*
+         NSMutableDictionary manages an *unordered* collection of mutable (modifiable) key-value pairs.
+         Instantiate an NSMutableDictionary object and initialize it with the contents of the CompaniesILike.plist file.
+         */
+        let notes_dictionaryFromFile: NSMutableDictionary? = NSMutableDictionary(contentsOfFile: notes_plistFilePathInDocumentDirectory)
+        
+        /*
+         IF the optional variable dictionaryFromFile has a value, THEN
+         Notes.plist exists in the Document directory and the dictionary is successfully created
+         ELSE read Notes.plist from the application's main bundle.
+         */
+        if let dictionaryFromFileInDocumentDirectory = notes_dictionaryFromFile {
+            
+            // CompaniesILike.plist exists in the Document directory
+            dict_Notes = dictionaryFromFileInDocumentDirectory
+            
+        } else {
+            
+            // Notes.plist does not exist in the Document directory; Read it from the main bundle.
+            
+            // Obtain the file path to the plist file in the mainBundle (project folder)
+            let plistFilePathInMainBundle = Bundle.main.path(forResource: "Notes", ofType: "plist")
+            
+            // Instantiate an NSMutableDictionary object and initialize it with the contents of the CompaniesILike.plist file.
+            let dictionaryFromFileInMainBundle: NSMutableDictionary? = NSMutableDictionary(contentsOfFile: plistFilePathInMainBundle!)
+            
+            // Store the object reference into the instance variable
+            dict_Notes = dictionaryFromFileInMainBundle!
+        }
+        
+        
         loadAllEvents()
         return true
     }
@@ -175,7 +213,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let days = cur_event_data["days"] as! [Bool]
             let time = cur_event_data["time"] as! String
             let cat = cur_event_data["category"] as! String
-            //let notes = cur_event_data["Notes"] as! NSDictionary
+            let notes = cur_event_data["Notes"] as! [String]
             
             var category:EventCategory
             switch (cat) {
@@ -193,6 +231,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             
             let new_event = Event.init(title: title, days: days, time: time, priority: priority, category: category, active: active)
+            new_event.notes = notes
             
             // add to events in given category
             events[new_event.category.hashValue].append(new_event)
