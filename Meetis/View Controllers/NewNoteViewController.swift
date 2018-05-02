@@ -124,6 +124,8 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         let noteData: [AnyObject] = ["placeholder" as AnyObject, views.count as AnyObject]
         applicationDelegate.dict_Notes.setValue(noteData, forKey: filename!)
         
+        applicationDelegate.loadAllEvents()
+        
         self.navigationController?.popToRootViewController(animated: true)
     }
     
@@ -153,7 +155,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
             
             // Obtain the auto manufacturer's logo image
             let buttonImage = UIImage(named: "\(buttonNames[i].lowercased()).png")
-            let resizedImage = resizeImage(image: buttonImage!, withSize: CGSize(width: 40, height: 40))
+            let resizedImage = resizeImage(image: buttonImage!, withSize: CGSize(width: 50, height: 50))
             
             // Set the button frame at origin at (x, y) = (0, 0) with
             // button width  =  image width + 20 points padding for each side
@@ -164,7 +166,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
             scrollMenuButton.setImage(resizedImage, for: UIControlState())
             
             // The button width and height in points will depend on its font style and size
-            let buttonTitleFont = UIFont(name: "Helvetica", size: 12.0)
+            let buttonTitleFont = UIFont(name: "Helvetica", size: 10.0)
             
             // Set the font of the button title label text
             scrollMenuButton.titleLabel?.font = buttonTitleFont
@@ -197,7 +199,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
             scrollMenuButton.setTitleColor(UIColor.red, for: UIControlState.selected)
             
             // Specify the Inset values for top, left, bottom, and right edges for the title
-            scrollMenuButton.titleEdgeInsets = UIEdgeInsetsMake(0.0, -buttonImage!.size.width, -(buttonImage!.size.height + 5), 0.0)
+            scrollMenuButton.titleEdgeInsets = UIEdgeInsetsMake(0.0, -resizedImage.size.width, -(resizedImage.size.height + 5), 0.0)
             
             // Specify the Inset values for top, left, bottom, and right edges for the auto logo image
             scrollMenuButton.imageEdgeInsets = UIEdgeInsetsMake(-(buttonTitleSize.height + 5), 0.0, 0.0, -buttonTitleSize.width)

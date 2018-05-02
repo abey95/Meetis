@@ -79,9 +79,13 @@ class HomeTableViewController: UITableViewController {
         eventsTableView.backgroundColor = background_color
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        t_count = 0
+        applicationDelegate.loadAllEvents()
         isCurrentlyVisible = true
-        super.viewDidAppear(animated)
+        events = applicationDelegate.chronEvents
+        eventsTableView.reloadData()
+        super.viewWillAppear(animated)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -89,55 +93,6 @@ class HomeTableViewController: UITableViewController {
         super.viewDidDisappear(animated)
     }
     
-    
-    //-------------------------------
-    // Allow Editing of Rows (Movies)
-    //-------------------------------
-    
-    // We allow each row (movie) of the table view to be editable, i.e., deletable or movable
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        
-        return true
-    }
-    
-    //---------------------
-    // Delete Button Tapped
-    //---------------------
-    
-    // This is the method invoked when the user taps the Delete button in the Edit mode
-    // deleting a row only makes the event inactive - the notes are still available in the menu
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
-//        if editingStyle == .delete {   // Handle the Delete action
-//
-//            // Obtain the name of the event to be deleted
-//            let eventName = eventTitles[(indexPath as NSIndexPath).section]
-//
-//            //create new dicitionary of all movies and updated preferences minus the movie to remove
-//            let newDict = NSMutableDictionary()
-//
-//
-//            if newDict.count == 0 {
-//                // If no genre remains in the array after deletion, then we need to also delete the country
-//                applicationDelegate.dict_Genres_MovieData.removeObject(forKey: genreOfMovieToDelete)
-//
-//                // Since the dictionary has been changed, obtain the genre names again
-//                genres = applicationDelegate.dict_Genres_MovieData.allKeys as! [String]
-//
-//                // Sort the genres names within itself in alphabetical order
-//                genres.sort { $0 < $1 }
-//            }
-//            else {
-//                // At least one more movie remains in the array; therefore, the genre stays.
-//
-//                // Update the new list of movies for the genre in the NSMutableDictionary
-//                applicationDelegate.dict_Genres_MovieData.setValue(newDict, forKey: genreOfMovieToDelete)
-//            }
-//
-//            // Reload the rows and sections of the Table View moviesTableView
-//            moviesTableView.reloadData()
-//        }
-    }
     
     /*
      ----------------------
@@ -196,7 +151,6 @@ class HomeTableViewController: UITableViewController {
         // Typecast the AnyObject to Swift array of String objects
         let currentEvent = events[rowNumber]
         
-        if !cell.cellExists {
             cell.index = rowNumber
             cell.cellExists = true
             cell.eventTitleLabel.text = currentEvent.title
@@ -213,7 +167,7 @@ class HomeTableViewController: UITableViewController {
             case .family:
                 cell.imageView!.image = UIImage(named: "family.png")
             case .personal:
-                cell.imageView!.image = UIImage(named: "personal.png")
+                cell.imageView!.image = UIImage(named: "person.png")
             case .travel:
                 cell.imageView!.image = UIImage(named: "travel.png")
             default:
@@ -223,7 +177,6 @@ class HomeTableViewController: UITableViewController {
             t_count = t_count + 1
             cell.cellExists = true
             cell.delegate = self
-        }
 
         UIView.animate(withDuration: 0) {
             cell.contentView.layoutIfNeeded()
@@ -295,12 +248,14 @@ class HomeTableViewController: UITableViewController {
             newNoteViewController.startingState = cell!.currState
             newNoteViewController.event = eventToPass!
             newNoteViewController.filename = eventToPass!.makeNewFilename()
+            
         } else if segue.identifier == "Add Event" {
             let addEventViewController: AddEventViewController = segue.destination as! AddEventViewController
             addEventViewController.delegate = self
         } else if segue.identifier == "Event Data" {
             let eventDataViewController: EventDataViewController = segue.destination as! EventDataViewController
             eventDataViewController.eventDataPassed = eventToPass
+            eventDataViewController.delegate = self
         } else if segue.identifier == "View Note Data" {
             let noteDataViewController: NoteDataViewController = segue.destination as! NoteDataViewController
             noteDataViewController.passedNoteFilename = filenameToPass
@@ -358,10 +313,9 @@ extension HomeTableViewController: AddEventViewControllerProtocol {
             events = applicationDelegate.chronEvents
             events.sort(by: {$0.nextDate! < $1.nextDate!})
             eventsTableView.reloadData()
+            self.navigationController!.popViewController(animated: true)
         }
         
-        
-        self.navigationController!.popViewController(animated: true)
     }
 }
 
@@ -384,5 +338,21 @@ extension HomeTableViewController: MenuViewControllerDelegate {
         filenameToPass = filename
         eventToPass = event
         performSegue(withIdentifier: "View Note Data" , sender: self)
+    }
+}
+
+extension HomeTableViewController: EventDataViewControllerProtocol {
+    func eventDataViewController(_ controller: EventDataViewController, didFinishWithSave save: Bool) {
+        if save {
+            
+            //add the new event to the dictionary and refresh the tableview and app delegate arrays
+            applicationDelegate.dict_Events.setValue(controller.eventDataPassed!.toDict(), forKey: controller.eventDataPassed!.title!)
+            
+            applicationDelegate.loadAllEvents()
+            events = applicationDelegate.chronEvents
+            events.sort(by: {$0.nextDate! < $1.nextDate!})
+            eventsTableView.reloadData()
+            self.navigationController!.popViewController(animated: true)
+        }
     }
 }

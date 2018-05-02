@@ -7,7 +7,15 @@
 //
 
 import UIKit
-
+/*
+ ---------------------------------
+ MARK: Protocol Method Declaration
+ ---------------------------------
+ */
+protocol EventDataViewControllerProtocol {
+    
+    func eventDataViewController(_ controller: EventDataViewController, didFinishWithSave save: Bool)
+}
 class EventDataViewController: UIViewController {
 
     @IBOutlet var imageView: UIImageView!
@@ -22,8 +30,14 @@ class EventDataViewController: UIViewController {
     @IBOutlet var fridayButton: UIButton!
     @IBOutlet var saturdayButton: UIButton!
     
+    var buttonArray : [UIButton]!
+    
+     var delegate: EventDataViewControllerProtocol?
+    
     
     @IBOutlet var editSaveButton: UIBarButtonItem!
+    
+    var isEdit: Bool!
     
     let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -31,14 +45,12 @@ class EventDataViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        buttonArray = [sundayButton, mondayButton, tuesdayButton, wednesdayButton, thursdayButton, fridayButton, saturdayButton]
+        for but in buttonArray {
+            but.isEnabled = false
+        }
         
-        sundayButton.isEnabled = false
-        mondayButton.isEnabled = false
-        tuesdayButton.isEnabled = false
-        wednesdayButton.isEnabled = false
-        thursdayButton.isEnabled = false
-        fridayButton.isEnabled = false
-        saturdayButton.isEnabled = false
+        isEdit = true
 
         let navigationBarWidth = self.navigationController?.navigationBar.frame.width
         let navigationBarHeight = self.navigationController?.navigationBar.frame.height
@@ -72,37 +84,22 @@ class EventDataViewController: UIViewController {
         categoryLabel.text = eventDataPassed!.category.rawValue
         timeTextField.text = eventDataPassed?.time
         
-        if eventDataPassed?.priority == "Low" {
+        if eventDataPassed?.priority == "low" {
             prioritySegmentedControl.selectedSegmentIndex = 0
         }
-        else if eventDataPassed?.priority == "Medium" {
+        else if eventDataPassed?.priority == "medium" {
             prioritySegmentedControl.selectedSegmentIndex = 1
         }
         else {
             prioritySegmentedControl.selectedSegmentIndex = 2
         }
         
-        if (eventDataPassed?.days[0])! {
-            sundayButton.setBackgroundImage(UIImage(named: "blue_circle.png"), for: UIControlState.normal)
+        for i in 0 ..< eventDataPassed!.days.count {
+            if eventDataPassed!.days[i] {
+                buttonArray[i].setBackgroundImage(UIImage(named: "blue_circle.png"), for: UIControlState.normal)
+            }
         }
-        if (eventDataPassed?.days[1])! {
-            mondayButton.setBackgroundImage(UIImage(named: "blue_circle.png"), for: UIControlState.normal)
-        }
-        if (eventDataPassed?.days[2])! {
-            tuesdayButton.setBackgroundImage(UIImage(named: "blue_circle.png"), for: UIControlState.selected)
-        }
-        if (eventDataPassed?.days[3])! {
-            wednesdayButton.setBackgroundImage(UIImage(named: "blue_circle.png"), for: UIControlState.selected)
-        }
-        if (eventDataPassed?.days[4])! {
-            thursdayButton.setBackgroundImage(UIImage(named: "blue_circle.png"), for: UIControlState.selected)
-        }
-        if (eventDataPassed?.days[5])! {
-            fridayButton.setBackgroundImage(UIImage(named: "blue_circle.png"), for: UIControlState.selected)
-        }
-        if (eventDataPassed?.days[6])! {
-            saturdayButton.setBackgroundImage(UIImage(named: "blue_circle.png"), for: UIControlState.selected)
-        }
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -110,7 +107,7 @@ class EventDataViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    var isEdit = true;
+    
     
     @IBAction func editSaveTapped(_ sender: UIBarButtonItem) {
         
@@ -118,40 +115,26 @@ class EventDataViewController: UIViewController {
             
             editSaveButton.title = "Save"
 
-            sundayButton.isEnabled = true
-            mondayButton.isEnabled = true
-            tuesdayButton.isEnabled = true
-            wednesdayButton.isEnabled = true
-            thursdayButton.isEnabled = true
-            fridayButton.isEnabled = true
-            saturdayButton.isEnabled = true
+            for but in buttonArray {
+                but.isEnabled = true
+            }
             
         }
         else {
             eventDataPassed?.time = timeTextField.text
             
             if prioritySegmentedControl.selectedSegmentIndex == 0 {
-                eventDataPassed?.priority = "Low"
+                eventDataPassed?.priority = "low"
             }
             else if prioritySegmentedControl.selectedSegmentIndex == 1 {
-                eventDataPassed?.priority = "Med"
+                eventDataPassed?.priority = "medium"
             }
             else {
-                eventDataPassed?.priority = "High"
+                eventDataPassed?.priority = "high"
                 
             }
             
-            applicationDelegate.dict_Events.setValue(eventDataPassed?.toDict(), forKey: (eventDataPassed?.title)!)
-
-            editSaveButton.title = "Edit"
-            
-            sundayButton.isEnabled = false
-            mondayButton.isEnabled = false
-            tuesdayButton.isEnabled = false
-            wednesdayButton.isEnabled = false
-            thursdayButton.isEnabled = false
-            fridayButton.isEnabled = false
-            saturdayButton.isEnabled = false
+             delegate!.eventDataViewController(self, didFinishWithSave:true)
             
         }
         isEdit = !isEdit
@@ -161,7 +144,6 @@ class EventDataViewController: UIViewController {
     // The weekButtonTapped method is invoked when the user taps the Add button created in viewDidLoad() above.
     @IBAction func weekButtonTapped(_ sender: UIButton) {
         
-        // Perform the segue
         eventDataPassed?.days[sender.tag] = !(eventDataPassed?.days[sender.tag])!
         
         if eventDataPassed?.days[sender.tag] == true {

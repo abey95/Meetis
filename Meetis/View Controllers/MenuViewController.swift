@@ -56,7 +56,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
 
     // Prepare the view before it appears to the user
     override func viewWillAppear(_ animated: Bool) {
-        
+
         noteSelected = false
         applicationDelegate.loadAllEvents()
         
@@ -81,6 +81,24 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         super.viewWillAppear(animated)
     }
     
+    func reloadData() {
+        applicationDelegate.loadAllEvents()
+        
+        events = applicationDelegate.events
+        eventNames = applicationDelegate.dict_Events.allKeys as! [String]
+        
+        // Initialize the current table view rows to be the list of event Categories
+        tableViewList = eventCategories
+        
+        
+        // get all note names by iterating through events
+        for i in 0..<eventCategories.count {
+            for j in 0..<events[i].count {
+                let curEvent = events[i][j]
+                allNoteNames.append(contentsOf: curEvent.notes)
+            }
+        }
+    }
     
     
     override func didReceiveMemoryWarning() {
@@ -536,7 +554,6 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
             selectedIndexPathPrevious = selectedIndexPath
             selectedIndexPath = indexPath
             
-            tableView.reloadData()
             
             var curEvent : Event!
             for i in  0..<eventCategories.count{

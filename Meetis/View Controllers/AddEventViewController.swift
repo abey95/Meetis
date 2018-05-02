@@ -61,10 +61,11 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         // Show the picker view of the university names from the middle
         pickerView.selectRow(numberOfRowToShow, inComponent: 0, animated: false)
         
-        super.viewWillAppear(animated)
-        
         // Set the segmented control to show no selection before the view appears
         prioritySegmentedControl.selectedSegmentIndex = UISegmentedControlNoSegment
+        
+        super.viewWillAppear(animated)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -83,12 +84,11 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         days[currentTagNumber] = !days[currentTagNumber]
         
         if days[currentTagNumber] {
-            sender.backgroundColor = UIColor.blue
-            sender.titleLabel?.textColor = UIColor.white
+            sender.setBackgroundImage(UIImage(named: "blue_circle.png"), for: UIControlState.normal)
         } else {
-            sender.backgroundColor = UIColor.clear
-            sender.titleLabel?.textColor = UIColor.blue
+            sender.setBackgroundImage(nil, for: UIControlState.normal)
         }
+        
         
     }
     

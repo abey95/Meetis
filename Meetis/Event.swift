@@ -59,6 +59,10 @@ class Event: NSObject {
     
     //updates the next Date to the next occurence matching the date ordinal
     func updateToNextDate() {
+        let hours_minutes = time.split(separator: ":")
+        self.dateInfo = DateComponents(hour: Int(hours_minutes[0]), minute:Int(hours_minutes[1]), weekday: nextDateOrdinal())
+        
+        
          nextDate = Calendar.current.nextDate(after: Date(), matching: dateInfo!, matchingPolicy: Calendar.MatchingPolicy.nextTime)
     }
     

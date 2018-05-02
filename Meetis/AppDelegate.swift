@@ -227,25 +227,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let notes = cur_event_data["notes"] as! [String]
             
             var category:EventCategory
+            var catIndex: Int
             switch (cat) {
             case "school":
                 category = .school
+                catIndex = 0
                 break;
             case "work":
                 category = .work
+                catIndex = 1
                 break;
             case "personal":
                 category = .personal
+                catIndex = 2
                 break;
-            default:
+            case "travel":
                 category = .travel
+                catIndex = 3
+                break
+            default:
+                category = .family
+                catIndex = 4
             }
             
             let new_event = Event.init(title: title, days: days, time: time, priority: priority, category: category, active: active)
             new_event.notes = notes
             
             // add to events in given category
-            events[new_event.category.hashValue].append(new_event)
+            events[catIndex].append(new_event)
             
             if active {
                 chronEvents.append(new_event)

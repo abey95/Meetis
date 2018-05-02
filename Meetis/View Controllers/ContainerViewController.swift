@@ -175,7 +175,8 @@ class ContainerViewController: UIViewController, HomeTableViewControllerDelegate
 
         if (shouldExpand) {
             currentState = .menuExpanded
-
+            menuViewController?.reloadData()
+            menuViewController?.eventsTableView.reloadData()
             animateCenterPanelXPosition(targetPosition: homeNavigationController.view.frame.width - centerPanelExpandedOffset)
         } else {
             animateCenterPanelXPosition(targetPosition: 0) { finished in
@@ -227,6 +228,7 @@ class ContainerViewController: UIViewController, HomeTableViewControllerDelegate
             if menuViewController != nil {
                 // Animate the side panel open or closed based on whether the view has moved more or less than halfway
                 let hasMovedGreaterThanHalfway = recognizer.view!.center.x > view.bounds.size.width
+                
                 animateLeftPanel(shouldExpand: hasMovedGreaterThanHalfway)
             }
         default:
