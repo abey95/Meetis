@@ -29,6 +29,7 @@ class EventDataViewController: UIViewController {
     @IBOutlet var thursdayButton: UIButton!
     @IBOutlet var fridayButton: UIButton!
     @IBOutlet var saturdayButton: UIButton!
+    @IBOutlet var deleteButton: UIButton!
     
     var buttonArray : [UIButton]!
     
@@ -118,6 +119,9 @@ class EventDataViewController: UIViewController {
             for but in buttonArray {
                 but.isEnabled = true
             }
+            deleteButton.isHidden = false
+            timeTextField.isEnabled = true
+            prioritySegmentedControl.isEnabled = true
             
         }
         else {
