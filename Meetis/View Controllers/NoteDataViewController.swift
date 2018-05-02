@@ -21,13 +21,16 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
     
     //filename data passed downstream
     var passedNoteFilename: String!
+    var passedEvent: Event!
     
     // Other properties (instance variables) and their initializations
-    let kScrollMenuHeight: CGFloat = 100.0
+    let kScrollMenuHeight: CGFloat = 135.0
     var selectedView: Int!
     var previousButton = UIButton(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     
     let backgroundColorToUse = UIColor(red: 0.6, green: 0.8, blue: 1.0, alpha: 1.0)
+    let imageWidth = 75
+    let imageHeight = 100
     
     var views = [UIImage]()
     //var audio:
@@ -85,7 +88,7 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
             let scrollMenuButton = UIButton(type: UIButtonType.custom)
             
             // Obtain the auto manufacturer's logo image
-            let noteImage = views[i]
+            let noteImage = resizeImage(image: views[i], withSize: CGSize(width: imageWidth, height: imageHeight))
             
             // Set the button frame at origin at (x, y) = (0, 0) with
             // button width  = genre image width + 10 points padding for each side
@@ -194,7 +197,10 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
         
     }
     
-
+    @IBAction func editTapped(_ sender: UIBarButtonItem) {
+        
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -273,15 +279,70 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
 
     }
     
+    /*
+     ------------------------------------
+     MARK: - Resize Image Proportionately
+     ------------------------------------
+     */
+    func resizeImage(image: UIImage, withSize: CGSize) -> UIImage {
+        
+        var actualHeight: CGFloat = image.size.height
+        var actualWidth: CGFloat = image.size.width
+        let maxHeight: CGFloat = withSize.width
+        let maxWidth: CGFloat = withSize.height
+        var imgRatio: CGFloat = actualWidth/actualHeight
+        let maxRatio: CGFloat = maxWidth/maxHeight
+        let compressionQuality = 1.0
+        
+        if (actualHeight > maxHeight || actualWidth > maxWidth) {
+            if (imgRatio < maxRatio) {
+                // Adjust width according to maxHeight
+                imgRatio = maxHeight / actualHeight
+                actualWidth = imgRatio * actualWidth
+                actualHeight = maxHeight
+            } else if (imgRatio > maxRatio) {
+                // Adjust height according to maxWidth
+                imgRatio = maxWidth / actualWidth
+                actualHeight = imgRatio * actualHeight
+                actualWidth = maxWidth
+            } else {
+                actualHeight = maxHeight
+                actualWidth = maxWidth
+            }
+        }
+        
+        let rect: CGRect = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight)
+        UIGraphicsBeginImageContext(rect.size)
+        image.draw(in: rect)
+        let image: UIImage  = UIGraphicsGetImageFromCurrentImageContext()!
+        let imageData = UIImageJPEGRepresentation(image, CGFloat(compressionQuality))
+        UIGraphicsEndImageContext()
+        let resizedImage = UIImage(data: imageData!)
+        
+        return resizedImage!
+    }
+    
 
     @IBAction func playButtonTapped(_ sender: UIButton) {
         
     }
     
     @IBAction func shareButtonTapped(_ sender: UIButton) {
+        
     }
     
-    @IBAction func saveButtonTapped(_ sender: Any) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
+        
+        if segue.identifier == "Edit Notes" {
+            
+            // Obtain the object reference of the destination view controller
+            let newNoteViewController: NewNoteViewController = segue.destination as! NewNoteViewController
+            newNoteViewController.startingState = CanvasState.Edit
+            newNoteViewController.event = passedEvent
+            newNoteViewController.images = views
+            newNoteViewController.isMicActive = false
+            
+        }
     }
     
     

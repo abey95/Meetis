@@ -304,6 +304,7 @@ class HomeTableViewController: UITableViewController {
         } else if segue.identifier == "View Note Data" {
             let noteDataViewController: NoteDataViewController = segue.destination as! NoteDataViewController
             noteDataViewController.passedNoteFilename = filenameToPass
+            noteDataViewController.passedEvent = eventToPass!
         }
     }
 }
@@ -367,7 +368,8 @@ extension HomeTableViewController: AddEventViewControllerProtocol {
 // Menu view's delegate protocol for viewing a note
 extension HomeTableViewController: MenuViewControllerDelegate {
     
-    func noteSelected(_ filename: String) {
+    
+    func noteSelected(_ filename: String, _ event: Event) {
         /*
          Ask the navigation controller to pop all of the view controllers on the stack
          except the root view controller and update the display.
@@ -380,6 +382,7 @@ extension HomeTableViewController: MenuViewControllerDelegate {
          */
         delegate?.collapseMenuView!()
         filenameToPass = filename
+        eventToPass = event
         performSegue(withIdentifier: "View Note Data" , sender: self)
     }
 }

@@ -16,7 +16,7 @@ protocol StackCellDelegate {
 }
 
 enum CanvasState {
-    case Blank, Pic, Import;
+    case Blank, Pic, Import, Edit;
 }
 
 class StackTableViewCell: UITableViewCell {

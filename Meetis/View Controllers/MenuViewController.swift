@@ -12,7 +12,7 @@ import UIKit
 
 // Define MenuViewControllerDelegate as a protocol with one required method
 protocol MenuViewControllerDelegate {
-    func noteSelected(_ filename: String)
+    func noteSelected(_ filename: String, _ event: Event)
 }
 
 
@@ -57,6 +57,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
     // Prepare the view before it appears to the user
     override func viewWillAppear(_ animated: Bool) {
         
+        noteSelected = false
         applicationDelegate.loadAllEvents()
         
         events = applicationDelegate.events
@@ -78,19 +79,6 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         eventsTableView.reloadData()
         
         super.viewWillAppear(animated)
-    }
-    
-    // Scroll the selected sport name row towards the middle of the table view
-    override func viewDidAppear(_ animated: Bool) {
-        
-        if noteSelected {
-            
-            // Scroll the selected row towards the middle of the table view
-            eventsTableView.scrollToRow(at: selectedIndexPath,
-                                           at: UITableViewScrollPosition.middle, animated: true)
-        }
-        
-        super.viewDidAppear(animated)
     }
     
     
@@ -548,7 +536,16 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
             selectedIndexPathPrevious = selectedIndexPath
             selectedIndexPath = indexPath
             
-    
+            tableView.reloadData()
+            
+            var curEvent : Event!
+            for i in  0..<eventCategories.count{
+                for j in 0..<events[i].count {
+                    if events[i][j].title == nameOfSelectedRow {
+                        curEvent = events[i][j]
+                    }
+                }
+            }
             
             //----------------------- Related to Sliding View ------------------------
             
@@ -556,14 +553,14 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
              Tell the delegate (HomeViewController) to execute its implementation of the
              MenuViewControllerDelegate protocol method noteSelected(filename: String)
              */
-            delegate?.noteSelected(nameOfSelectedRow)
+            delegate?.noteSelected(nameOfSelectedRow, event: curEvent)
             
             //----------------------- Related to Sliding View ------------------------
             
             // Remove the keyboard for the search bar
             searchResultsController.searchBar.resignFirstResponder()
             
-            tableView.reloadData()
+            
             break
     
             

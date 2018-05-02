@@ -22,6 +22,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
     var isMicActive:Bool!
     var event: Event!
     var filename: String!
+    var images: [UIImage]?
     
     // audio recording variables
     var recordingSession: AVAudioSession?
@@ -64,6 +65,8 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
             openPhotoLibraryButton()
         } else if startingState == CanvasState.Pic {
             openCameraButton()
+        } else if startingState == CanvasState.Edit {
+            
         }
         
         
@@ -397,7 +400,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         let maxWidth: CGFloat = withSize.height
         var imgRatio: CGFloat = actualWidth/actualHeight
         let maxRatio: CGFloat = maxWidth/maxHeight
-        let compressionQuality = 1.0
+        //let compressionQuality = 1.0
         
         if (actualHeight > maxHeight || actualWidth > maxWidth) {
             if (imgRatio < maxRatio) {
@@ -420,7 +423,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         UIGraphicsBeginImageContext(rect.size)
         image.draw(in: rect)
         let image: UIImage  = UIGraphicsGetImageFromCurrentImageContext()!
-        let imageData = UIImageJPEGRepresentation(image, CGFloat(compressionQuality))
+        let imageData = UIImagePNGRepresentation(image)
         UIGraphicsEndImageContext()
         let resizedImage = UIImage(data: imageData!)
         
@@ -475,7 +478,7 @@ extension NewNoteViewController: UIImagePickerControllerDelegate, UINavigationCo
                                didFinishPickingMediaWithInfo info: [String : Any]) {
         
         var image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        image = resizeImage(image: image, withSize: canvasView.bounds.size)
+        image = resizeImage(image: image, withSize: UIScreen.main.bounds.size)
         canvasView.addBackground(image: image)
         dismiss(animated:true, completion: nil)
     }
@@ -505,7 +508,7 @@ extension NewNoteViewController:  AVAudioRecorderDelegate {
     }
     
     func startRecording() {
-        let audioFilename = getDocumentsDirectory().appendingPathComponent("\(filename)_recording.m4a")
+        let audioFilename = getDocumentsDirectory().appendingPathComponent("\(filename!)_recording.m4a")
         
         let settings = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -532,7 +535,7 @@ extension NewNoteViewController:  AVAudioRecorderDelegate {
 // allows a view to be converted to a png
 extension UIImage {
     convenience init(view: UIView) {
-        UIGraphicsBeginImageContext(view.frame.size)
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.isOpaque, 0.0)
         view.layer.render(in:UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
