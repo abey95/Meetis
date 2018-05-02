@@ -579,12 +579,6 @@
                                     <constraint firstAttribute="height" constant="30" id="uaY-b3-moe"/>
                                 </constraints>
                                 <state key="normal" title="W"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="20"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="Znk-bK-hDW"/>
                                 </connections>
@@ -596,12 +590,6 @@
                                     <constraint firstAttribute="height" constant="30" id="J6P-EU-6Ff"/>
                                 </constraints>
                                 <state key="normal" title="T"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="20"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="ZMr-EF-qOu"/>
                                 </connections>
@@ -609,12 +597,6 @@
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vcH-TT-D57">
                                 <rect key="frame" x="57" y="310" width="30" height="30"/>
                                 <state key="normal" title="M"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="20"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="yyL-dk-4Kb"/>
                                 </connections>
@@ -626,12 +608,6 @@
                                     <constraint firstAttribute="height" constant="30" id="tzc-8U-evY"/>
                                 </constraints>
                                 <state key="normal" title="R"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="20"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="dIy-gl-TbL"/>
                                 </connections>
@@ -639,12 +615,6 @@
                             <button opaque="NO" tag="5" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Op-2M-OaX">
                                 <rect key="frame" x="225" y="310" width="30" height="30"/>
                                 <state key="normal" title="F"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="20"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="SR7-e7-anv"/>
                                 </connections>
@@ -652,12 +622,6 @@
                             <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qmt-Jc-Xh4">
                                 <rect key="frame" x="268" y="310" width="30" height="30"/>
                                 <state key="normal" title="Sa"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="20"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="K7X-YR-ddU"/>
                                 </connections>
@@ -665,12 +629,6 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9M-Tl-StP">
                                 <rect key="frame" x="19" y="310" width="30" height="30"/>
                                 <state key="normal" title="Su"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="20"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="tapped:" destination="xBc-t5-Rd0" eventType="touchUpInside" id="Sot-ex-CxY"/>
                                 </connections>

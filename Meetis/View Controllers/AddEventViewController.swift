@@ -84,7 +84,7 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         days[currentTagNumber] = !days[currentTagNumber]
         
         if days[currentTagNumber] {
-            sender.setBackgroundImage(UIImage(named: "blue_circle.png"), for: UIControlState.normal)
+            sender.setBackgroundImage(resizeImage(image: UIImage(named: "blue_circle.png")!, withSize: sender.frame.size), for: UIControlState.normal)
         } else {
             sender.setBackgroundImage(nil, for: UIControlState.normal)
         }
@@ -191,6 +191,49 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return EventCategory.allValues.count;
+    }
+    
+    /*
+     ------------------------------------
+     MARK: - Resize Image Proportionately
+     ------------------------------------
+     */
+    func resizeImage(image: UIImage, withSize: CGSize) -> UIImage {
+        
+        var actualHeight: CGFloat = image.size.height
+        var actualWidth: CGFloat = image.size.width
+        let maxHeight: CGFloat = withSize.width
+        let maxWidth: CGFloat = withSize.height
+        var imgRatio: CGFloat = actualWidth/actualHeight
+        let maxRatio: CGFloat = maxWidth/maxHeight
+        //let compressionQuality = 1.0
+        
+        if (actualHeight > maxHeight || actualWidth > maxWidth) {
+            if (imgRatio < maxRatio) {
+                // Adjust width according to maxHeight
+                imgRatio = maxHeight / actualHeight
+                actualWidth = imgRatio * actualWidth
+                actualHeight = maxHeight
+            } else if (imgRatio > maxRatio) {
+                // Adjust height according to maxWidth
+                imgRatio = maxWidth / actualWidth
+                actualHeight = imgRatio * actualHeight
+                actualWidth = maxWidth
+            } else {
+                actualHeight = maxHeight
+                actualWidth = maxWidth
+            }
+        }
+        
+        let rect: CGRect = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight)
+        UIGraphicsBeginImageContext(rect.size)
+        image.draw(in: rect)
+        let image: UIImage  = UIGraphicsGetImageFromCurrentImageContext()!
+        let imageData = UIImagePNGRepresentation(image)
+        UIGraphicsEndImageContext()
+        let resizedImage = UIImage(data: imageData!)
+        
+        return resizedImage!
     }
     
     
