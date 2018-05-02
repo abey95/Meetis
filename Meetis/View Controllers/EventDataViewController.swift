@@ -134,7 +134,8 @@ class EventDataViewController: UIViewController {
                 
             }
             
-             delegate!.eventDataViewController(self, didFinishWithSave:true)
+            
+            delegate!.eventDataViewController(self, didFinishWithSave:true)
             
         }
         isEdit = !isEdit
@@ -155,8 +156,20 @@ class EventDataViewController: UIViewController {
     }
     
     @IBAction func deleteButtonTapped(_ sender: UIButton) {
-        eventDataPassed?.active = false
-        delegate!.eventDataViewController(self, didFinishWithSave:true)
+        let refreshAlert = UIAlertController(title: "Delete", message: "Are You Sure You Want To Delete This Event? ", preferredStyle: UIAlertControllerStyle.alert)
+        
+        refreshAlert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action: UIAlertAction!) in
+            self.eventDataPassed?.active = false;
+            self.delegate!.eventDataViewController(self, didFinishWithSave:true)
+        }))
+        
+        refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action: UIAlertAction!) in
+            
+            refreshAlert.dismiss(animated: true, completion: nil)
+        }))
+        
+        present(refreshAlert, animated: true, completion: nil)
+        
 
     }
     
