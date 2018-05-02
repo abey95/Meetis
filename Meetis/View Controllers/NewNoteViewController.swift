@@ -46,7 +46,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
     let kScrollMenuHeight: CGFloat = 75.0
     let backgroundColorToUse = UIColor.white
     
-    let buttonNames = ["Black", "Blue", "Red", "Highlight", "Erase", "Text", "Clear", "Previous_Page", "Next_Page", "Camera", "Import", "New_Page"]
+    let buttonNames = ["Black", "Blue", "Red", "Highlight", "Text", "Clear", "Previous_Page", "Next_Page", "Camera", "Import", "New_Page"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -269,25 +269,22 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         case 3:
             updateToHighlight()
             break
-        case 4:
-            updateToErase()
-            break
-        case 5 :
+        case 4 :
             textSelected()
             break;
-        case 6:
+        case 5:
             canvasView.clearCanvas()
             break
-        case 7:
+        case 6:
             previousPage()
             break
-        case 8:
+        case 7:
             nextPage()
             break
-        case 9:
+        case 8:
             openCameraButton()
             break
-        case 10:
+        case 9:
             openPhotoLibraryButton()
             break
         default:
@@ -350,7 +347,8 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func updateToErase() {
-        canvasView.lineColor = UIColor.clear
+
+        canvasView.lineColor = UIColor(patternImage: UIImage(view: canvasView))
         canvasView.lineOpacity = 1
     }
     

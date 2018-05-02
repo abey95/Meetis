@@ -13,11 +13,11 @@ import UIKit
 /**
  This class is used for marking up notes
 */
-class CanvasView: UIView {
+class CanvasView: UIImageView {
     
     // mark-up variables
     var lineColor = UIColor.black
-    var lineWidth: CGFloat = 10
+    var lineWidth: CGFloat = 4
     var lineOpacity: Float = 1
     var path:UIBezierPath!
     var touchPoint: CGPoint!
@@ -87,11 +87,11 @@ class CanvasView: UIView {
     }
     
     func addBackground(image: UIImage) {
-        self.layer.contents = image.cgImage
+        self.image = image
     }
     
     func removeBackground() {
-        self.layer.contents = nil
+        self.image = nil
     }
     /*
     // Only override draw() if you perform custom drawing.

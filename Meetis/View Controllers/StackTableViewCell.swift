@@ -46,8 +46,7 @@ class StackTableViewCell: UITableViewCell {
     var index = -1 //row number for the cell
     var cellExists = false
     var delegate: StackCellDelegate?
-    var micBackground = UIImageView()
-    
+
     let background_color = UIColor.init(red: 50/255, green: 54/255, blue: 64/255, alpha: 1)
     
     override func awakeFromNib() {

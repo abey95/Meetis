@@ -63,7 +63,7 @@ class Event: NSObject {
         self.dateInfo = DateComponents(hour: Int(hours_minutes[0]), minute:Int(hours_minutes[1]), weekday: nextDateOrdinal())
         
         
-         nextDate = Calendar.current.nextDate(after: Date(), matching: dateInfo!, matchingPolicy: Calendar.MatchingPolicy.nextTime)
+         nextDate = Calendar.current.nextDate(after: Date(), matching: dateInfo!, matchingPolicy: Calendar.MatchingPolicy.strict)
     }
     
     func apppendToNotes(filename: String) {
@@ -119,7 +119,7 @@ class Event: NSObject {
         
         for i in 0...days.count {
             if days[(cur_ordinal + i) % days.count] {
-                return (cur_ordinal + i) % days.count
+                return ((cur_ordinal + i) % days.count) + 1
             }
         }
         return -1

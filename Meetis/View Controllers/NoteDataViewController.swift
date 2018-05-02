@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AVFoundation
+import Speech
 
 class NoteDataViewController: UIViewController, UIScrollViewDelegate {
 
@@ -16,6 +18,10 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet var noteTextView: UITextView!
     @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet var transcriptionTextView: UITextView!
+    
+    // Declare audioPlayer as an Optional instance variable to hold the object reference of an AVAudioPlayer object
+    var audioPlayer: AVAudioPlayer?
     
     // Obtain the object reference to the App Delegate object
     let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -30,12 +36,11 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
     var previousButton = UIButton(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     
     let backgroundColorToUse = UIColor(red: 0.6, green: 0.8, blue: 1.0, alpha: 1.0)
-    let imageWidth = 75
-    let imageHeight = 100
+    let imageWidth = 100
+    let imageHeight = 133
     
     var views = [UIImage]()
     var noteText: [String]!
-    //var audio:
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,22 +70,52 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
         }
         
         // load in av session
-        
-        // transcribe
-        
+        let fileManager = FileManager.default
+        let audioFilePath = documentDirectoryPath + "/\(passedNoteFilename!)_recording.m4a"
+        print(audioFilePath)
+        if fileManager.fileExists(atPath: audioFilePath) {
+
+            let url = URL(fileURLWithPath: audioFilePath)
+            do {
+                // Try to create an AVAudioPlayer object, which provides playback of audio data from the above file
+                audioPlayer = try AVAudioPlayer(contentsOf: url)
+                transcribeFile(url: url)
+            } catch let error as NSError {
+                
+                // AVAudioPlayer object creation failed!
+                showAlertMessage(messageHeader: "AVAudioPlayer Object Creation Failed!",
+                                 messageBody: "Error details: \(error.localizedDescription)")
+                transcriptionTextView.text = "Transcription not available"
+            }
+        } else {
+            transcriptionTextView.text = "Transcription not available"
+        }
         // populate scroll view with notes images
-        
+        populateScrollView()
         
 
         
     }
     
-    @IBAction func editTapped(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "Edit Notes", sender: self)
+    
+    @IBAction func playButtonTapped(_ sender: UIButton) {
+        
+
+        //play audio and change button image to pause
+        if sender.tag == 0 {
+            audioPlayer?.play()
+            sender.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            sender.tag = 1
+        } else {
+            audioPlayer?.pause()
+            sender.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            sender.tag = 0
+        }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        populateScrollView()
+    
+    @IBAction func editTapped(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "Edit Notes", sender: self)
     }
 
     override func didReceiveMemoryWarning() {
@@ -122,7 +157,7 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
             scrollMenuButton.setImage(noteImage, for: UIControlState())
             
             // Obtain the titl to be displayed on the button
-            let buttonTitle = "Note \(i)"
+            let buttonTitle = "Note \(i + 1)"
             
             // The button width and height in points will depend on its font style and size
             let buttonTitleFont = UIFont(name: "Helvetica", size: 14.0)
@@ -336,11 +371,6 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
         return resizedImage!
     }
     
-
-    @IBAction func playButtonTapped(_ sender: UIButton) {
-        
-    }
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         
@@ -357,6 +387,57 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
             newNoteViewController.startPage = selectedView
             
         }
+    }
+    
+    fileprivate func transcribeFile(url: URL) {
+        
+        guard let recognizer = SFSpeechRecognizer() else {
+            transcriptionTextView.text = "Speech recognition not available for specified locale"
+            return
+        }
+        
+        if !recognizer.isAvailable {
+            transcriptionTextView.text = "Speech recognition not currently available"
+            return
+        }
+        
+
+        let request = SFSpeechURLRecognitionRequest(url: url)
+        
+        // 3
+        recognizer.recognitionTask(with: request) {
+            (result, error) in
+            guard let result = result else {
+                self.transcriptionTextView.text = "There was an error transcribing that file"
+                return
+            }
+            
+            // 4
+            if result.isFinal {
+                self.transcriptionTextView.text! = result.bestTranscription.formattedString
+            }
+        }
+    }
+    
+    
+    /*
+     -----------------------------
+     MARK: - Display Alert Message
+     -----------------------------
+     */
+    func showAlertMessage(messageHeader header: String, messageBody body: String) {
+        
+        /*
+         Create a UIAlertController object; dress it up with title, message, and preferred style;
+         and store its object reference into local constant alertController
+         */
+        let alertController = UIAlertController(title: header, message: body, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // Create a UIAlertAction object and add it to the alert controller
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        // Present the alert controller
+        present(alertController, animated: true, completion: nil)
     }
     
     

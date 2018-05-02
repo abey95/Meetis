@@ -34,7 +34,7 @@ class HomeTableViewController: UITableViewController {
     var events = [Event]()
     var lastCell:StackTableViewCell = StackTableViewCell()
     var t_count:Int = 0
-    var button_tag:Int = -1
+    var last_button_tag:Int = -1
 
     let background_color = UIColor.init(red: 50/255, green: 54/255, blue: 64/255, alpha: 1)
     
@@ -74,13 +74,13 @@ class HomeTableViewController: UITableViewController {
         eventsTableView.register(UINib(nibName: "StackTableViewCell", bundle: nil), forCellReuseIdentifier: "StackCell")
         eventsTableView.delegate = self
         eventsTableView.dataSource = self
-        
+        eventsTableView.separatorStyle = .none
         eventsTableView.allowsSelection = false
         eventsTableView.backgroundColor = background_color
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        t_count = 0
+        //t_count = 0
         applicationDelegate.loadAllEvents()
         isCurrentlyVisible = true
         events = applicationDelegate.chronEvents
@@ -151,32 +151,44 @@ class HomeTableViewController: UITableViewController {
         // Typecast the AnyObject to Swift array of String objects
         let currentEvent = events[rowNumber]
         
-            cell.index = rowNumber
-            cell.cellExists = true
-            cell.eventTitleLabel.text = currentEvent.title
-            cell.eventTimeLabel.text = currentEvent.getDateString()
-            
-            cell.openButton.tag = t_count
-            
-            cell.openButton.addTarget(self, action: #selector(cellOpened(sender:)), for: .touchUpInside)
-            
-           switch currentEvent.category {
-            case .school:
-                cell.imageView!.image = UIImage(named: "school.png")
-                break
-            case .family:
-                cell.imageView!.image = UIImage(named: "family.png")
-            case .personal:
-                cell.imageView!.image = UIImage(named: "person.png")
-            case .travel:
-                cell.imageView!.image = UIImage(named: "travel.png")
-            default:
-                cell.imageView!.image = UIImage(named: "work.png")
-                
-            }
-            t_count = t_count + 1
-            cell.cellExists = true
-            cell.delegate = self
+        cell.index = rowNumber
+        cell.cellExists = true
+        cell.eventTitleLabel.text = currentEvent.title
+        cell.eventTimeLabel.text = currentEvent.getDateString()
+        cell.openButton.tag = rowNumber
+        cell.openButton.addTarget(self, action: #selector(cellOpened(sender:)), for: .touchUpInside)
+        
+       switch currentEvent.category {
+        case .school:
+            cell.imageView!.image = UIImage(named: "school.png")
+            break
+        case .family:
+            cell.imageView!.image = UIImage(named: "family.png")
+        case .personal:
+            cell.imageView!.image = UIImage(named: "person.png")
+        case .travel:
+            cell.imageView!.image = UIImage(named: "travel.png")
+        default:
+            cell.imageView!.image = UIImage(named: "work.png")
+        
+        }
+        
+        switch currentEvent.priority {
+        case "high" :
+            //red
+            cell.openView.backgroundColor = UIColor(red: 255.0/255.0, green: 151.0/255.0, blue: 112.0/255.0, alpha: 1.0)
+            break
+        case "medium":
+            // yellow
+            cell.openView.backgroundColor = UIColor(red: 233.0/255.0, green: 255.0/255.0, blue: 112.0/255.0, alpha: 1.0)
+            break
+        default:
+            //green
+            cell.openView.backgroundColor = UIColor(red: 55.0/255.0, green: 214.0/255.0, blue: 95.0/255.0, alpha: 1.0)
+        }
+        
+        cell.cellExists = true
+        cell.delegate = self
 
         UIView.animate(withDuration: 0) {
             cell.contentView.layoutIfNeeded()
@@ -187,23 +199,23 @@ class HomeTableViewController: UITableViewController {
     @objc func cellOpened(sender:UIButton) {
         self.tableView.beginUpdates()
         
-        let previousCellTag = button_tag
+        let previousCellTag = last_button_tag
         
         if lastCell.cellExists {
             self.lastCell.animate(duration: 0.2, c: {
                 self.view.layoutIfNeeded()
             })
-            
-            if sender.tag == button_tag {
-                button_tag = -1
-                lastCell = StackTableViewCell()
-            }
         }
         
-        if sender.tag != previousCellTag {
-            button_tag = sender.tag
+        if sender.tag == last_button_tag {
+            last_button_tag = -1
+            lastCell = StackTableViewCell()
+        }
+        
+        else if sender.tag != previousCellTag {
+            last_button_tag = sender.tag
             
-            lastCell = tableView.cellForRow(at: IndexPath(row: button_tag, section: 0)) as! StackTableViewCell
+            lastCell = tableView.cellForRow(at: IndexPath(row: sender.tag, section: 0)) as! StackTableViewCell
             self.lastCell.animate(duration: 0.2, c: {
                 self.view.layoutIfNeeded()
             })
@@ -223,7 +235,7 @@ class HomeTableViewController: UITableViewController {
     // Asks the table view delegate to return the height of a given row.
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if indexPath.row == button_tag {
+        if indexPath.row == last_button_tag {
             return tableViewRowHeightOpen
         } else {
             return tableViewRowHeightClosed
@@ -275,7 +287,8 @@ extension HomeTableViewController: StackCellDelegate {
     
     //update event to be next date and update tablview
     func didTapIgnore(sender: StackTableViewCell) {
-        
+        events[last_button_tag].updateNextDate()
+        events.sort { $0.nextDate < $1.nextDate}
         eventsTableView.reloadData();
     }
     //update event to be next date and update tablview

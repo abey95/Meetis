@@ -291,17 +291,17 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         
         switch cell.indentationLevel {
         case 0:
-            // Set level 1 (University Name) row background color to Lavendar (#E6E6FA)
+            // Set level 1 Category row background color to Lavendar (#E6E6FA)
             cell.backgroundColor = UIColor(red: 230.0/255.0, green: 230.0/255.0, blue: 250.0/255.0, alpha: 1.0)
             
         case 1:
-            // Set level 2 (Sport Category Name) row background color to Ivory (#FFFFF0)
+            // Set level 2 Event row background color to Ivory (#FFFFF0)
             cell.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 240.0/255.0, alpha: 1.0)
             
         case 2:
-            // Set level 3 (Sport Name) row background color to PeachPuff (#FFDAB9)
+            // Set level 3 Note row background color to PeachPuff (#FFDAB9)
             cell.backgroundColor = UIColor(red: 255.0/255.0, green: 218.0/255.0, blue: 185.0/255.0, alpha: 1.0)
-            
+            cell.textLabel!.font = cell.textLabel!.font.withSize(12.0)
         default:
             print("Cell indentation level is out of range!")
             break
@@ -554,11 +554,11 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
             selectedIndexPathPrevious = selectedIndexPath
             selectedIndexPath = indexPath
             
-            
+            let searchName = nameOfSelectedRow.replacingOccurrences(of: "_", with: " ")
             var curEvent : Event!
             for i in  0..<eventCategories.count{
                 for j in 0..<events[i].count {
-                    if nameOfSelectedRow.contains(events[i][j].title){
+                    if searchName.contains(events[i][j].title){
                         curEvent = events[i][j]
                     }
                 }
