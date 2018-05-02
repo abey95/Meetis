@@ -153,5 +153,12 @@ class EventDataViewController: UIViewController {
             sender.setBackgroundImage(nil, for: UIControlState.normal)
         }
     }
+    
+    @IBAction func deleteButtonTapped(_ sender: UIButton) {
+        eventDataPassed?.active = false
+        delegate!.eventDataViewController(self, didFinishWithSave:true)
+
+    }
+    
 }
 
