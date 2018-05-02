@@ -30,10 +30,11 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
     
     // variable for the background images
     var imagePicker = UIImagePickerController()
-    //var backgroundImage: UIImageView!
     
     // contains all the views for each of the note pages
     var views = [UIImage]()
+    var textNotes = [String]()
+    var startPage: Int?
     var pageNum = 0
     
     // Obtain the object reference to the App Delegate object
@@ -45,7 +46,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
     let kScrollMenuHeight: CGFloat = 75.0
     let backgroundColorToUse = UIColor.white
     
-    let buttonNames = ["Black", "Blue", "Red", "Highlight", "Erase", "Clear", "Previous_Page", "Next_Page", "Camera", "Import", "New_Page"]
+    let buttonNames = ["Black", "Blue", "Red", "Highlight", "Erase", "Text", "Clear", "Previous_Page", "Next_Page", "Camera", "Import", "New_Page"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +73,8 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
                 canvasView.addBackground(image: image)
                 newPageSelected()
             }
+            pageNum = startPage!
+            canvasView.addBackground(image: views[pageNum ])
         }
         
         
@@ -121,7 +124,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         
         //  update the dictionaries
         applicationDelegate.dict_Events.setValue(event.toDict(), forKeyPath: event.title)
-        let noteData: [AnyObject] = ["placeholder" as AnyObject, views.count as AnyObject]
+        let noteData: [AnyObject] = [textNotes as AnyObject, views.count as AnyObject]
         applicationDelegate.dict_Notes.setValue(noteData, forKey: filename!)
         
         applicationDelegate.loadAllEvents()
@@ -270,18 +273,21 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
             updateToErase()
             break
         case 5 :
+            textSelected()
+            break;
+        case 6:
             canvasView.clearCanvas()
             break
-        case 6:
+        case 7:
             previousPage()
             break
-        case 7:
+        case 8:
             nextPage()
             break
-        case 8:
+        case 9:
             openCameraButton()
             break
-        case 9:
+        case 10:
             openPhotoLibraryButton()
             break
         default:
@@ -353,6 +359,43 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         canvasView.lineOpacity = 0.25
     }
     
+    func textSelected () {
+        let alert = UIAlertController(title: "Text", message: nil, preferredStyle: .alert)
+        let textView = UITextView()
+        textView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        let controller = UIViewController()
+        
+        textView.frame = controller.view.frame
+        controller.view.addSubview(textView)
+        
+        if pageNum != textNotes.count {
+            textView.text! = textNotes[pageNum]
+        }
+        
+        alert.setValue(controller, forKey: "contentViewController")
+        
+        let height: NSLayoutConstraint = NSLayoutConstraint(item: alert.view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: view.frame.height * 0.8)
+        alert.view.addConstraint(height)
+        
+        // on save action update the notes[pageNum]
+        alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { (action: UIAlertAction!) in
+            if self.pageNum == self.textNotes.count {
+                self.textNotes.append(textView.text!)
+            } else { //update that view
+                self.textNotes[self.pageNum] = textView.text!
+            }
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action: UIAlertAction!) in
+            
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     
     // add snapshot of canvasview to views array of note images
     func newPageSelected() {
@@ -362,6 +405,10 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
              views.append(UIImage(view: canvasView))
         } else { //update that view
            views[pageNum] = UIImage(view: canvasView)
+        }
+        
+        if textNotes.count != views.count {
+            textNotes.append("")
         }
         canvasView.clearCanvas()
         canvasView.removeBackground()

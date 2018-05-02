@@ -14,6 +14,7 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet var leftArrowImageView: UIImageView!
     @IBOutlet var rightArrowImageView: UIImageView!
     
+    @IBOutlet var noteTextView: UITextView!
     @IBOutlet var scrollView: UIScrollView!
     
     // Obtain the object reference to the App Delegate object
@@ -33,6 +34,7 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
     let imageHeight = 100
     
     var views = [UIImage]()
+    var noteText: [String]!
     //var audio:
     
     override func viewDidLoad() {
@@ -42,8 +44,10 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
         
         // get notes from dict given filename
         let noteData = applicationDelegate.dict_Notes[passedNoteFilename] as! [AnyObject]
-        let notetext = noteData[0] as! String
+        noteText = noteData[0] as! [String]
+        noteTextView!.text = noteText[0]
         let numberOfNotes = noteData[1] as! Int
+        
         
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let documentDirectoryPath = paths[0] as String
@@ -191,6 +195,8 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
             
             // Add the width of the button to the total width
             sumOfButtonWidths += button.frame.size.width
+            
+            button.tag = j
         }
         
         // Horizontally scrollable menu's content width size = the sum of the widths of all of the buttons
@@ -283,6 +289,7 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
         previousButton = selectedButton
         
         selectedView = selectedButton.tag
+        noteTextView!.text = noteText[selectedButton.tag]
 
     }
     
@@ -334,9 +341,6 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
         
     }
     
-    @IBAction func shareButtonTapped(_ sender: UIButton) {
-        
-    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         
@@ -349,6 +353,8 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
             newNoteViewController.images = views
             newNoteViewController.isMicActive = false
             newNoteViewController.filename = passedNoteFilename
+            newNoteViewController.textNotes = noteText
+            newNoteViewController.startPage = selectedView
             
         }
     }

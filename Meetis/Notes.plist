@@ -4,7 +4,9 @@
 <dict>
 	<key>filename</key>
 	<array>
-		<string>text</string>
+		<array>
+			<string>text</string>
+		</array>
 		<integer>1</integer>
 	</array>
 </dict>
