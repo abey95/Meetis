@@ -89,6 +89,10 @@ class CanvasView: UIView {
     func addBackground(image: UIImage) {
         self.layer.contents = image.cgImage
     }
+    
+    func removeBackground() {
+        self.layer.contents = nil
+    }
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.

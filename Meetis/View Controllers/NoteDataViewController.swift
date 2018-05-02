@@ -66,6 +66,25 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
         
         // populate scroll view with notes images
         
+        
+
+        
+    }
+    
+    @IBAction func editTapped(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "Edit Notes", sender: self)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        populateScrollView()
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func populateScrollView (){
         /**********************
          * Set Background Colors
          **********************/
@@ -193,18 +212,6 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
         
         previousButton = defaultButton
         selectedView = 0
-
-        
-    }
-    
-    @IBAction func editTapped(_ sender: UIBarButtonItem) {
-        
-    }
-    
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     
@@ -341,6 +348,7 @@ class NoteDataViewController: UIViewController, UIScrollViewDelegate {
             newNoteViewController.event = passedEvent
             newNoteViewController.images = views
             newNoteViewController.isMicActive = false
+            newNoteViewController.filename = passedNoteFilename
             
         }
     }

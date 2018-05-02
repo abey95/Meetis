@@ -297,7 +297,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         } else {
             
             // Otherwise, show the Right Arrow image as Disclosure Indicator
-            cell.accessoryView = UIImageView(image: UIImage(named: "RightArrow"))
+            cell.accessoryView = UIImageView(image: resizeImage(image: UIImage(named: "RightArrow")!, withSize: CGSize(width: 25, height: 25)))
         }
     }
     /*
@@ -541,7 +541,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
             var curEvent : Event!
             for i in  0..<eventCategories.count{
                 for j in 0..<events[i].count {
-                    if events[i][j].title == nameOfSelectedRow {
+                    if nameOfSelectedRow.contains(events[i][j].title){
                         curEvent = events[i][j]
                     }
                 }
@@ -553,7 +553,7 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
              Tell the delegate (HomeViewController) to execute its implementation of the
              MenuViewControllerDelegate protocol method noteSelected(filename: String)
              */
-            delegate?.noteSelected(nameOfSelectedRow, event: curEvent)
+            delegate?.noteSelected(nameOfSelectedRow, curEvent)
             
             //----------------------- Related to Sliding View ------------------------
             
@@ -591,6 +591,49 @@ class MenuViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         
         // Present the alert controller by calling the presentViewController method
         present(alertController, animated: true, completion: nil)
+    }
+    
+    /*
+     ------------------------------------
+     MARK: - Resize Image Proportionately
+     ------------------------------------
+     */
+    func resizeImage(image: UIImage, withSize: CGSize) -> UIImage {
+        
+        var actualHeight: CGFloat = image.size.height
+        var actualWidth: CGFloat = image.size.width
+        let maxHeight: CGFloat = withSize.width
+        let maxWidth: CGFloat = withSize.height
+        var imgRatio: CGFloat = actualWidth/actualHeight
+        let maxRatio: CGFloat = maxWidth/maxHeight
+        //let compressionQuality = 1.0
+        
+        if (actualHeight > maxHeight || actualWidth > maxWidth) {
+            if (imgRatio < maxRatio) {
+                // Adjust width according to maxHeight
+                imgRatio = maxHeight / actualHeight
+                actualWidth = imgRatio * actualWidth
+                actualHeight = maxHeight
+            } else if (imgRatio > maxRatio) {
+                // Adjust height according to maxWidth
+                imgRatio = maxWidth / actualWidth
+                actualHeight = imgRatio * actualHeight
+                actualWidth = maxWidth
+            } else {
+                actualHeight = maxHeight
+                actualWidth = maxWidth
+            }
+        }
+        
+        let rect: CGRect = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight)
+        UIGraphicsBeginImageContext(rect.size)
+        image.draw(in: rect)
+        let image: UIImage  = UIGraphicsGetImageFromCurrentImageContext()!
+        let imageData = UIImagePNGRepresentation(image)
+        UIGraphicsEndImageContext()
+        let resizedImage = UIImage(data: imageData!)
+        
+        return resizedImage!
     }
     
 }

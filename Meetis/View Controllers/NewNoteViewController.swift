@@ -33,7 +33,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
     //var backgroundImage: UIImageView!
     
     // contains all the views for each of the note pages
-    var views = [UIView]()
+    var views = [UIImage]()
     var pageNum = 0
     
     // Obtain the object reference to the App Delegate object
@@ -45,7 +45,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
     let kScrollMenuHeight: CGFloat = 75.0
     let backgroundColorToUse = UIColor.white
     
-    let buttonNames = ["Black", "Blue", "Red", "Highlight", "Erase", "Clear", "Camera", "Import", "New_Page"]
+    let buttonNames = ["Black", "Blue", "Red", "Highlight", "Erase", "Clear", "Previous_Page", "Next_Page", "Camera", "Import", "New_Page"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +66,12 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         } else if startingState == CanvasState.Pic {
             openCameraButton()
         } else if startingState == CanvasState.Edit {
-            
+            //load in images as uiviews
+            for i in 0 ..< images!.count {
+                let image = resizeImage(image: images![i], withSize: canvasView.bounds.size)
+                canvasView.addBackground(image: image)
+                newPageSelected()
+            }
         }
         
         
@@ -101,7 +106,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         
         // save all views to document directory as .png
         for i in 1...views.count {
-            let image = UIImage(view: views[i - 1])
+            let image = views[i - 1]
             
             if let data = UIImagePNGRepresentation(image) {
                 let filename = getDocumentsDirectory().appendingPathComponent("\(self.filename!)_\(i).png")
@@ -119,7 +124,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         let noteData: [AnyObject] = ["placeholder" as AnyObject, views.count as AnyObject]
         applicationDelegate.dict_Notes.setValue(noteData, forKey: filename!)
         
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     func populateScrollView() {
@@ -148,7 +153,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
             
             // Obtain the auto manufacturer's logo image
             let buttonImage = UIImage(named: "\(buttonNames[i].lowercased()).png")
-            let resizedImage = resizeImage(image: buttonImage!, withSize: CGSize(width: 50, height: 50))
+            let resizedImage = resizeImage(image: buttonImage!, withSize: CGSize(width: 40, height: 40))
             
             // Set the button frame at origin at (x, y) = (0, 0) with
             // button width  =  image width + 20 points padding for each side
@@ -266,9 +271,15 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
             canvasView.clearCanvas()
             break
         case 6:
-            openCameraButton()
+            previousPage()
             break
         case 7:
+            nextPage()
+            break
+        case 8:
+            openCameraButton()
+            break
+        case 9:
             openPhotoLibraryButton()
             break
         default:
@@ -293,7 +304,27 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         
     }
     
+    func previousPage() {
+        if pageNum != 0 {
+            if pageNum == views.count  {
+                views.append(UIImage(view: canvasView))
+            } else {
+                views[pageNum] = UIImage(view: canvasView)
+            }
+            canvasView.clearCanvas()
+            pageNum = pageNum - 1
+            canvasView.addBackground(image: views[pageNum ])
+        }
+    }
     
+    func nextPage() {
+        if pageNum < views.count - 1{
+            views[pageNum] = UIImage(view: canvasView)
+            canvasView.clearCanvas()
+            pageNum = pageNum + 1
+           canvasView.addBackground(image: views[pageNum ])
+        }
+    }
     
     func updateToBlackPen() {
         canvasView.lineColor = UIColor.black
@@ -326,11 +357,12 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         
         // add to end
         if pageNum == views.count || views.isEmpty {
-            views.append(canvasView.snapshotView(afterScreenUpdates: true)!)
+             views.append(UIImage(view: canvasView))
         } else { //update that view
-            views[pageNum] = canvasView.snapshotView(afterScreenUpdates: true)!
+           views[pageNum] = UIImage(view: canvasView)
         }
         canvasView.clearCanvas()
+        canvasView.removeBackground()
         pageNum = pageNum + 1
     }
 
@@ -478,7 +510,7 @@ extension NewNoteViewController: UIImagePickerControllerDelegate, UINavigationCo
                                didFinishPickingMediaWithInfo info: [String : Any]) {
         
         var image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        image = resizeImage(image: image, withSize: UIScreen.main.bounds.size)
+        image = resizeImage(image: image, withSize: canvasView.bounds.size)
         canvasView.addBackground(image: image)
         dismiss(animated:true, completion: nil)
     }
