@@ -74,7 +74,7 @@ class EventDataViewController: UIViewController {
         case .family:
             imageView!.image = UIImage(named: "family.png")
         case .personal:
-            imageView!.image = UIImage(named: "personal.png")
+            imageView!.image = UIImage(named: "person.png")
         case .travel:
             imageView!.image = UIImage(named: "travel.png")
         default:
@@ -175,6 +175,83 @@ class EventDataViewController: UIViewController {
         present(refreshAlert, animated: true, completion: nil)
         
 
+    }
+    
+    
+    /*
+     ------------------------
+     MARK: - IBAction Methods
+     ------------------------
+     */
+    @IBAction func keyboardDone(_ sender: UITextField) {
+        
+        // When the Text Field resigns as first responder, the keyboard is automatically removed.
+        sender.resignFirstResponder()
+    }
+    
+    @IBAction func backgroundTouch(_ sender: UIControl) {
+        /*
+         "This method looks at the current view and its subview hierarchy for the text field that is
+         currently the first responder. If it finds one, it asks that text field to resign as first responder.
+         If the force parameter is set to true, the text field is never even asked; it is forced to resign." [Apple]
+         
+         When the Text Field resigns as first responder, the keyboard is automatically removed.
+         */
+        view.endEditing(true)
+    }
+    
+    /*
+     -----------------------------
+     MARK: - Validate input
+     -----------------------------
+     */
+    func inputValid() -> Bool{
+        if timeTextField.text!.isEmpty{
+            showAlertMessage(messageHeader: "No Time Entered!", messageBody: "Please enter the time for the event. Example: 12:15")
+            return false
+        } else {
+            let min_hr = timeTextField.text!.split(separator: ":")
+            if min_hr.count != 2 {
+                showAlertMessage(messageHeader: "Time Read Error!", messageBody: "Please enter a time in the format hh:mm")
+                return false
+            }
+            if Int(min_hr[0]) == nil {
+                showAlertMessage(messageHeader: "Hours Read Error!", messageBody: "Please enter a time in the format hh:mm")
+                return false
+            }
+            if Int(min_hr[1]) == nil {
+                showAlertMessage(messageHeader: "Minutes Read Error!", messageBody: "Please enter a time in the format hh:mm")
+                return false
+            }
+        }
+        
+        for check in eventDataPassed!.days {
+            if check {
+                return true;
+            }
+        }
+        showAlertMessage(messageHeader: "Missing Selected Days!", messageBody: "Please select the days for the event")
+        return false
+    }
+    
+    /*
+     -----------------------------
+     MARK: - Display Alert Message
+     -----------------------------
+     */
+    func showAlertMessage(messageHeader header: String, messageBody body: String) {
+        
+        /*
+         Create a UIAlertController object; dress it up with title, message, and preferred style;
+         and store its object reference into local constant alertController
+         */
+        let alertController = UIAlertController(title: header, message: body, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // Create a UIAlertAction object and add it to the alert controller
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        // Present the alert controller
+        present(alertController, animated: true, completion: nil)
     }
     
 }

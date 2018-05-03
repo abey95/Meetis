@@ -17,15 +17,13 @@
 			<false/>
 		</array>
 		<key>priority</key>
-		<string>Medium</string>
+		<string>medium</string>
 		<key>time</key>
 		<string>12:00</string>
 		<key>category</key>
 		<string>school</string>
 		<key>notes</key>
-		<array>
-			<string>filenames</string>
-		</array>
+		<array/>
 	</dict>
 </dict>
 </plist>

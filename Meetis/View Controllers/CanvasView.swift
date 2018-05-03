@@ -60,18 +60,24 @@ class CanvasView: UIImageView {
     
     // create a shape over the path the was created
     func drawShapeLayer() {
+        
+        //create new shape layer
         let shapeLayer = CAShapeLayer()
+        
+        //set the layer's path the the recently created BezierPath
         shapeLayer.path = path.cgPath
         
+        //set the new layer's properties for how the new line should look
         shapeLayer.strokeColor = lineColor.cgColor
         shapeLayer.lineWidth = lineWidth
         shapeLayer.opacity = lineOpacity
+        shapeLayer.fillColor = UIColor.clear.cgColor
         
         //make line smoother
         shapeLayer.lineCap = kCALineCapRound
         
-        shapeLayer.fillColor = UIColor.clear.cgColor
         
+        // add the newly created line as a sublayer or this view
         self.layer.addSublayer(shapeLayer)
         self.setNeedsDisplay()
     }

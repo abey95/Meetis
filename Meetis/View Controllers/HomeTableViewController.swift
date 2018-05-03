@@ -26,7 +26,7 @@ class HomeTableViewController: UITableViewController {
     let applicationDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     let tableViewRowHeightClosed: CGFloat = 70.0
-    let tableViewRowHeightOpen: CGFloat = 130.0
+    let tableViewRowHeightOpen: CGFloat = 135.0
     
        
     //---------- Create and Initialize the Arrays -----------------------
@@ -196,6 +196,7 @@ class HomeTableViewController: UITableViewController {
         return cell
     }
     
+    
     @objc func cellOpened(sender:UIButton) {
         self.tableView.beginUpdates()
         
@@ -308,11 +309,11 @@ extension HomeTableViewController: AddEventViewControllerProtocol {
             let priority: String?
             switch controller.prioritySegmentedControl.selectedSegmentIndex {
             case 0:
-                priority = "high"
+                priority = "low"
             case 1:
                 priority = "medium"
             default:
-                priority = "low"
+                priority = "high"
             }
             
             

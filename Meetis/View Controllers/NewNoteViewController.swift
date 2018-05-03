@@ -46,7 +46,10 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
     let kScrollMenuHeight: CGFloat = 75.0
     let backgroundColorToUse = UIColor.white
     
-    let buttonNames = ["Black", "Blue", "Red", "Highlight", "Text", "Clear", "Previous_Page", "Next_Page", "Camera", "Import", "New_Page"]
+    let buttonNames = ["Black", "Blue", "Red",
+                       "Highlight", "Text", "Clear",
+                       "Previous_Page", "Next_Page",
+                       "Camera", "Import", "New_Page"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -255,7 +258,6 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         
         let selectedButton: UIButton = sender
         
-
         switch selectedButton.tag {
         case 0:
             updateToBlackPen()
@@ -292,7 +294,7 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         }
         
         // check if this is a canvas state update i.e. pen change
-        if selectedButton.tag < 5 {
+        if selectedButton.tag < 4 {
             
         
             // Indicate that the button is selected
@@ -346,15 +348,15 @@ class NewNoteViewController: UIViewController, UIScrollViewDelegate {
         canvasView.lineOpacity = 1
     }
     
-    func updateToErase() {
-
-        canvasView.lineColor = UIColor(patternImage: UIImage(view: canvasView))
-        canvasView.lineOpacity = 1
-    }
-    
     func updateToHighlight () {
         canvasView.lineColor = UIColor.yellow
         canvasView.lineOpacity = 0.25
+    }
+    
+    func updateToErase() {
+        
+        canvasView.lineColor = UIColor(patternImage: UIImage(view: canvasView))
+        canvasView.lineOpacity = 1
     }
     
     func textSelected () {
